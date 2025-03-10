@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { Card, CardContent } from "../Components/ui/Card";
+import { Card } from "../Components/ui/Card";
 import { Progress } from "../Components/ui/Progress";
-import { Button } from "../Components/ui/Button";
 import { Trophy, Briefcase, BookOpen } from "lucide-react";
 
 export default function StudentDashboard() {
   const [eduCoins, setEduCoins] = useState(250);
+  
   const challenges = [
     { id: 1, title: "AI Fundamentals", progress: 70 },
     { id: 2, title: "Data Structures & Algorithms", progress: 40 },
@@ -25,66 +25,72 @@ export default function StudentDashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Student Dashboard</h1>
+    <div className="min-h-screen bg-gray-100 text-gray-900 p-8">
+      <h1 className="text-5xl font-extrabold text-center mb-10">Student Dashboard</h1>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {/* EduCoins Card */}
-        <Card className="bg-gray-800 p-4 flex flex-col items-center">
-          <Trophy size={40} className="text-yellow-400 mb-2" />
-          <h2 className="text-xl font-semibold">EduCoins</h2>
-          <p className="text-3xl font-bold mt-2">{eduCoins}</p>
+      {/* EduCoins Card */}
+      <div className="flex justify-center">
+        <Card className="bg-white p-6 rounded-2xl shadow-lg text-center hover:shadow-xl transition w-80">
+          <Trophy size={50} className="text-yellow-500 mx-auto mb-3" />
+          <h2 className="text-2xl font-semibold">EduCoins</h2>
+          <p className="text-5xl font-bold mt-2">{eduCoins}</p>
         </Card>
+      </div>
 
+      {/* Learning Challenges & Job Roles (Side by Side) */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
         {/* Learning Challenges */}
-        <Card className="bg-gray-800 p-4">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <BookOpen size={24} /> Learning Challenges
+        <Card className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            <BookOpen size={28} /> Learning Challenges
           </h2>
-          <div className="mt-4 space-y-3">
+          <div className="mt-5 space-y-5">
             {challenges.map((challenge) => (
               <div key={challenge.id}>
-                <p className="font-medium">{challenge.title}</p>
-                <Progress value={challenge.progress} className="mt-1" />
+                <p className="font-medium text-lg">{challenge.title}</p>
+                <Progress value={challenge.progress} className="mt-2 h-3 rounded-full" />
               </div>
             ))}
           </div>
         </Card>
 
         {/* Job Roles */}
-        <Card className="bg-gray-800 p-4">
-          <h2 className="text-xl font-semibold flex items-center gap-2">
-            <Briefcase size={24} /> Job Roles
+        <Card className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+          <h2 className="text-2xl font-semibold flex items-center gap-2">
+            <Briefcase size={28} /> Job Roles
           </h2>
-          <ul className="mt-4 space-y-2">
+          <ul className="mt-5 space-y-4">
             {jobRoles.map((job) => (
-              <li key={job.id} className="border-b border-gray-700 pb-2">
-                <p className="font-medium">{job.title}</p>
-                <p className="text-gray-400 text-sm">{job.university}</p>
+              <li key={job.id} className="border-b pb-3 border-gray-300">
+                <p className="font-medium text-lg">{job.title}</p>
+                <p className="text-gray-500 text-sm">{job.university}</p>
               </li>
             ))}
           </ul>
         </Card>
       </div>
 
-      {/* Leaderboard (Optional) */}
-      <div className="mt-8">
-        <h2 className="text-2xl font-semibold text-center mb-4">Leaderboard</h2>
-        <div className="bg-gray-800 p-4 rounded-lg">
-          <table className="w-full">
+      {/* Leaderboard Section */}
+      <div className="mt-16">
+        <h2 className="text-4xl font-semibold text-center mb-8">Leaderboard</h2>
+        <div className="bg-white p-6 rounded-2xl shadow-lg hover:shadow-xl transition">
+          <table className="w-full border-collapse text-lg">
             <thead>
-              <tr className="text-left border-b border-gray-700">
-                <th className="py-2">Rank</th>
-                <th>Name</th>
-                <th>EduCoins</th>
+              <tr className="text-left border-b border-gray-300 font-semibold">
+                <th className="py-3 px-4">Rank</th>
+                <th className="px-4">Name</th>
+                <th className="px-4">EduCoins</th>
               </tr>
             </thead>
             <tbody>
-              {leaderboard.map((entry) => (
-                <tr key={entry.rank} className="border-b border-gray-700">
-                  <td className="py-2">{entry.rank}</td>
-                  <td>{entry.name}</td>
-                  <td>{entry.coins}</td>
+              {leaderboard.map((entry, index) => (
+                <tr
+                  key={entry.rank}
+                  className={`border-b border-gray-200 ${index % 2 === 0 ? "bg-gray-50" : ""} text-lg`}
+                >
+                  <td className="py-3 px-4">{entry.rank}</td>
+                  <td className="px-4">{entry.name}</td>
+                  <td className="px-4 font-bold">{entry.coins}</td>
                 </tr>
               ))}
             </tbody>
