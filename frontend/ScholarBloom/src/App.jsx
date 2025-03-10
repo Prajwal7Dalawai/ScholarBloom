@@ -1,11 +1,10 @@
-import { useState } from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
-import Landing from './Pages/Landing'
-import SignupPage from './Pages/SignupPage.jsx'
-import StudentDashboard from './Pages/StudentDashboard'
-import LoginPage from './Pages/login.jsx'
-import Challenge from './Pages/Challenge.jsx'
+import Landing from './pages/Landing'
+import SignupPage from './pages/SignupPage.jsx'
+import StudentDashboard from './pages/StudentDashboard'
+import LoginPage from './pages/login.jsx'
+import Challenge from './pages/Challenge.jsx'
 
 function App() {
 
