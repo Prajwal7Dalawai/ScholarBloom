@@ -1,8 +1,4 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 
 export default function SignUp() {
   const [userType, setUserType] = useState("student");
@@ -10,7 +6,7 @@ export default function SignUp() {
     name: "",
     email: "",
     password: "",
-    universityName: ""
+    universityName: "",
   });
 
   const handleChange = (e) => {
@@ -23,37 +19,96 @@ export default function SignUp() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md p-6 bg-white shadow-xl rounded-2xl">
-        <CardContent>
-          <h2 className="text-xl font-bold mb-4">Signup as {userType === "student" ? "Student" : "University"}</h2>
-          <div className="flex gap-2 mb-4">
-            <Button variant={userType === "student" ? "default" : "outline"} onClick={() => setUserType("student")}>Student</Button>
-            <Button variant={userType === "university" ? "default" : "outline"} onClick={() => setUserType("university")}>University</Button>
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+      <div className="bg-gray-800 p-8 shadow-lg rounded-lg w-full max-w-sm">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Signup as {userType === "student" ? "Student" : "University"}
+        </h2>
+
+        {/* Toggle Buttons */}
+        <div className="flex justify-between mb-6">
+          <button
+            className={`w-1/2 py-2 rounded-l-md transition-all ${
+              userType === "student"
+                ? "bg-blue-500 text-white shadow-md"
+                : "bg-gray-700 hover:bg-gray-600"
+            }`}
+            onClick={() => setUserType("student")}
+          >
+            Student
+          </button>
+          <button
+            className={`w-1/2 py-2 rounded-r-md transition-all ${
+              userType === "university"
+                ? "bg-blue-500 text-white shadow-md"
+                : "bg-gray-700 hover:bg-gray-600"
+            }`}
+            onClick={() => setUserType("university")}
+          >
+            University
+          </button>
+        </div>
+
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex flex-col">
+            
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /><br></br>
           </div>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <Label>Name</Label>
-              <Input type="text" name="name" value={formData.name} onChange={handleChange} required />
+
+          <div className="flex flex-col">
+            
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /> <br></br>
+          </div>
+
+          <div className="flex flex-col">
+            
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /> <br></br>
+          </div>
+
+          {userType === "university" && (
+            <div className="flex flex-col">
+              <input
+                type="text"
+                name="universityName"
+                placeholder="Enter university name"
+                className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
+                required
+              /> <br></br>
             </div>
-            <div>
-              <Label>Email</Label>
-              <Input type="email" name="email" value={formData.email} onChange={handleChange} required />
-            </div>
-            <div>
-              <Label>Password</Label>
-              <Input type="password" name="password" value={formData.password} onChange={handleChange} required />
-            </div>
-            {userType === "university" && (
-              <div>
-                <Label>University Name</Label>
-                <Input type="text" name="universityName" value={formData.universityName} onChange={handleChange} required />
-              </div>
-            )}
-            <Button type="submit" className="w-full">Signup</Button>
-          </form>
-        </CardContent>
-      </Card>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 shadow-md hover:bg-blue-600 transition-all"
+          >
+            Signup
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
