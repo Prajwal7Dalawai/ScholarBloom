@@ -1,72 +1,114 @@
-import React, { useState } from 'react';
-import './auth.css';
+import { useState } from "react";
 
-const SignupPage = () => {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [userType, setUserType] = useState('student'); // Default to student
+export default function SignUp() {
+  const [userType, setUserType] = useState("student");
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    universityName: "",
+  });
 
-    const handleSignup = async (e) => {
-        e.preventDefault();
-        // Mock API call for signup
-        const mockApiCall = async () => {
-            // Simulate a successful signup response
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-        const response = await mockApiCall();
-        if (response.success) {
-            // Handle successful signup (e.g., redirect or show a success message)
-            console.log('Signup successful!');
-        } else {
-            // Handle signup failure (e.g., show an error message)
-            console.log('Signup failed!');
-        }
-    };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Signup Data:", formData);
+  };
 
-    return (
-        <div className="signup-container">
-            <h2>Signup</h2>
-            <form className="signup-form" onSubmit={handleSignup}>
-                <div>
-                    <label>Name:</label>
-                    <input 
-                        type="text" 
-                        value={name} 
-                        onChange={(e) => setName(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
-                <div>
-                    <label>User Type:</label>
-                    <select value={userType} onChange={(e) => setUserType(e.target.value)}>
-                        <option value="student">Student</option>
-                        <option value="university">University</option>
-                    </select>
-                </div>
-                <button type="submit">Signup</button>
-            </form>
+  return (
+    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
+      <div className="bg-gray-800 p-8 shadow-lg rounded-lg w-full max-w-sm">
+        <h2 className="text-2xl font-bold text-center mb-6">
+          Signup as {userType === "student" ? "Student" : "University"}
+        </h2>
+
+        {/* Toggle Buttons */}
+        <div className="flex justify-between mb-6">
+          <button
+            className={`w-1/2 py-2 rounded-l-md transition-all ${
+              userType === "student"
+                ? "bg-blue-500 text-white shadow-md"
+                : "bg-gray-700 hover:bg-gray-600"
+            }`}
+            onClick={() => setUserType("student")}
+          >
+            Student
+          </button>
+          <button
+            className={`w-1/2 py-2 rounded-r-md transition-all ${
+              userType === "university"
+                ? "bg-blue-500 text-white shadow-md"
+                : "bg-gray-700 hover:bg-gray-600"
+            }`}
+            onClick={() => setUserType("university")}
+          >
+            University
+          </button>
         </div>
-    );
-};
 
-export default SignupPage;
+        {/* Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="flex flex-col">
+            
+            <input
+              type="text"
+              name="name"
+              placeholder="Enter your name"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /><br></br>
+          </div>
+
+          <div className="flex flex-col">
+            
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /> <br></br>
+          </div>
+
+          <div className="flex flex-col">
+            
+            <input
+              type="password"
+              name="password"
+              placeholder="Enter your password"
+              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              onChange={handleChange}
+              required
+            /> <br></br>
+          </div>
+
+          {userType === "university" && (
+            <div className="flex flex-col">
+              <input
+                type="text"
+                name="universityName"
+                placeholder="Enter university name"
+                className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+                onChange={handleChange}
+                required
+              /> <br></br>
+            </div>
+          )}
+
+          {/* Submit Button */}
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 shadow-md hover:bg-blue-600 transition-all"
+          >
+            Signup
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
