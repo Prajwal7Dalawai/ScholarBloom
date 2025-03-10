@@ -1,6 +1,3 @@
-const mongoose = require('mongoose');
-require("dotenv").config(); // Load environment variables
-
 const connectDB = async()=>{
     try{
     await mongoose.connect(process.env.MongoURL);
@@ -12,4 +9,5 @@ catch(error){
     process.exit(1);
 }
 };
+connectDB();
 module.exports = connectDB;
