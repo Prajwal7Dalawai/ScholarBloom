@@ -1,0 +1,34 @@
+{
+  "name": "scholarbloom",
+  "version": "1.0.0",
+  "description": "GDG campus solution challenge",
+  "main": "app.js",
+  "scripts": {
+    "test": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Prajwal7Dalawai/SholarBloom.git"
+  },
+  "keywords": [
+    "AI",
+    "nodejs",
+    "react",
+    "api",
+    "backend",
+    "database"
+  ],
+  "author": "Prajwa Dalawai, Bhavana Hottigoudar, Neha Nayak, Sukeerti Khasnis",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Prajwal7Dalawai/SholarBloom/issues"
+  },
+  "homepage": "https://github.com/Prajwal7Dalawai/SholarBloom#readme",
+  "dependencies": {
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "firebase": "^11.4.0",
+    "firebase-admin": "^13.2.0",
+    "mongoose": "^8.12.1"
+  }
+}

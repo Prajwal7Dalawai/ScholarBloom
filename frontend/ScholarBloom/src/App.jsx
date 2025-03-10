@@ -1,19 +1,29 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Login from "./pages/login.jsx";
-import Signup from "./pages/signup.jsx";
-import Dashboard from "./pages/UniversityDashboard.jsx"; // Optional: For logged-in users
+import { useState } from 'react'
+import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import Landing from './pages/Landing'
+import LoginPage from './pages/login'
+import SignUp from './pages/SignUp'
+import StudentDashboard from './pages/StudentDashboard'
+import UniversityDashboard from './pages/UniversityDashboard'
+import ScholarshipPage from './pages/ScholarshipPage'
+
 
 function App() {
+
   return (
-    <Router>
+    <>
+      <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/unidashboard" element={<Dashboard />} />
+        <Route path='/landing' element={<Landing></Landing>} />
+        <Route path='/login' element={<LoginPage></LoginPage>} />
+        <Route path='/signup' element={<SignUp></SignUp>} />
+        <Route path='/dashboard' element={<StudentDashboard></StudentDashboard>} />
+        <Route path='/unidashboard' element={<UniversityDashboard></UniversityDashboard>} />
+        <Route path='/ScholarshipPage' element={<ScholarshipPage></ScholarshipPage>} />
       </Routes>
-    </Router>
-  );
+      </BrowserRouter>
+    </>
+  )
 }
 
 export default App;
