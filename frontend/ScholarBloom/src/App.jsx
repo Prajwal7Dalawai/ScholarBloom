@@ -1,29 +1,24 @@
-import { useState } from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
+import './App.css'
 import Landing from './pages/Landing'
-import LoginPage from './pages/login'
-import SignUp from './pages/SignUp'
+import SignupPage from './pages/SignupPage.jsx'
 import StudentDashboard from './pages/StudentDashboard'
-import UniversityDashboard from './pages/UniversityDashboard'
-import ScholarshipPage from './pages/ScholarshipPage'
-
+import LoginPage from './pages/login.jsx'
+import Challenge from './pages/Challenge.jsx'
 
 function App() {
 
-  return (
-    <>
-      <BrowserRouter>
-      <Routes>
-        <Route path='/landing' element={<Landing></Landing>} />
-        <Route path='/login' element={<LoginPage></LoginPage>} />
-        <Route path='/signup' element={<SignUp></SignUp>} />
-        <Route path='/dashboard' element={<StudentDashboard></StudentDashboard>} />
-        <Route path='/unidashboard' element={<UniversityDashboard></UniversityDashboard>} />
-        <Route path='/ScholarshipPage' element={<ScholarshipPage></ScholarshipPage>} />
+  return (  
+    <BrowserRouter>
+      <Routes> 
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="/studentDashboard" element={<StudentDashboard />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/challenge" element={<Challenge />} />
       </Routes>
-      </BrowserRouter>
-    </>
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App;
+export default App

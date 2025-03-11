@@ -25,6 +25,10 @@
   },
   "homepage": "https://github.com/Prajwal7Dalawai/SholarBloom#readme",
   "dependencies": {
+<<<<<<< HEAD
+=======
+    "cors": "^2.8.5",
+>>>>>>> main
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "firebase": "^11.4.0",

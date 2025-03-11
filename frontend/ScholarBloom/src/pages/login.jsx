@@ -74,37 +74,39 @@ const GlobalStyle = createGlobalStyle`
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [user, setUser] = useState(null); // To store authenticated user info
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const mockApiCall = async () => {
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
-        const response = await mockApiCall();
-        if (response.success) {
-            console.log('Login successful!');
-        } else {
-            console.log('Login failed!');
-        }
+        console.log('Email login functionality to be implemented later.');
     };
 
     const handleGoogleLogin = async () => {
+        // Mock Google OAuth login
         const mockGoogleLogin = async () => {
+            // Simulate a successful Google login response
             return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
         };
+
         const response = await mockGoogleLogin();
         if (response.success) {
+            // Handle successful Google login (e.g., redirect or show a success message)
             console.log('Google login successful!');
         } else {
+            // Handle Google login failure (e.g., show an error message)
             console.log('Google login failed!');
         }
     };
 
     return (
-        <>
-            <GlobalStyle />
-            <div className="login-container">
-                <h2>Login</h2>
+        <div className="login-container">
+            <h2>Login</h2>
+            {user ? (
+                <div>
+                    <p>Welcome, {user.displayName}!</p>
+                    <img src={user.photoURL} alt="User Profile" />
+                </div>
+            ) : (
                 <form className="login-form" onSubmit={handleLogin}>
                     <div>
                         <label>Email:</label>
@@ -127,8 +129,8 @@ const LoginPage = () => {
                     <button type="submit">Login</button>
                     <button type="button" onClick={handleGoogleLogin}>Login with Google</button>
                 </form>
-            </div>
-        </>
+            )}
+        </div>
     );
 };
 
