@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
 
+
 const GlobalStyle = createGlobalStyle`
     body {
         font-family: Arial, sans-serif;
@@ -69,8 +70,8 @@ const GlobalStyle = createGlobalStyle`
     button[type="button"]:hover {
         background-color: #b53122;
     }
+};
 `;
-
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
