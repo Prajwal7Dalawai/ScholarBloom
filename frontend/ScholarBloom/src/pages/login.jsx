@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
-
+import { auth, provider, signInWithPopup } from '../firebaseConfig';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -83,19 +83,21 @@ const LoginPage = () => {
     };
 
     const handleGoogleLogin = async () => {
-        // Mock Google OAuth login
-        const mockGoogleLogin = async () => {
-            // Simulate a successful Google login response
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
-
-        const response = await mockGoogleLogin();
-        if (response.success) {
-            // Handle successful Google login (e.g., redirect or show a success message)
-            console.log('Google login successful!');
-        } else {
-            // Handle Google login failure (e.g., show an error message)
-            console.log('Google login failed!');
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const idToken = await result.user.getIdToken(); // ✅ Get ID Token
+    
+            // 🔹 Send ID Token to backend
+            const response = await fetch("http://localhost:3000/auth/google", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ idToken }), // ✅ Send token
+            });
+    
+            const data = await response.json();
+            console.log("Login Successful:", data);
+        } catch (error) {
+            console.error("Google Sign-In Error:", error);
         }
     };
 
