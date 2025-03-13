@@ -1,8 +1,7 @@
 const express = require("express");
-const { getAuth, GoogleAuthProvider, signInWithPopup } = require("firebase/auth");
-const { initializeApp } = require("firebase/app");
 require("dotenv").config();
 const admin = require("firebase-admin");
+const User = require("../models/User-Schema");
 
 const router = express.Router();
 
@@ -12,36 +11,27 @@ admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
 });
 
-// 🔹 Firebase Config
-const firebaseConfig = {
-    apiKey: process.env.apiKey,
-    authDomain: process.env.authDomain,
-    projectId: process.env.projectId
-};
-
-// 🔹 Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-
-// 🔹 Google Sign-In Function
-const signInWithGoogle = async () => {
+router.post("/google/signin", async (req, res) => {
     try {
-        const result = await signInWithPopup(auth, provider);
-        return result.user;
-    } catch (error) {
-        throw error;
-    }
-};
-
-// 🔹 Google Sign-In API
-router.post("/google", async (req, res) => {
-    try {
-        const user = await signInWithGoogle();
-        res.status(200).json({ user });
-    } catch (error) {
+        const idToken = req.body.idToken; // Get the ID token from the client
+        
+        if (!idToken) {
+          return res.status(400).json({ error: "ID token is required" });
+        }
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        const user = decodedToken; // Decoded token contains user info
+        const registeredUser = {
+          email: user.email,
+          name: user.name,
+          picture: user.picture,
+          uid: user.uid,
+          time: new Date().toString(),
+        }
+        await User.insertOne({ firebaseUID: user.uid, email: user.email, fullName: user.name, profilePic: user.picture });
+        res.status(200).json({ registeredUser });
+      } catch (error) {
         res.status(500).json({ error: "Google Sign-In Failed", details: error.message });
-    }
+      }
 });
 
 // 🔹 Logout API

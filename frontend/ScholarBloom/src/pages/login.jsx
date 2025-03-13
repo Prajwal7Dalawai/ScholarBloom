@@ -82,19 +82,20 @@ const LoginPage = () => {
         console.log('Email login functionality to be implemented later.');
     };
 
-    const handleGoogleLogin = async () => {
+    const handleGoogleSignin = async () => {
         try {
             const result = await signInWithPopup(auth, provider);
-            const idToken = await result.user.getIdToken(); // ✅ Get ID Token
+           const idToken = await result.user.getIdToken(); // ✅ Get ID Token
     
             // 🔹 Send ID Token to backend
-            const response = await fetch("http://localhost:3000/auth/google", {
+            const response = await fetch("http://localhost:3000/auth/google/signin", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ idToken }), // ✅ Send token
             });
     
             const data = await response.json();
+            setUser(data); // Store user info in state
             console.log("Login Successful:", data);
         } catch (error) {
             console.error("Google Sign-In Error:", error);
@@ -106,8 +107,8 @@ const LoginPage = () => {
             <h2>Login</h2>
             {user ? (
                 <div>
-                    <p>Welcome, {user.displayName}!</p>
-                    <img src={user.photoURL} alt="User Profile" />
+                    <p>Welcome, {user.user.name}!</p>
+                    <img src={user.user.picture} alt="User Profile" />
                 </div>
             ) : (
                 <form className="login-form" onSubmit={handleLogin}>
@@ -130,7 +131,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <button type="submit">Login</button>
-                    <button type="button" onClick={handleGoogleLogin}>Login with Google</button>
+                    <button type="button" onClick={handleGoogleSignin}>Login with Google</button>
                 </form>
             )}
         </div>
