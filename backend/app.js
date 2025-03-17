@@ -1,23 +1,32 @@
 const express = require('express');
-const User = require('./models/User-Schema');
-const mongoose = require('mongoose');
-const EduCoins = require('./models/EduCoins-Schema');
-const Scholarship = require('./models/Scholarship-Schema');
-const app = express();
-const cors = require('cors');
+const cors = require('cors'); // Import CORS
 
+const session = require('express-session');
+const app = express();
 const connectDB = require('./mongo-Connect');
-require("dotenv").config();
+
+// Middleware
+app.use(cors({
+    origin: 'http://localhost:5173', // Allow requests from your frontend
+    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
 app.use(express.json());
 
-const authRoute = require('./Routes/authRoute');
-const scholarRoute = require('./Routes/scholarshipRoute');
-app.use(cors({
-    origin: 'http://localhost:5173' // Adjust this to match your frontend's URL
+app.use(session({
+    secret: 'mamasboyy', // Change this to a secure random string
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true } // Set to true if using HTTPS
 }));
-app.use("/auth", authRoute);
 
-app.use("/scholar",scholarRoute);
+// Other routes and middleware
+app.use('/auth', require('./Routes/authRoute'));
+
+app.use("/scholar",require("./Routes/scholarshipRoute"));
+
+app.use((req,res,next)=>{
+    res.locals.currentUser = req.session.user;
+});
 
 const port  = 3000;
 

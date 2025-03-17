@@ -9,6 +9,8 @@ import JobApplication from './Pages/JobApplication.jsx'
 import Header from "./Components/header/Header.jsx";
 import Scholarship from './Pages/Scholarship.jsx';
 import Footer from "./Components/footer/Footer.jsx";
+import SignUp from './pages/SignUp.jsx';
+import UniversityDashboard from './pages/UniversityDashboard.jsx';
 
 function App() {
   return (
@@ -18,13 +20,16 @@ function App() {
         <Routes> 
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/studentDashboard" element={<StudentDashboard />} />
+          <Route path="/StudDashboard" element={<StudentDashboard />} />
+          <Route path="/UniDashboard" element={<UniversityDashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
+          <Route path="/signnew" element={<SignUp />} />
         </Routes>
       </div>
+      <Footer className="footer" />
     </BrowserRouter>
   );
 }

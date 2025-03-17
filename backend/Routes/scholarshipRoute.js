@@ -1,10 +1,11 @@
 const express = require('express');
+const authMiddleware = require('../middleware'); // Import the auth middleware
+
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-    res.send("<h1>Hey I m Scholarship Route</h1>");
+router.get('/', authMiddleware, (req, res) => {
+    res.json({ message: "Scholarship data" });
 });
 
+
 module.exports = router;
-
-

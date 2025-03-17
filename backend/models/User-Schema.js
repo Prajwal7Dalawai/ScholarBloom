@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     firebaseUID: { type: String, required: true, unique: true }, // Store Firebase UID
-    role: { type: String, enum: ["student", "university", "admin"], required: true, default: "student" },
+    role: { type: String, enum: ["student", "university"], required: true, },
     profilePic: { type: String, default: "" }, // Firebase profile picture
     createdAt: { type: Date, default: Date.now }
 });

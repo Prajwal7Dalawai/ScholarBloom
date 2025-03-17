@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { createGlobalStyle } from 'styled-components';
-import { auth, provider, signInWithPopup } from '../firebaseConfig';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -82,25 +81,7 @@ const LoginPage = () => {
         console.log('Email login functionality to be implemented later.');
     };
 
-    const handleGoogleSignin = async () => {
-        try {
-            const result = await signInWithPopup(auth, provider);
-           const idToken = await result.user.getIdToken(); // ✅ Get ID Token
-    
-            // 🔹 Send ID Token to backend
-            const response = await fetch("http://localhost:3000/auth/google/signin", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ idToken }), // ✅ Send token
-            });
-    
-            const data = await response.json();
-            setUser(data); // Store user info in state
-            console.log("Login Successful:", data);
-        } catch (error) {
-            console.error("Google Sign-In Error:", error);
-        }
-    };
+ 
 
     return (
         <div className="login-container">

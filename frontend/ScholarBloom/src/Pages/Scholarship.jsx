@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "../Components/ui/Card";
 import { Button } from "../Components/ui/Button";
 
@@ -23,6 +23,23 @@ const scholarships = [
 
 const Scholarship = () => {
   const [applications, setApplications] = useState({});
+  const [scholar, setScholar] = useState(null);
+
+  useEffect(() => {
+    const fetchScholar = async () => {
+      const response = await fetch("http://localhost:3000/scholar", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const data = await response.json();
+      setScholar(data);
+    };
+
+    fetchScholar();
+  }, []);
 
   const applyForScholarship = (id) => {
     setApplications((prev) => ({ ...prev, [id]: "Applied" }));
