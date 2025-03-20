@@ -7,10 +7,10 @@ import LoginPage from './pages/login.jsx'
 import Challenge from './Pages/Challenge.jsx'
 import JobApplication from './Pages/JobApplication.jsx'
 import Header from "./Components/header/Header.jsx";
-import Scholarship from './Pages/Scholarship.jsx';
+import Scholarship from './pages/Scholarship.jsx';
 import Footer from "./Components/footer/Footer.jsx";
 import SignUp from './pages/SignUp.jsx';
-import UniversityDashboard from './pages/UniversityDashboard.jsx';
+import Dashboard from './pages/dashboard.jsx'
 
 function App() {
   return (
@@ -20,8 +20,7 @@ function App() {
         <Routes> 
           <Route path="/" element={<Landing />} />
           <Route path="/signup" element={<SignupPage />} />
-          <Route path="/StudDashboard" element={<StudentDashboard />} />
-          <Route path="/UniDashboard" element={<UniversityDashboard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />

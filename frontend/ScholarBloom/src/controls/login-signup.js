@@ -1,7 +1,9 @@
 import { auth, provider, signInWithPopup } from '../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-const handleStudentSignin = async () => {
+const handleStudentSignin = async (navigate) => {
+
     try {
+        // provider.setCustomParameters({ prompt: "select_account" });
         const result = await signInWithPopup(auth, provider);
        const idToken = await result.user.getIdToken(); // ✅ Get ID Token
 
@@ -10,16 +12,20 @@ const handleStudentSignin = async () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idToken }), // ✅ Send token
+            credentials: "include",
         });
 
         const data = await response.json();
-        console.log("Login Successful:", data);
+        console.log(data);
+        navigate("/dashboard");
+
     } catch (error) {
         console.error("Google Sign-In Error:", error);
     }
 };
 
-const handleUniversitySignin = async () => {
+const handleUniversitySignin = async (navigate) => {
+
     try {
         const result = await signInWithPopup(auth, provider);
        const idToken = await result.user.getIdToken(); // ✅ Get ID Token
@@ -29,8 +35,11 @@ const handleUniversitySignin = async () => {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ idToken }), // ✅ Send token
+            credentials: "include",
         });
-        const data = await response.json();// Store user info in state
+    const data = await response.json(); // Store user info in state
+    navigate("/dashboard");
+
         console.log("Login Successful:", data);
     } catch (error) {
         console.error("Google Sign-In Error:", error);

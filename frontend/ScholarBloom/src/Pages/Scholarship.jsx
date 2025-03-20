@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "../Components/ui/Card";
 import { Button } from "../Components/ui/Button";
+import { data } from "react-router-dom";
 
 const scholarships = [
   {
@@ -23,11 +24,11 @@ const scholarships = [
 
 const Scholarship = () => {
   const [applications, setApplications] = useState({});
-  const [scholar, setScholar] = useState(null);
+  const [scholar, setScholar] = useState("");
 
   useEffect(() => {
     const fetchScholar = async () => {
-      const response = await fetch("http://localhost:3000/scholar", {
+      const response = await fetch("http://localhost:3000/dashboard", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -50,6 +51,7 @@ const Scholarship = () => {
       <h1 className="text-3xl font-bold text-gray-800 mb-6 text-left">
         Scholarship Portal
       </h1>
+      <div> {scholar} </div>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {scholarships.map((scholarship) => (
           <Card key={scholarship.id} className="p-5 border rounded-lg shadow-lg bg-white">

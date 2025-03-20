@@ -1,35 +1,39 @@
-const express = require('express');
-const cors = require('cors'); // Import CORS
-
-const session = require('express-session');
+const express = require("express");
+const cors = require("cors");
 const app = express();
-const connectDB = require('./mongo-Connect');
+const connectDB = require("./mongo-Connect");
+require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const { verifySession } = require("./middleware");
 
-// Middleware
+// ✅ Enable CORS with Credentials to Allow Cookies
 app.use(cors({
-    origin: 'http://localhost:5173', // Allow requests from your frontend
+    origin: "http://localhost:5173", // Adjust based on your frontend URL
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-app.use(session({
-    secret: 'mamasboyy', // Change this to a secure random string
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true } // Set to true if using HTTPS
-}));
+// ✅ Route for authentication (stores session token in cookies)
+app.use("/auth", require("./Routes/authRoute"));
 
-// Other routes and middleware
-app.use('/auth', require('./Routes/authRoute'));
-
-app.use("/scholar",require("./Routes/scholarshipRoute"));
-
-app.use((req,res,next)=>{
-    res.locals.currentUser = req.session.user;
+// ✅ Route to get user data (requires session token)
+app.get("/user/data", verifySession, (req, res) => {
+    res.json({ user: req.user });
 });
 
-const port  = 3000;
+// ✅ Route to check if session is active
+app.get("/dashboard", verifySession, (req, res) => {
+    res.json({ message: "Welcome to your dashboard", user: req.user });
+});
 
-app.listen(port,()=>{console.log(`Server is listening to port ${port}`)});
-
+// ✅ Connect to MongoDB
 connectDB();
+
+// ✅ Start server
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server is listening to port ${port}`);
+});
