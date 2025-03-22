@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './auth.css';
+import './login.css'; // Ensure this file is properly linked
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -7,44 +7,20 @@ const LoginPage = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        // Mock API call for login
-        const mockApiCall = async () => {
-            // Simulate a successful login response
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
-
-        const response = await mockApiCall();
-        if (response.success) {
-            // Handle successful login (e.g., redirect or show a success message)
-            console.log('Login successful!');
-        } else {
-            // Handle login failure (e.g., show an error message)
-            console.log('Login failed!');
-        }
+        console.log('Login attempted with:', { email, password });
     };
 
     const handleGoogleLogin = async () => {
-        // Mock Google OAuth login
-        const mockGoogleLogin = async () => {
-            // Simulate a successful Google login response
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
-
-        const response = await mockGoogleLogin();
-        if (response.success) {
-            // Handle successful Google login (e.g., redirect or show a success message)
-            console.log('Google login successful!');
-        } else {
-            // Handle Google login failure (e.g., show an error message)
-            console.log('Google login failed!');
-        }
+        console.log('Google login attempted');
     };
 
     return (
         <div className="login-container">
             <h2>Login</h2>
             <form className="login-form" onSubmit={handleLogin}>
-                <div>
+                
+                {/* Email Input Field */}
+                <div className="input-box">
                     <label>Email:</label>
                     <input 
                         type="email" 
@@ -53,7 +29,9 @@ const LoginPage = () => {
                         required 
                     />
                 </div>
-                <div>
+
+                {/* Password Input Field */}
+                <div className="input-box">
                     <label>Password:</label>
                     <input 
                         type="password" 
@@ -62,8 +40,15 @@ const LoginPage = () => {
                         required 
                     />
                 </div>
+
+                {/* Login Button */}
                 <button type="submit">Login</button>
-                <button type="button" onClick={handleGoogleLogin}>Login with Google</button>
+
+                {/* Google Login Button */}
+                <button type="button" className="google-btn" onClick={handleGoogleLogin}>
+                    Login with Google
+                </button>
+
             </form>
         </div>
     );
