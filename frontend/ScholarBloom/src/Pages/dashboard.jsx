@@ -15,7 +15,9 @@ const Dashboard = () => {
             .catch(() => console.log("User not logged in"));
     }, []);
 
-    return user ? <h1>Welcome, {user.name}</h1> : <h1>Please log in</h1>;
+    return (user ? ( <div><h1>Welcome, {user.name}</h1>
+        <h2>you are {user.role}</h2></div>
+    )  : <h1>Please log in</h1>);
 };
 
 export default Dashboard;

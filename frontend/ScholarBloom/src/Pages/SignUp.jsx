@@ -1,4 +1,4 @@
-import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup.js'
+import { handleStudentSignin, handleUniversitySignin, logout } from '../controls/login-signup.js';
 
 export default function SignUp() {
 
@@ -22,6 +22,11 @@ export default function SignUp() {
           </button>
           
         </div>
+        <button 
+        className={`w-1/2 py-2 rounded-l-md transition-all`} 
+        onClick={logout}>
+          Logout
+          </button>
 
       </div>
     </div>

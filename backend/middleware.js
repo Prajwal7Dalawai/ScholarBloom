@@ -8,7 +8,7 @@ const verifySession = (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY); // ✅ Fix: Use `process.env.SECRET_KEY`
+        const decoded = jwt.verify(token, process.env.SECRET_KEY); 
         console.log("Decoded User:", decoded); // Debug decoded token
         req.user = decoded; // Store user data in `req.user`
         next(); // Proceed to next middleware

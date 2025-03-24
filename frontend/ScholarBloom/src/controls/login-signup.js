@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 const handleStudentSignin = async (navigate) => {
 
     try {
-        // provider.setCustomParameters({ prompt: "select_account" });
+        provider.setCustomParameters({ prompt: "select_account" });
         const result = await signInWithPopup(auth, provider);
        const idToken = await result.user.getIdToken(); // ✅ Get ID Token
 
@@ -27,6 +27,7 @@ const handleStudentSignin = async (navigate) => {
 const handleUniversitySignin = async (navigate) => {
 
     try {
+        provider.setCustomParameters({ prompt: "select_account" });
         const result = await signInWithPopup(auth, provider);
        const idToken = await result.user.getIdToken(); // ✅ Get ID Token
 
@@ -37,13 +38,29 @@ const handleUniversitySignin = async (navigate) => {
             body: JSON.stringify({ idToken }), // ✅ Send token
             credentials: "include",
         });
-    const data = await response.json(); // Store user info in state
-    navigate("/dashboard");
 
-        console.log("Login Successful:", data);
+        const data = await response.json();
+        console.log(data);
+        navigate("/dashboard");
+
     } catch (error) {
         console.error("Google Sign-In Error:", error);
     }
 };
 
-export { handleStudentSignin, handleUniversitySignin };
+const logout = async () => {
+    try {
+        const response = await fetch("http://localhost:3000/auth/logout", {
+            method: "POST",
+            credentials: "include",
+        });
+
+        const data = await response.json();
+        console.log(data);
+        window.location.reload();
+    } catch (error) {
+        console.error("Logout Error:", error);
+    }
+}
+
+export { handleStudentSignin, handleUniversitySignin, logout };
