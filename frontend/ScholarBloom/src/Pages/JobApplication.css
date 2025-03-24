@@ -1,0 +1,86 @@
+/* General Styling */
+.job-portal {
+    color: white;
+    min-height: 100vh;
+    text-align: center;
+    padding: 40px 20px;
+  }
+  
+  /* Title */
+  .portal-title {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #e7ebef;
+    margin-bottom: 30px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    margin-top: 60px;
+    text-align: center;
+  }
+  
+  /* Job Grid (Now 2 Cards per Row) */
+  .job-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(350px, 1fr)); /* Fixed 2 cards per row */
+    gap: 25px;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  
+  /* Job Cards (Bigger Size) */
+  .job-card {
+
+    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
+    color: #f0eaea;
+    border-radius: 15px;
+    padding: 30px; /* Increased padding */
+    transition: transform 0.2s ease-in-out;
+  }
+  
+  .job-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Job Titles */
+  .job-title {
+    color: #f4f1f1;
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+  
+  .job-university {
+    color: #cbc0c0;
+    font-size: 15px;
+    margin-bottom: 12px;
+  }
+  
+  .job-details {
+    font-size: 15px;
+    color: #bca7a7;
+    margin-bottom: 10px;
+  }
+  
+  /* Apply Button */
+  .job-apply-btn { /* Updated class name */
+    background-color: #a12ccf; /* Purple button */
+    color: white;
+    border: none;
+    padding: 12px 18px; /* Increased button size */
+    border-radius: 8px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 18px;
+    margin-top: 15px;
+    transition: background 0.2s ease-in-out;
+  }
+  
+  .job-apply-btn:hover {
+    background-color: #891eb5; /* Darker purple */
+  }
+  
+  .job-apply-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  

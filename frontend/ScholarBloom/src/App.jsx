@@ -19,13 +19,13 @@ function App() {
       <div className="main-content">
         <Routes> 
           <Route path="/" element={<Landing />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/signUp" element={<SignupPage />} />
+          <Route path="/studentDashboard" element={<StudentDashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
-          <Route path="/signnew" element={<SignUp />} />
+          
         </Routes>
       </div>
       <Footer className="footer" />
