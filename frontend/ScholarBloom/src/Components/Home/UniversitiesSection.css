@@ -1,0 +1,20 @@
+.university-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .university-card img {
+    height: 220px;
+    object-fit: cover;
+  }
+  
+  .university-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+  }
+  
+  .card-body {
+    text-align: center;
+  }
+  

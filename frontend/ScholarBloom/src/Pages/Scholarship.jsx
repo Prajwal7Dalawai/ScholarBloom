@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "../Components/ui/Card";
 import { Button } from "../Components/ui/Button";
-import { data } from "react-router-dom";
+import "./Scholarship.css"; // Import the CSS file
 
 const scholarships = [
   {
@@ -18,6 +18,38 @@ const scholarships = [
     university: "XYZ University",
     lastDate: "April 15, 2025",
     minCGPA: 3.5,
+    status: "Open",
+  },
+  {
+    id: 3,
+    name: "Global Leaders Scholarship",
+    university: "Harvard University",
+    lastDate: "May 10, 2025",
+    minCGPA: 3.7,
+    status: "Open",
+  },
+  {
+    id: 4,
+    name: "AI Research Grant",
+    university: "Stanford University",
+    lastDate: "June 5, 2025",
+    minCGPA: 3.6,
+    status: "Open",
+  },
+  {
+    id: 5,
+    name: "Tech Innovators Award",
+    university: "MIT",
+    lastDate: "July 1, 2025",
+    minCGPA: 3.9,
+    status: "Open",
+  },
+  {
+    id: 6,
+    name: "Future Scientists Fund",
+    university: "Cambridge University",
+    lastDate: "August 20, 2025",
+    minCGPA: 3.85,
     status: "Open",
   },
 ];
@@ -47,34 +79,33 @@ const Scholarship = () => {
   };
 
   return (
-    <div className="p-10 bg-gray-100 min-h-screen">
-      <h1 className="text-3xl font-bold text-gray-800 mb-6 text-left">
-        Scholarship Portal
-      </h1>
-      <div> {scholar} </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="scholarship-container">
+      <h1 className="scholarship-title">Scholarship & Internship Portal</h1>
+      <div className="scholarship-flex">
         {scholarships.map((scholarship) => (
-          <Card key={scholarship.id} className="p-5 border rounded-lg shadow-lg bg-white">
+          <Card key={scholarship.id} className="scholarship-card">
             <CardContent>
-              <h2 className="text-xl font-semibold text-gray-900 mb-1">
-                {scholarship.name}
-              </h2>
-              <p className="text-sm text-gray-600 font-medium mb-3">
-                {scholarship.university}
-              </p>
-              <p className="text-gray-700 mb-2">
-                <strong>Last Date:</strong> {scholarship.lastDate}
-              </p>
-              <p className="text-gray-700 mb-4">
-                <strong>Minimum CGPA:</strong> {scholarship.minCGPA}
-              </p>
-              <div className="mt-4">
+              <div className="scholarship-header">
+                <h2 className="scholarship-name">{scholarship.name}</h2>
+                <p className="scholarship-university">{scholarship.university}</p>
+                <p>
+                  <strong>Last Date:</strong> {scholarship.lastDate}
+                </p>
+                <p>
+                  <strong>Min CGPA:</strong> {scholarship.minCGPA}
+                </p>
+              </div>
+
+
+
+              {/* Apply Button */}
+              <div className="sc-apply-button">
                 {applications[scholarship.id] ? (
-                  <p className="text-green-600 font-semibold">Status: Applied</p>
+                  <p className="applied-status">Status: Applied</p>
                 ) : (
                   <Button
                     onClick={() => applyForScholarship(scholarship.id)}
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition"
+                    className="sc-apply-now-btn"
                   >
                     Apply Now
                   </Button>
