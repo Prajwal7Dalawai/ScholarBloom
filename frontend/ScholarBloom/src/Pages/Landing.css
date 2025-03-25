@@ -3,7 +3,8 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: 'Poppins', sans-serif;
-    background-color: #f4f7fc;
+    background-color: #2a2a2a;
+
 }
 
 /* Static Header */
@@ -51,13 +52,7 @@ h1 {
     color: #8a4baf;
 }
 
-/* Text Styling */
-p {
-    font-size: 1.1rem;
-    color: #555;
-    margin-top: 10px;
-    line-height: 1.6;
-}
+
 
 /* Buttons Container */
 .btn-container {
