@@ -1,161 +1,151 @@
-/* General Styles */
-.dashboard-container {
-    min-height: 100vh;
-    color: #f9f2f2;
-    padding: 40px 20px;
-    text-align: center;
-}
+/* StudentDashboardDarkMode.css */
 
-.dashboard-title {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #e7ebef;
-    margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-    margin-top: 60px;
-}
-
-/* Top Section Layout */
-.top-section {
+.dashboard-container-dark {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #2a2a2a; /* Updated background color */
+    color: #e0e0e0; /* Light text */
 }
 
-/* Cards Wrapper - Side by Side */
-.cards-wrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    align-items: center;
-}
-
-/* Responsive Layout for Top Cards (Side by Side) */
-@media (min-width: 768px) {
-    .cards-wrapper {
-        display: grid;
-        grid-template-columns: 1fr 1.5fr 1fr; /* Side by side */
-        align-items: stretch;
-        gap: 20px;
-    }
-}
-
-/* Card Sizing */
-.edu-coins-card, 
-.enrolled-courses-card {
-    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
+.left-section-dark {
     flex: 1;
-    min-width: 250px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background-color: #1e1e1e; /* Darker card background */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    border-right: 1px solid #333;
 }
 
-.user-details-card {
-    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
-    flex: 1.5; /* Bigger in the middle */
-    min-width: 300px;
+.right-section-dark {
+    flex: 2;
+    padding: 50px;
+    overflow-y: auto;
+    background-color: #1e1e1e;
 }
 
-/* Common Card Styles */
-.user-details-card, 
-.edu-coins-card, 
-.enrolled-courses-card, 
-.challenges-table, 
-.job-roles-table {
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+.user-card-dark,
+.educoins-card-dark,
+.scholarships-list-dark {
+    background-color: #2a2a2a;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.user-details-card:hover, 
-.edu-coins-card:hover, 
-.enrolled-courses-card:hover, 
-.challenges-table:hover, 
-.job-roles-table:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
+.user-card-dark:hover,
+.educoins-card-dark:hover,
+.scholarships-list-dark:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
 }
 
-/* Card Titles */
-.card-title {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: #eff0f2;
+.user-profile-dark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-picture-dark {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
     margin-bottom: 15px;
 }
 
-/* User Details */
-.coins-amount, .user-name {
-    font-size: 2rem;
-    font-weight: bold;
-    color: #c855d0;
+.user-name-dark {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #f0f0f0;
 }
 
-.user-email {
-    font-size: 1rem;
-    color: #cbdcdd;
+.user-details-dark, .detail-label-dark {
+    font-size: 1.1em;
 }
 
-/* Enrolled Courses */
-.courses-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-top: 10px;
+.detail-label-dark {
+    font-weight: 600;
+    color: #ccc;
 }
 
-.courses-list {
-    list-style: none;
-    padding: 0;
+.card-title-dark,
+.section-title-dark {
+    color: #f0f0f0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    font-size: 2em;
+    font-weight: 700;
 }
 
-.course-item {
-    font-size: 1rem;
-    color: #d0d8e0;
+.educoins-display-dark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
 }
 
-/* Icons */
-.edu-coins-icon, .user-icon, .courses-icon {
-    color: #e807e8;
-    margin-bottom: 10px;
+.educoins-icon-dark {
+    font-size: 2.5em;
+    margin-right: 15px;
+    color: #ffc107; /* Gold color */
 }
 
-/* Middle Section */
-.middle-section {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 40px;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
+.educoins-value-dark {
+    font-size: 2.8em;
+    font-weight: 800;
+    color: #00bcd4; /* Cyan color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 }
 
-@media (min-width: 768px) {
-    .middle-section {
-        grid-template-columns: 1fr 1fr;
+.scholarship-item-dark {
+    border-bottom: 1px dashed #333;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+.scholarship-item-dark:last-child {
+    border-bottom: none;
+}
+
+.scholarship-header-dark {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.scholarship-icon-dark {
+    font-size: 1.8em;
+    margin-right: 15px;
+    color: #9c27b0; /* Purple color */
+}
+
+.scholarship-name-dark {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container-dark {
+        flex-direction: column;
     }
-}
 
-/* Table Styles */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-}
+    .left-section-dark, .right-section-dark {
+        flex: none;
+        width: 100%;
+        padding: 30px;
+    }
 
-th, td {
-    padding: 10px;
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-}
-
-th {
-    font-weight: bold;
-}
-
-tr:hover {
-    background-color: #f9f9f9;
+    .profile-picture-dark {
+        width: 100px;
+        height: 100px;
+    }
 }

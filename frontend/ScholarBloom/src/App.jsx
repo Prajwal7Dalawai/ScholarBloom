@@ -3,7 +3,7 @@ import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
 import Landing from './Pages/Landing'
 import SignupPage from './Pages/SignupPage.jsx'
-import StudentDashboard from './Pages/StudentDashboard'
+import Dashboard from './Pages/Dashboard'
 import LoginPage from './Pages/login.jsx'
 import Challenge from './Pages/Challenge.jsx'
 import JobApplication from './Pages/JobApplication.jsx'
@@ -19,7 +19,7 @@ function App() {
         <Routes> 
           <Route path="/" element={<Landing />} />
           <Route path="/signUp" element={<SignupPage />} />
-          <Route path="/studentDashboard" element={<StudentDashboard />} />
+          <Route path="/studentDashboard" element={<Dashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />

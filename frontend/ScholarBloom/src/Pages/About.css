@@ -1,19 +1,23 @@
+.about-container {
+    background-color: #2a2a2a; /* Updated background color */
+    padding: 20px; /* Adjust padding to control space */
+}
+
 .about-img {
     max-height: 350px; /* Limits image height to prevent extra space */
     object-fit: cover;
-  }
-  
-  .about-text {
+}
+
+.about-text {
     padding: 20px; /* Adjust padding to control space */
-  }
-  
-  @media (max-width: 768px) {
+}
+
+@media (max-width: 768px) {
     .about-img {
-      max-height: 250px; /* Reduce image height on small screens */
+        max-height: 250px; /* Reduce image height on small screens */
     }
-  
+
     .about-text {
-      padding: 10px; /* Less padding on smaller screens */
+        padding: 10px; /* Less padding on smaller screens */
     }
-  }
-  
+}

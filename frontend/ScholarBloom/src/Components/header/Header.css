@@ -1,54 +1,59 @@
-header {
+/* Main Navbar Container */
+.header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 50px;
-    box-shadow: 0px 4px 8px rgba(244, 243, 243, 0.813);
+    padding: 16px 32px;
+    background-color: #000000; /* Pure Black */
+    color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    position: fixed;
+    width: 100%;
     top: 0;
     z-index: 1000;
-    font-family: 'Orbitron', sans-serif;
 }
 
+/* Logo Styling */
 .logo {
-    font-size: 28px;
-    font-weight: 800;
-    color: #8a4baf;
+    font-size: 24px;
+    font-weight: bold;
+    font-family: 'Orbitron', sans-serif;
+    color: white;
 }
 
-.link {
+/* Navigation Links */
+.nav-links {
     display: flex;
-    gap: 1.5rem;
+    gap: 20px;
+    align-items: center;
 }
 
-.link a {
+/* Navigation Item */
+.nav-item {
     text-decoration: none;
-    color: #f4efef;
+    color: rgba(255, 255, 255, 0.8);
     font-size: 16px;
-    font-weight: 600;
-    transition: color 0.3s ease-in-out, transform 0.2s;
+    font-weight: 500;
+    transition: color 0.3s ease-in-out;
 }
 
-.link a:hover {
-    color: #8a4baf;
-    transform: scale(1.1);
+.nav-item:hover {
+    color: #ffcc00; /* Highlight Color */
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        width: 100%;
-        text-align: center;
-        padding: 10px;
-    }
+/* Get Started Button */
+.get-started {
+    background-color: white;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
+}
 
-    .logo {
-        font-size: 22px;
-    }
-
-    .link {
-        flex-direction: column;
-        gap: 0.8rem;
-        margin-top: 10px;
-    }
+.get-started:hover {
+    background-color: #ffcc00;
+    color: black;
 }

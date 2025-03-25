@@ -1,23 +1,20 @@
-import React from 'react';
-import './Header.css';
+import React from "react";
+import "./Header.css";
 import { Link } from "react-router-dom";
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Exo:wght@400;700&display=swap" rel="stylesheet"/>
 
-
-const Header = ({isAuth}) => {
+const Header = () => {
   return (
-    <header>
-        <div className="logo">Scholor-Bloom</div>
-
-        <div className="link">
-            <Link to={'/'}>Home</Link>
-            <Link to={'/challenge'}>Challenge</Link>
-            <Link to={'/jobApplication'}>Job Portal</Link>
-            <Link to={'/scholarship'}>Internships</Link>
-            <Link to={'/about'}>About</Link>
-            <Link to={'/studentDashboard'}>Dashboard</Link>
-            <Link to={'/login'}>Login</Link>
-        </div>
+    <header className="header-container">
+      <div className="logo">Scholar-Bloom</div>
+      <nav className="nav-links">
+        <Link to="/" className="nav-item">Home</Link>
+        <Link to="/challenge" className="nav-item">Challenge</Link>
+        <Link to="/jobApplication" className="nav-item">Job Portal</Link>
+        <Link to="/scholarship" className="nav-item">Internships</Link>
+        <Link to="/about" className="nav-item">About</Link>
+        <Link to="/studentDashboard" className="nav-item">Dashboard</Link>
+        <button className="get-started">Get Started</button>
+      </nav>
     </header>
   );
 };

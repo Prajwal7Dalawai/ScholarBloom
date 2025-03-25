@@ -1,102 +1,111 @@
-/* Centered Login Container */
+/* Full Page Container */
 .login-container {
-    width: 400px;
-    border-radius: 12px;
-    padding: 30px;
-    box-shadow: 0 4px 12px rgba(253, 249, 249, 0.397);
-    text-align: center;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 100px auto;
-}
-
-/* Header */
-h2 {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: #fff;
-    margin-bottom: 20px;
-}
-
-/* Login Form */
-.login-form {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-/* Input Box Container */
-.input-box {
-    width: 100%;
-    border-radius: 8px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    border: 1px solid #444;
-}
-
-/* Label Styling */
-.input-box label {
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-/* Input Field */
-.input-box input {
-    width: 95%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #444;
-    color: white;
-    font-size: 14px;
-}
-
-.input-box input:focus {
-    outline: none;
-    border: 1px solid #915eff;
-}
-
-/* Buttons */
-button {
-    width: 50%;
-    padding: 12px;
-    border: none;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s ease-in-out;
+    justify-content: center;
     align-items: center;
-    align-self: center;
+    height: 100vh;
+    background-color: #2a2a2a; /* Updated background color */
+    color: #ffffff;
 }
 
-/* Primary Login Button */
-button[type="submit"] {
-    background-color: #915eff;
+/* Bigger Login Card */
+.login-card {
+    background-color: #2a2a2a; /* Updated card background color */
+    color: #ffffff;
+    padding: 40px;  /* Increased padding */
+    border-radius: 12px; /* Softer corners */
+
+    width: 450px;  /* Increased width */
+    max-width: 90%;
+    margin: auto;
+    border: 1px solid #333; /* Subtle border */
+}
+
+/* Title */
+.login-title {
+    font-size: 28px;  /* Bigger title */
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+/* Input Fields */
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    font-size: 16px;  /* Bigger label text */
+    margin-bottom: 6px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;  /* Bigger input fields */
+    border: 1px solid #444;
+    border-radius: 6px;
+    background-color: #19253f;
+    color: #ffffff;
+    font-size: 16px; /* Bigger text */
+}
+
+.input-group input::placeholder {
+    color: #aaaaaa;
+}
+
+/* Smaller and Beautiful Login Button */
+.login-btn {
+    width: 80%;  /* Slightly smaller width */
+    padding: 8px 14px; /* Reduced padding */
+    font-size: 16px;  /* Smaller text */
+    background-color: #007bff;
     color: white;
+    border: none;
+    border-radius: 20px; /* Rounded edges for a modern look */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: block;
+    margin: 15px auto; /* Center the button */
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2);
+    margin-top: 50px;
 }
 
-button[type="submit"]:hover {
-    background-color: #7a4ce3;
+.login-btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05); /* Subtle zoom effect */
 }
 
-/* Google Login Button */
-button.google-btn {
-    background-color: #4285F4;
+/* Google Login */
+.google-login {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-btn {
+    display: flex;
+    align-items: center;
+    background-color: #ea4335;
     color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    transition: background 0.3s;
 }
 
-button.google-btn:hover {
-    background-color: #357ae8;
+.google-btn:hover {
+    background-color: #d62d20;
 }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .login-container {
-        width: 90%;
-        padding: 20px;
-    }
+.google-icon {
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
 }
