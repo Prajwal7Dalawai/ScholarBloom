@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import './login.css'; // Ensure this file is properly linked
 import { createGlobalStyle } from 'styled-components';
 import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup'; // Import the function from login-signup.js
+import React, { useState } from "react";
+import "./login.css"; // Make sure this file is properly linked
+import googleLogo from "../assets/google.png";  
+import { FcGoogle } from "react-icons/fc";
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -74,57 +78,67 @@ const GlobalStyle = createGlobalStyle`
 };
 `;
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState(null); // To store authenticated user info
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        console.log('Login attempted with:', { email, password });
-    };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("Login attempted with:", { email, password });
+  };
 
-    const handleGoogleLogin = async () => {
-        console.log('Google login attempted');
-    };
+  const handleGoogleLogin = async () => {
+    console.log("Google login attempted");
+  };
 
-    return (
-        <div className="login-container">
-            <h2>Login</h2>
-            <form className="login-form" onSubmit={handleLogin}>
-                
-                {/* Email Input Field */}
-                <div className="input-box">
-                    <label>Email:</label>
-                    <input 
-                        type="email" 
-                        value={email} 
-                        onChange={(e) => setEmail(e.target.value)} 
-                        required 
-                    />
-                </div>
+  return (
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
+        <form className="login-form" onSubmit={handleLogin}>
+          
+          {/* Email Input */}
+          <div className="input-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
 
-                {/* Password Input Field */}
-                <div className="input-box">
-                    <label>Password:</label>
-                    <input 
-                        type="password" 
-                        value={password} 
-                        onChange={(e) => setPassword(e.target.value)} 
-                        required 
-                    />
-                </div>
+          {/* Password Input */}
+          <div className="input-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
 
-                {/* Login Button */}
-                <button type="submit">Login</button>
+          {/* Login Button */}
+          <button type="submit" className="login-btn">
+            Login
+          </button>
 
-                {/* Google Login Button */}
-                <button type="button" className="google-btn" onClick={handleUniversitySignin}>
-                    Login with Google
-                </button>
+          {/* Google Login Button */}
+          <div className="google-login">
+            <span>Or login with  <a href=""><FcGoogle /></a></span>
+            
 
-            </form>
-        </div>
-    );
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;
