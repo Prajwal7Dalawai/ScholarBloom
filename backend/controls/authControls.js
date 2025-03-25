@@ -62,7 +62,9 @@ module.exports.UniSignin = async (req, res) => {
         const sessionToken = jwt.sign({ uid: user.uid, role: "university", email:user.email, name:user.name }, process.env.SECRET_KEY, { expiresIn: "720h" });
         res.cookie("session", sessionToken, { httpOnly: true, secure: true, sameSite: "none" , maxAge: 30*24*60*60*1000});
         if (!verifyEmail) {
-            await User.create({ firebaseUID: user.uid, email: user.email, fullName: user.name, profilePic: user.picture, role: "student" });
+            await User.create({ firebaseUID: user.uid, email: user.email, fullName: user.name, profilePic: user.picture, role: "university",
+                universityDetails: { universityName: user.name, postedJobs: [], scholarshipsOffered: [] }
+             });
         } 
         return res.status(200).json({  message: "Login successful", sessionToken, registeredUser });
     } catch (error) {

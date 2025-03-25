@@ -1,11 +1,9 @@
-// const express = require('express');
-// const authMiddleware = require('../middleware'); // Import the auth middleware
+const express = require('express');
+const authMiddleware = require('../middleware'); // Import the auth middleware
+const scholarshipController = require('../controllers/scholarshipController');
 
-// const router = express.Router();
+const router = express.Router();
 
-// router.get('/', authMiddleware, (req, res) => {
-//     res.json({ message: "Scholarship data" });
-// });
+router.get('/', scholarshipController.getAllScholarships);
 
-
-// module.exports = router;
+module.exports = router;

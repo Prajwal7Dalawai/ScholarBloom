@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './login.css'; // Ensure this file is properly linked
+import { createGlobalStyle } from 'styled-components';
+import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup'; // Import the function from login-signup.js
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -116,7 +118,7 @@ const LoginPage = () => {
                 <button type="submit">Login</button>
 
                 {/* Google Login Button */}
-                <button type="button" className="google-btn" onClick={handleGoogleLogin}>
+                <button type="button" className="google-btn" onClick={handleUniversitySignin}>
                     Login with Google
                 </button>
 

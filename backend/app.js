@@ -12,12 +12,18 @@ app.use(cors({
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
 
+app.use((req,res,next)=>{
+    res.locals.currUser = req.user;
+    next();
+})
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // ✅ Route for authentication (stores session token in cookies)
 app.use("/auth", require("./Routes/authRoute"));
+app.use("/uni", require("./Routes/uni"));
 
 // ✅ Route to get user data (requires session token)
 app.get("/user/data", verifySession, (req, res) => {

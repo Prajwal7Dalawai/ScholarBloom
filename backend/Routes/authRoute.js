@@ -8,6 +8,8 @@ router.post("/google/Studentsignin", wrapAsync(authController.StudentSignin));
 router.post("/google/UniSignin", wrapAsync(authController.UniSignin));
 
 router.post('/login', wrapAsync(authController.login));
+
+
 // 🔹 Logout API
 router.post("/logout", verifySession, wrapAsync(authController.logout));
 
