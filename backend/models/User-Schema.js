@@ -6,13 +6,20 @@ const UserSchema = new mongoose.Schema({
     firebaseUID: { type: String, required: true, unique: true }, // Store Firebase UID
     role: { type: String, enum: ["student", "university"], required: true },
     profilePic: { type: String, default: "" }, // Firebase profile picture
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    location: { 
+        city: { type: String, default: "" },
+        state: { type: String, default: "" },
+        country: { type: String, default: "" }
+    },
 });
 
 // Role-specific fields
 UserSchema.add({
     studentDetails: {
         eduCoins: { type: Number, default: 0 },
+        grade: { type: String, default: "" },
+        skills: [{ type: String, default: "" }],
         appliedScholarships: [{ type: mongoose.Schema.Types.ObjectId, ref: "Scholarship" }],
         appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }]
     },

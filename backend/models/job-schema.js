@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const JobApplicationSchema = new mongoose.Schema({
     universityId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "University", // Reference to the university that posted the job
+        ref: "User", // Reference to the university that posted the job
         required: true,
     },
     jobTitle: {

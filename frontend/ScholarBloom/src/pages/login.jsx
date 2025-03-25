@@ -1,10 +1,8 @@
-import React, { useState } from 'react';
 import './login.css'; // Ensure this file is properly linked
 import { createGlobalStyle } from 'styled-components';
 import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup'; // Import the function from login-signup.js
 import React, { useState } from "react";
-import "./login.css"; // Make sure this file is properly linked
-import googleLogo from "../assets/google.png";  
+import "./login.css"; // Make sure this file is properly linked 
 import { FcGoogle } from "react-icons/fc";
 
 const GlobalStyle = createGlobalStyle`

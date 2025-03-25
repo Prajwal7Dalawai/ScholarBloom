@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from "react";
-import { Card, CardContent } from "../Components/ui/Card";
-import { Button } from "../Components/ui/Button";
-import "./Scholarship.css"; // Import the CSS file
-=======
 import React, { useState } from "react";
 import ScholarshipCard from "../Components/ui/ScholarshipCard"; // Import the new component
 import "./Scholarship.css"; // Import CSS for page layout
@@ -14,7 +8,6 @@ import stanford from "../assets/ScholarshipPhotos/stanford.png"
 import Caltech from "../assets/ScholarshipPhotos/caltech.png"
 import cambridge from "../assets/ScholarshipPhotos/cambridge.png"
 
->>>>>>> 365634116a533ed8e09b6a228c77375b0f909db9
 
 const scholarships = [
   { 

@@ -10,6 +10,7 @@ router.get('/sch/selected/',middleware.verifySession,scholarship.listSelectedSch
 router.get('sch/applicants',middleware.verifySession,scholarship.ScholarshipApplicants);
 
 //Routes Related to Job application
-// router.post('job/create',middleware.verifySession,scholarship.createJob);
+router.post('job/create',middleware.verifySession,scholarship.createJob);
+router.get('job/list',middleware.verifySession,scholarship.listJobApplicants);
 
 module.exports = router;
