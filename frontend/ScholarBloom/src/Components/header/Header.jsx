@@ -11,9 +11,11 @@ const Header = () => {
         <Link to="/challenge" className="nav-item">Challenge</Link>
         <Link to="/jobApplication" className="nav-item">Job Portal</Link>
         <Link to="/scholarship" className="nav-item">Internships</Link>
-        <Link to="/about" className="nav-item">About</Link>
         <Link to="/studentDashboard" className="nav-item">Dashboard</Link>
-        <button className="get-started">Get Started</button>
+        <button className="get-started" onClick={() => (window.location.href = "/signup")}>
+  Get Started
+</button>
+
       </nav>
     </header>
   );

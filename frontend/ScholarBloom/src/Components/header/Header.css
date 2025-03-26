@@ -6,7 +6,7 @@
     padding: 16px 32px;
     background-color: #000000; /* Pure Black */
     color: #ffffff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    box-shadow: 0px 4px 10px #000000;
     position: fixed;
     width: 100%;
     top: 0;
@@ -38,7 +38,7 @@
 }
 
 .nav-item:hover {
-    color: #ffcc00; /* Highlight Color */
+    color: #1c8cd6; /* Highlight Color */
 }
 
 /* Get Started Button */
@@ -54,6 +54,6 @@
 }
 
 .get-started:hover {
-    background-color: #ffcc00;
+    background-color: #1c8cd6;
     color: black;
 }

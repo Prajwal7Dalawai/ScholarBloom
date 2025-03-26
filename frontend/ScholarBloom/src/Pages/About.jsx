@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "../styles/about.css"; // Import custom styles
+import "./About.css"; // Import custom styles
+import AboutImage from '../assets/AboutUs.jpeg'
 
 const AboutSection = () => {
   useEffect(() => {
@@ -14,7 +15,7 @@ const AboutSection = () => {
         {/* Left Side - Image */}
         <div className="col-md-6 text-center">
           <img
-            src="/assets/AboutUs.jpeg"
+            src={AboutImage}
             alt="About Us"
             className="about-img img-fluid rounded shadow-lg"
             data-aos="fade-right"
@@ -24,7 +25,7 @@ const AboutSection = () => {
         {/* Right Side - Text */}
         <div className="col-md-6 about-text" data-aos="fade-left">
           <h2 className="fw-bold">About Us</h2>
-          <p className="text-muted">
+          <p className="text-gray-300">
             We provide career growth opportunities by connecting students and professionals with top universities and companies.
           </p>
           <p>
