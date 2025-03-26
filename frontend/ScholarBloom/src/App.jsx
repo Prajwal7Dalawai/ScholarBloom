@@ -9,6 +9,7 @@ import Challenge from './Pages/Challenge.jsx'
 import JobApplication from './Pages/JobApplication.jsx'
 import Header from "./Components/header/Header.jsx";
 import Scholarship from './Pages/Scholarship.jsx';
+import Course from './Pages/Course.jsx'
 import Footer from "./Components/footer/Footer.jsx";
 
 function App() {
@@ -24,7 +25,7 @@ function App() {
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
-          
+          <Route path="/courses" element={<Course />} />
         </Routes>
       </div>
     </BrowserRouter>
