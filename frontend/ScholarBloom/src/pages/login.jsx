@@ -1,5 +1,9 @@
-import React, { useState } from 'react';
+import './login.css'; // Ensure this file is properly linked
 import { createGlobalStyle } from 'styled-components';
+import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup'; // Import the function from login-signup.js
+import React, { useState } from "react";
+import "./login.css"; // Make sure this file is properly linked 
+import { FcGoogle } from "react-icons/fc";
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -69,69 +73,70 @@ const GlobalStyle = createGlobalStyle`
     button[type="button"]:hover {
         background-color: #b53122;
     }
+};
 `;
-
 const LoginPage = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [user, setUser] = useState(null); // To store authenticated user info
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        console.log('Email login functionality to be implemented later.');
-    };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    console.log("Login attempted with:", { email, password });
+  };
 
-    const handleGoogleLogin = async () => {
-        // Mock Google OAuth login
-        const mockGoogleLogin = async () => {
-            // Simulate a successful Google login response
-            return new Promise((resolve) => setTimeout(() => resolve({ success: true }), 1000));
-        };
+  const handleGoogleLogin = async () => {
+    console.log("Google login attempted");
+  };
 
-        const response = await mockGoogleLogin();
-        if (response.success) {
-            // Handle successful Google login (e.g., redirect or show a success message)
-            console.log('Google login successful!');
-        } else {
-            // Handle Google login failure (e.g., show an error message)
-            console.log('Google login failed!');
-        }
-    };
+  return (
+    <div className="login-container">
+      <div className="login-card">
+        <h2 className="login-title">Login</h2>
+        <form className="login-form" onSubmit={handleLogin}>
+          
+          {/* Email Input */}
+          <div className="input-group">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
 
-    return (
-        <div className="login-container">
-            <h2>Login</h2>
-            {user ? (
-                <div>
-                    <p>Welcome, {user.displayName}!</p>
-                    <img src={user.photoURL} alt="User Profile" />
-                </div>
-            ) : (
-                <form className="login-form" onSubmit={handleLogin}>
-                    <div>
-                        <label>Email:</label>
-                        <input 
-                            type="email" 
-                            value={email} 
-                            onChange={(e) => setEmail(e.target.value)} 
-                            required 
-                        />
-                    </div>
-                    <div>
-                        <label>Password:</label>
-                        <input 
-                            type="password" 
-                            value={password} 
-                            onChange={(e) => setPassword(e.target.value)} 
-                            required 
-                        />
-                    </div>
-                    <button type="submit">Login</button>
-                    <button type="button" onClick={handleGoogleLogin}>Login with Google</button>
-                </form>
-            )}
-        </div>
-    );
+          {/* Password Input */}
+          <div className="input-group">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+
+          {/* Login Button */}
+          <button type="submit" className="login-btn">
+            Login
+          </button>
+
+          {/* Google Login Button */}
+          <div className="google-login">
+            <span>Or login with  <a href=""><FcGoogle /></a></span>
+            
+
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 };
 
 export default LoginPage;

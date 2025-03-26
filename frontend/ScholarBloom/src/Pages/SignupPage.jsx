@@ -1,12 +1,11 @@
 import { useState } from "react";
+import './SignupPage.css';
 
 export default function SignUp() {
-  const [userType, setUserType] = useState("student");
+  const [userType, setUserType] = useState(""); // No selection initially
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
-    universityName: "",
   });
 
   const handleChange = (e) => {
@@ -15,99 +14,56 @@ export default function SignUp() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Signup Data:", formData);
+    console.log(`${userType} Login Data:`, formData);
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">
-      <div className="bg-gray-800 p-8 shadow-lg rounded-lg w-full max-w-sm">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Signup as {userType === "student" ? "Student" : "University"}
-        </h2>
+    <div className="signup-container">
+      <div className="signup-card">
+        <h2 className="signup-title">Login as</h2>
 
-        {/* Toggle Buttons */}
-        <div className="flex justify-between mb-6">
+        {/* Login Buttons */}
+        <div className="login-buttons">
           <button
-            className={`w-1/2 py-2 rounded-l-md transition-all ${
-              userType === "student"
-                ? "bg-blue-500 text-white shadow-md"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
+            className={userType === "student" ? "active-btn" : ""}
             onClick={() => setUserType("student")}
           >
-            Student
+            Student Login
           </button>
           <button
-            className={`w-1/2 py-2 rounded-r-md transition-all ${
-              userType === "university"
-                ? "bg-blue-500 text-white shadow-md"
-                : "bg-gray-700 hover:bg-gray-600"
-            }`}
+            className={userType === "university" ? "active-btn" : ""}
             onClick={() => setUserType("university")}
           >
-            University
+            University Login
           </button>
         </div>
 
-        {/* Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex flex-col">
-            
-            <input
-              type="text"
-              name="name"
-              placeholder="Enter your name"
-              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
-              onChange={handleChange}
-              required
-            /><br></br>
-          </div>
-
-          <div className="flex flex-col">
-            
+        {/* Show Login Form Only When a User Type is Selected */}
+        {userType && (
+          <form onSubmit={handleSubmit} className="signup-form">
             <input
               type="email"
               name="email"
               placeholder="Enter your email"
-              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              className="signup-input"
               onChange={handleChange}
               required
-            /> <br></br>
-          </div>
+            />
 
-          <div className="flex flex-col">
-            
             <input
               type="password"
               name="password"
               placeholder="Enter your password"
-              className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+              className="signup-input"
               onChange={handleChange}
               required
-            /> <br></br>
-          </div>
+            />
 
-          {userType === "university" && (
-            <div className="flex flex-col">
-              <input
-                type="text"
-                name="universityName"
-                placeholder="Enter university name"
-                className="w-full px-4 py-2 border border-gray-600 rounded bg-gray-700 text-white placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
-                onChange={handleChange}
-                required
-              /> <br></br>
-            </div>
-          )}
-
-          {/* Submit Button */}
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded-md mt-4 shadow-md hover:bg-blue-600 transition-all"
-          >
-            Signup
-          </button>
-        </form>
+            <button type="submit" className="signup-btn">
+              Login as {userType === "student" ? "Student" : "University"}
+            </button>
+          </form>
+        )}
       </div>
     </div>
   );

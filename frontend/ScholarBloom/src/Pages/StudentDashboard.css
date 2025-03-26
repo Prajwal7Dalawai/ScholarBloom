@@ -1,0 +1,151 @@
+/* StudentDashboardDarkMode.css */
+
+.dashboard-container-dark {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+    font-family: 'Montserrat', sans-serif;
+    background-color: #2a2a2a; /* Updated background color */
+    color: #e0e0e0; /* Light text */
+}
+
+.left-section-dark {
+    flex: 1;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    background-color: #1e1e1e; /* Darker card background */
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+    border-right: 1px solid #333;
+}
+
+.right-section-dark {
+    flex: 2;
+    padding: 50px;
+    overflow-y: auto;
+    background-color: #1e1e1e;
+}
+
+.user-card-dark,
+.educoins-card-dark,
+.scholarships-list-dark {
+    background-color: #2a2a2a;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.user-card-dark:hover,
+.educoins-card-dark:hover,
+.scholarships-list-dark:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+}
+
+.user-profile-dark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.profile-picture-dark {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
+    margin-bottom: 15px;
+}
+
+.user-name-dark {
+    font-size: 1.8em;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+.user-details-dark, .detail-label-dark {
+    font-size: 1.1em;
+}
+
+.detail-label-dark {
+    font-weight: 600;
+    color: #ccc;
+}
+
+.card-title-dark,
+.section-title-dark {
+    color: #f0f0f0;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #333;
+    padding-bottom: 15px;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+.educoins-display-dark {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 25px;
+}
+
+.educoins-icon-dark {
+    font-size: 2.5em;
+    margin-right: 15px;
+    color: #ffc107; /* Gold color */
+}
+
+.educoins-value-dark {
+    font-size: 2.8em;
+    font-weight: 800;
+    color: #00bcd4; /* Cyan color */
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.scholarship-item-dark {
+    border-bottom: 1px dashed #333;
+    padding-bottom: 30px;
+    margin-bottom: 30px;
+}
+
+.scholarship-item-dark:last-child {
+    border-bottom: none;
+}
+
+.scholarship-header-dark {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.scholarship-icon-dark {
+    font-size: 1.8em;
+    margin-right: 15px;
+    color: #9c27b0; /* Purple color */
+}
+
+.scholarship-name-dark {
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #f0f0f0;
+}
+
+@media (max-width: 768px) {
+    .dashboard-container-dark {
+        flex-direction: column;
+    }
+
+    .left-section-dark, .right-section-dark {
+        flex: none;
+        width: 100%;
+        padding: 30px;
+    }
+
+    .profile-picture-dark {
+        width: 100px;
+        height: 100px;
+    }
+}

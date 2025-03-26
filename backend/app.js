@@ -1,39 +1,49 @@
-const express = require('express');
-const User = require('./models/User-Schema');
-const mongoose = require('mongoose');
-const EduCoins = require('./models/EduCoins-Schema');
-const Scholarship = require('./models/Scholarship-Schema');
+const express = require("express");
+const cors = require("cors");
 const app = express();
-<<<<<<< HEAD
-=======
-const cors = require('cors');
->>>>>>> main
-
-const connectDB = require('./mongo-Connect');
+const connectDB = require("./mongo-Connect");
 require("dotenv").config();
-app.use(express.json());
+const cookieParser = require("cookie-parser");
+const { verifySession } = require("./middleware");
 
-const authRoute = require('./Routes/authRoute');
-const scholarRoute = require('./Routes/scholarshipRoute');
-<<<<<<< HEAD
-
-app.use("/auth",authRoute);
-app.use("/scholarship",scholarRoute);
-=======
+// ✅ Enable CORS with Credentials to Allow Cookies
 app.use(cors({
-    origin: 'http://localhost:5173' // Adjust this to match your frontend's URL
+    origin: "http://localhost:5173", // Adjust based on your frontend URL
+    credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
-app.use("/auth", authRoute);
 
-app.use("/scholar",scholarRoute);
->>>>>>> main
+app.use((req,res,next)=>{
+    res.locals.currUser = req.user;
+    next();
+});
 
-const port  = 3000;
 
-app.listen(port,()=>{console.log(`Server is listening to port ${port}`)});
+app.set("trust proxy", true);
 
-<<<<<<< HEAD
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+// ✅ Route for authentication (stores session token in cookies)
+app.use("/auth", require("./Routes/authRoute"));
+app.use("/uni", require("./Routes/uni"));
+
+// ✅ Route to get user data (requires session token)
+app.get("/user/data", verifySession, (req, res) => {
+    res.json({ user: req.user });
+});
+
+// ✅ Route to check if session is active
+app.get("/dashboard", verifySession, (req, res) => {
+    res.json({ message: "Welcome to your dashboard", user: req.user });
+});
+
+// ✅ Connect to MongoDB
 connectDB();
-=======
-connectDB();
->>>>>>> main
+
+// ✅ Start server
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server is listening to port ${port}`);
+});
