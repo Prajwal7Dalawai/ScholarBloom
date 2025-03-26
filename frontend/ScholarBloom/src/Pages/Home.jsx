@@ -1,24 +1,33 @@
 import React from "react";
-import Navbar from "../components/navbar";
-import Footer from "../components/footer";
-import CardsSection from "../components/CardsSection";
-import UniversitiesSection from "../components/UniversitiesSection";
-import AboutSection from "../components/About";
+import "bootstrap/dist/css/bootstrap.min.css";
+
+
+// import Navbar from "../Components/header/Header.jsx";
+// import Footer from "../Components/footer/Footer.jsx";
+import CardsSection from "../Components/Home/CardsSection.jsx";
+import UniversitiesSection from "../Components/Home/UniversitiesSection.jsx";
+import AboutSection from "./About.jsx";
+import schoolbanner from "../assets/scholarship-banner.webp"
 
 const Home = () => {
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Navbar />
+    
+    <div className="flex flex-col min-h-screen">
+
+      {/* <Navbar /> */}
+      <button className="btn btn-danger">Test Bootstrap</button>
 
       {/* Hero Section with Image Side by Side */}
-      <div className="container flex-grow-1 d-flex align-items-center">
+      <div className="container flex-grow-1 flex items-center">
+
         <div className="row align-items-center w-100">
           {/* Left Side - Hero Text */}
-          <div className="col-md-6 text-center text-md-start">
+          <div className="col-md-6  md:text-left">
+
             <h1 className="fw-bold">
               <span className="text-primary">Unlock</span> Your Career
             </h1>
-            <p className="text-muted">
+            <p className="text-gray-300">
               Explore opportunities from across the globe to grow, showcase skills, gain CV points & get hired by your dream company.
             </p>
             <button className="btn btn-primary mt-3">Get Started</button>
@@ -26,7 +35,7 @@ const Home = () => {
 
           {/* Right Side - Image */}
           <div className="col-md-6 text-center">
-            <img src="/assets/scholarship-banner.webp" alt="Career Growth" className="img-fluid rounded shadow-lg" />
+            <img src={schoolbanner} alt="Career Growth" className="img-fluid rounded shadow-lg" />
           </div>
         </div>
       </div>
@@ -40,7 +49,7 @@ const Home = () => {
         <UniversitiesSection />
       </div>
       
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

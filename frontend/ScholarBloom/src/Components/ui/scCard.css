@@ -1,0 +1,70 @@
+/* Container */
+.widget-container {
+    background-color: #ffffff; /* Light mode background */
+    color: #333; /* Default text color */
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid #007bff; /* Primary border */
+    max-width: 400px;
+    margin: 32px auto;
+    position: relative;
+}
+
+/* Dark Mode */
+.dark .widget-container {
+    background-color: #1e1e1e; /* Dark mode background */
+    color: #e0e0e0;
+    border-color: #0056b3;
+}
+
+/* Image Styling */
+.widget-image {
+    width: 100%;
+    height: 190px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+/* Content Section */
+.widget-content {
+    padding: 16px;
+}
+
+/* Title */
+.widget-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+/* Text */
+.widget-text {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+/* Dark Mode Text */
+.dark .widget-text {
+    color: #b0b0b0;
+}
+
+/* Primary Text */
+.widget-primary {
+    color: #007bff;
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+/* Status Icon */
+.widget-status-icon {
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+    background-color: #007bff;
+    border-radius: 50%;
+}

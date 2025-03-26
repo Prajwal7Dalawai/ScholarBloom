@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
 import './App.css'
-import Landing from './Pages/Landing'
+import Home from './Pages/Home'
 import SignupPage from './Pages/SignupPage.jsx'
-import Dashboard from './Pages/Dashboard'
+import StudentDashboard from './Pages/StudentDashboard'
 import LoginPage from './Pages/login.jsx'
 import Challenge from './Pages/Challenge.jsx'
 import JobApplication from './Pages/JobApplication.jsx'
@@ -17,9 +17,9 @@ function App() {
       <Header className="header" />
       <div className="main-content">
         <Routes> 
-          <Route path="/" element={<Landing />} />
+          <Route path="/" element={<Home />} />
           <Route path="/signUp" element={<SignupPage />} />
-          <Route path="/studentDashboard" element={<Dashboard />} />
+          <Route path="/studentDashboard" element={<StudentDashboard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/jobApplication" element={<JobApplication />} />
