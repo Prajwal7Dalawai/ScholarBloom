@@ -27,7 +27,9 @@ app.use(cookieParser());
 
 // ✅ Route for authentication (stores session token in cookies)
 app.use("/auth", require("./Routes/authRoute"));
-app.use("/uni", require("./Routes/uni"));
+app.use("/uni", require("./Routes/uniRoute"));
+app.use("/job", require("./Routes/jobRoute"));
+app.use("/sch", require("./Routes/schRoute"));
 
 // ✅ Route to get user data (requires session token)
 app.get("/user/data", verifySession, (req, res) => {
