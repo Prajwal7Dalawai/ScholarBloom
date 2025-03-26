@@ -4,3 +4,4 @@ const scholarship = require('../controls/scholarshipController');
 const middleware = require('../middleware');
 
 router.get('/jobs', middleware.verifySession, scholarship.listAllJobs);
+module.exports = router;

@@ -29,7 +29,8 @@ app.use(cookieParser());
 app.use("/auth", require("./Routes/authRoute"));
 app.use("/uni", require("./Routes/uniRoute"));
 app.use("/job", require("./Routes/jobRoute"));
-app.use("/sch", require("./Routes/schRoute"));
+app.use("/sch", require("./Routes/scholarshipRoute"));
+app.use("/student", require("./Routes/studentRoute"));
 
 // ✅ Route to get user data (requires session token)
 app.get("/user/data", verifySession, (req, res) => {
