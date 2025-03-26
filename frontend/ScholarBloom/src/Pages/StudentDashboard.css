@@ -1,151 +1,146 @@
-/* StudentDashboardDarkMode.css */
+/* StudentDashboard.css */
 
 .dashboard-container-dark {
-    display: flex;
-    height: 100vh;
-    width: 100vw;
-    font-family: 'Montserrat', sans-serif;
-    background-color: #2a2a2a; /* Updated background color */
-    color: #e0e0e0; /* Light text */
+  background-color: inherit; /* Use default background */
+  color: white; /* Base text color */
+  min-height: 100vh;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+  margin: 0;
 }
 
 .left-section-dark {
-    flex: 1;
-    padding: 50px;
-    display: flex;
-    flex-direction: column;
-    gap: 40px;
-    background-color: #1e1e1e; /* Darker card background */
-    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
-    border-right: 1px solid #333;
+  padding: 20px;
 }
 
-.right-section-dark {
-    flex: 2;
-    padding: 50px;
-    overflow-y: auto;
-    background-color: #1e1e1e;
-}
-
-.user-card-dark,
-.educoins-card-dark,
-.scholarships-list-dark {
-    background-color: #2a2a2a;
-    border-radius: 20px;
-    padding: 40px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.user-card-dark:hover,
-.educoins-card-dark:hover,
-.scholarships-list-dark:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.7);
+.user-card-dark {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
 }
 
 .user-profile-dark {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 30px;
+  text-align: center;
+  padding: 20px;
 }
 
 .profile-picture-dark {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.2);
-    margin-bottom: 15px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 3px solid #6200ee;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Shadow for profile pic */
 }
 
 .user-name-dark {
-    font-size: 1.8em;
-    font-weight: 600;
-    color: #f0f0f0;
+  color: #6200ee; /* Primary color for name */
+  font-size: 1.8rem;
+  font-weight: 600; /* Semi-bold */
 }
 
-.user-details-dark, .detail-label-dark {
-    font-size: 1.1em;
+.user-details-dark {
+  padding: 0 20px 20px;
 }
 
 .detail-label-dark {
-    font-weight: 600;
-    color: #ccc;
+  font-weight: 500; /* Medium font weight */
+  color: #e0e0e0; /* Light variant of white */
 }
 
-.card-title-dark,
-.section-title-dark {
-    color: #f0f0f0;
-    margin-bottom: 30px;
-    border-bottom: 2px solid #333;
-    padding-bottom: 15px;
-    font-size: 2em;
-    font-weight: 700;
+.educoins-card-dark {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+}
+
+.card-title-dark {
+  color: #6200ee; /* Primary color for title */
+  font-size: 1.5rem;
+  font-weight: 600; /* Semi-bold */
+  margin-bottom: 15px;
 }
 
 .educoins-display-dark {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-top: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .educoins-icon-dark {
-    font-size: 2.5em;
-    margin-right: 15px;
-    color: #ffc107; /* Gold color */
+  font-size: 2rem;
+  margin-right: 10px;
 }
 
 .educoins-value-dark {
-    font-size: 2.8em;
-    font-weight: 800;
-    color: #00bcd4; /* Cyan color */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: 2.5rem;
+  color: #ff9800; /* Gold color for educoins */
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4); /* Text shadow for depth */
 }
 
-.scholarship-item-dark {
-    border-bottom: 1px dashed #333;
-    padding-bottom: 30px;
-    margin-bottom: 30px;
+.right-section-dark {
+  padding: 20px;
 }
 
-.scholarship-item-dark:last-child {
-    border-bottom: none;
+.section-title-dark {
+  color: #6200ee; /* Primary color for section titles */
+  font-size: 2rem;
+  font-weight: 600; /* Semi-bold */
+  margin-bottom: 20px;
+  margin-top: 80px;
 }
 
-.scholarship-header-dark {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+.applied-scholarships-dark,
+.enrolled-courses-dark {
+  background-color: #1e1e1e;
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Subtle shadow */
 }
 
-.scholarship-icon-dark {
-    font-size: 1.8em;
-    margin-right: 15px;
-    color: #9c27b0; /* Purple color */
+.applied-scholarship-item-dark,
+.enrolled-course-item-dark {
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-.scholarship-name-dark {
-    font-size: 1.5em;
-    font-weight: 600;
-    color: #f0f0f0;
+.applied-scholarship-name-dark,
+.enrolled-course-name-dark {
+  color: #6200ee; /* Primary color for names */
+  font-size: 1.2rem;
+  font-weight: 500; /* Medium font weight */
+  margin-bottom: 5px;
 }
 
-@media (max-width: 768px) {
-    .dashboard-container-dark {
-        flex-direction: column;
-    }
+.applied-scholarship-label-dark,
+.enrolled-course-label-dark {
+  font-weight: 500; /* Medium font weight */
+  color: #e0e0e0; /* Light variant of white */
+}
 
-    .left-section-dark, .right-section-dark {
-        flex: none;
-        width: 100%;
-        padding: 30px;
-    }
+/* Bootstrap adjustments */
+.container-fluid {
+  padding-left: 15px;
+  padding-right: 15px;
+}
 
-    .profile-picture-dark {
-        width: 100px;
-        height: 100px;
-    }
+.card {
+  background-color: #1e1e1e;
+  color: white; /* White text for cards */
+  border: none;
+}
+
+/* Full height and width */
+html, body, #root {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
