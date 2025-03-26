@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import "./JobApplicationForm.css"; // Using the same styles for consistency
-import { FcGoogle } from "react-icons/fc";
+import "./ScholarshipApplicationForm.css"; // Keeping the same styles for consistency
 
-const JobApplicationForm = () => {
+const ScholarshipApplicationForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
+  const [cgpa, setCgpa] = useState("");
+  const [university, setUniversity] = useState("");
   const [resume, setResume] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Application submitted with:", { name, email, phone, resume, coverLetter });
+    console.log("Scholarship Application submitted with:", { name, email, cgpa, university, resume });
   };
 
   return (
     <div className="login-container"> 
       <div className="login-card">
-        <h2 className="login-title">Job Application</h2>
+        <h2 className="login-title">Scholarship Application</h2>
         <form className="login-form" onSubmit={handleSubmit}>
           
           {/* Name Input */}
@@ -47,16 +47,30 @@ const JobApplicationForm = () => {
             />
           </div>
 
-          {/* Phone Input */}
+          {/* CGPA Input */}
           <div className="input-group">
-            <label htmlFor="phone">Phone:</label>
+            <label htmlFor="cgpa">CGPA:</label>
             <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
-              placeholder="Enter your phone number"
+              type="text"
+              id="cgpa"
+              name="cgpa"
+              value={cgpa}
+              onChange={(e) => setCgpa(e.target.value)}
+              placeholder="Enter your CGPA"
+              required
+            />
+          </div>
+
+          {/* University Input */}
+          <div className="input-group">
+            <label htmlFor="university">University:</label>
+            <input
+              type="text"
+              id="university"
+              name="university"
+              value={university}
+              onChange={(e) => setUniversity(e.target.value)}
+              placeholder="Enter your university name"
               required
             />
           </div>
@@ -74,18 +88,15 @@ const JobApplicationForm = () => {
             />
           </div>
 
-
-
           {/* Submit Button */}
           <button type="submit" className="login-btn">
             Submit Application
           </button>
 
-          
         </form>
       </div>
     </div>
   );
 };
 
-export default JobApplicationForm;
+export default ScholarshipApplicationForm;

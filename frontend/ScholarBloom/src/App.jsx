@@ -11,6 +11,8 @@ import Header from "./Components/header/Header.jsx";
 import Scholarship from './Pages/Scholarship.jsx';
 import Course from './Pages/Course.jsx'
 import Footer from "./Components/footer/Footer.jsx";
+import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
           <Route path="/courses" element={<Course />} />
+          <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
+          <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
         </Routes>
       </div>
     </BrowserRouter>
