@@ -1,87 +1,169 @@
-/* General Page Styling */
-.challenge-container {
-    min-height: 100vh;
-    color: white;
-    text-align: center;
-    font-family: 'Poppins', sans-serif;
-    padding: 40px 20px;
-    background-color: #2a2a2a; /* Updated background color */
+/* Challenge.css */
+
+.challenge-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Cover the entire viewport height */
+  width: 100%; /* Cover the entire viewport width */
+
+  color: #e0e0e0; /* Light text */
+  font-family: sans-serif;
+  padding: 20px;
+  box-sizing: border-box; /* Include padding in width/height */
 }
 
-/* Title and Subtitle */
-.challenge-title {
-    color: aliceblue;
-    font-size: 3rem;
-    font-weight: 800;
-    margin-bottom: 10px;
-    padding-top: 25px;
+.intro-section {
+  text-align: center;
+
 }
 
-.challenge-subtitle {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+.intro-section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+  color: #f2f1f4; /* Primary color for heading */
+  margin-top: 70px;
 }
 
-/* EduCoins Card */
-.challenge-card {
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(235, 231, 231, 0.783);
-    max-width: 350px;
-    margin: 0 auto 30px;
-    backdrop-filter: blur(10px);
+.intro-section p {
+  font-size: 1.1rem;
+  color: #bdbdbd;
 }
 
-.challenge-card h2 {
-    font-size: 1.8rem;
-    font-weight: 700;
+.game-card {
+  background-color: #1e1e1e; /* Darker card background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.educoins-count {
-    font-size: 3rem;
-    font-weight: bold;
-    color: #ae34a4;
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-/* Challenges Table Container */
-.challenges-table-container {
-    max-width: 800px;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    margin: 0 auto;
+.game-header h2 {
+  font-size: 2rem;
+  color: #e0e0e0;
 }
 
-/* Table Styling */
-.table {
-    width: 100%;
-    border-collapse: collapse;
+.game-header p {
+  color: #bdbdbd;
 }
 
-.table th {
-    background: rgba(138, 33, 157, 0.3);
-    padding: 15px;
-    text-align: left;
-    font-weight: bold;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+.game-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%; /* Ensure content takes full card width */
 }
 
-.table td {
-    padding: 15px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+.game-image {
+  width: 100%; /* Image takes full card width */
+  max-width: 400px; /* Limit image width */
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
 }
 
-/* Buttons */
-.challenge-btn {
-    background: #ae34a4;
-    color: rgba(115, 103, 103, 0.888);
-    padding: 10px 15px;
-    border-radius: 6px;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: 0.3s ease-in-out;
-    cursor: pointer;
-    border: none;
-    width: 100%;
+.play-button {
+  background-color: #6200ee;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%; /* Button takes full card width */
+  max-width: 250px; /* Limit button width */
+}
+
+.play-button:hover {
+  background-color: #4a00c2;
+}
+
+.coming-soon-section {
+  text-align: center;
+  margin-top: auto; /* Push to bottom */
+  padding-bottom: 30px;
+}
+
+.coming-soon-section h2 {
+  font-size: 1.8rem;
+  color: #e0e0e0;
+  margin-bottom: 10px;
+}
+
+.coming-soon-section p {
+  color: #bdbdbd;
+}
+
+.coming-soon-placeholder {
+  margin-top: 20px;
+  font-size: 1.2rem;
+  color: #ff9800; /* Orange for under construction */
+}
+
+/* GameCard.css (if you have separate styles for GameCard) */
+.game-card {
+  background-color: #1e1e1e; /* Darker card background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 40px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.game-header h2 {
+  font-size: 2rem;
+  color: #e0e0e0;
+}
+
+game-header p{
+  color: #bdbdbd;
+}
+
+.game-content{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.game-image{
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+.play-button{
+  background-color: #6200ee;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+}
+
+.play-button:hover{
+  background-color: #4a00c2;
 }

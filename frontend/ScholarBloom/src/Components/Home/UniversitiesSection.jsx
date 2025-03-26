@@ -3,21 +3,27 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./UniversitiesSection.css"; // Import custom styles
 
+
+import harvardImage from "../../assets/ScholarshipPhotos/harward.png";
+import MIT from "../../assets/ScholarshipPhotos/MIT.png"
+import stanford from "../../assets/ScholarshipPhotos/stanford.png"
+
+
 const universities = [
   {
     name: "Harvard University",
     description: "A world-renowned university known for excellence in education and research.",
-    image: "/assets/harvard-university.avif",
+    image:harvardImage,
   },
   {
     name: "Stanford University",
     description: "Leading in technology, business, and innovation with a global impact.",
-    image: "/assets/Stanford.webp",
+    image: stanford,
   },
   {
     name: "MIT",
     description: "Top-ranked in engineering and technology, pushing the boundaries of knowledge.",
-    image: "/assets/MIT.jpg",
+    image: MIT,
   },
 ];
 
