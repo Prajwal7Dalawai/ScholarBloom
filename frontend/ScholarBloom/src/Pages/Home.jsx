@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import CardsSection from "../Components/Home/CardsSection.jsx";
 import UniversitiesSection from "../Components/Home/UniversitiesSection.jsx";
-import AboutSection from "./About.jsx";
+import AboutSection from "../pages/About.jsx"; // ✅ Corrected Import Path
 import schoolbanner from "../assets/scholarship-banner.webp";
 
 
 const Home = () => {
+
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {
@@ -33,7 +34,6 @@ const Home = () => {
               <span className="text-primary">Unlock</span> Your Career
             </h1>
             <p className={isLightMode ? "text-gray-700 mt-3" : "text-gray-300 mt-3"}>
-
               Explore opportunities from across the globe to grow, showcase skills, gain CV points & get hired by your dream company.
             </p>
             <button className="btn btn-primary mt-3 shadow-lg">Get Started</button>

@@ -75,3 +75,49 @@
     font-size: 0.9rem;
   }
   
+  
+  /* Table Styling */
+.table-dark th, .table-dark td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Profile Image Small */
+.applicant-profile-img-small {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #f39c12;
+}
+
+/* Profile Image Large */
+.applicant-profile-img-large {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #f39c12;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.status-approved {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-pending {
+  background-color: #ffc107;
+  color: black;
+}
+
+.status-rejected {
+  background-color: #dc3545;
+  color: white;
+}

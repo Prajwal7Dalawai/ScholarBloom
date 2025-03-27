@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useTheme } from "./ThemeContext"; // Import Theme Context
 import "./App.css";
 import Home from "./Pages/Home";
-import SignupPage from "./pages/SignupPage.jsx";
-import StudentDashboard from "./Pages/StudentDashboard";
+import SignupPage from "./Pages/SignupPage.jsx";
+import StudentDashboard from "./Pages/StudentDashboard.jsx";
 import LoginPage from "./Pages/login.jsx";
 import Challenge from "./Pages/Challenge.jsx";
 import JobApplication from "./Pages/JobApplication.jsx";
@@ -16,9 +16,15 @@ import UniversityDashboard from "./pages/UniversityDashboard";
 import ScholarshipApplicants from "./pages/ScholarshipApplicants";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
-import JobApplicationForm from './Pages/JobApplicationForm.jsx'
-import ScholarshipApplicationForm from "./Pages/ScholarshipApplicationForm.jsx";
 
+import ApplicantProfile from "./pages/ApplicantProfile.jsx";
+import JobApplicants from "./pages/JobApplicants.jsx";
+
+import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+
+import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
+import uniProfile from './pages/UniProfile.jsx'
+import uniEditProfile from './pages/EditUniversityProfile.jsx'
 function App() {
   const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
 
@@ -46,12 +52,20 @@ function App() {
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
-          <Route path="/scholarship-applicants/" element={<ScholarshipApplicants />} />
-          <Route path="/profile" element={<ProfilePage />} />
+
+          <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
+          <Route path="/studprofile" element={<ProfilePage />} />
+
           <Route path="/edit-profile" element={<EditProfilePage />} />
+          <Route path="/uniProfile" element={<uniProfile />} />
+          <Route path="/editUniprofile" element={<uniEditProfile />} />
+          <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
+        <Route path="/job-applicants/:id" element={<JobApplicants />} />
+
           <Route path="/courses" element={<Course />} />
           <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
           <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
+
         </Routes>
       </div>
 
