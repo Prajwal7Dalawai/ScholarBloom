@@ -3,9 +3,11 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "./UniversitiesSection.css"; // Import custom styles
 
+
 import harvardImage from "../../assets/ScholarshipPhotos/harward.png";
 import MIT from "../../assets/ScholarshipPhotos/MIT.png"
 import stanford from "../../assets/ScholarshipPhotos/stanford.png"
+
 
 const universities = [
   {
