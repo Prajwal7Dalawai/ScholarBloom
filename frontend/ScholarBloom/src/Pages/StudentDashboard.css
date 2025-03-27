@@ -18,7 +18,7 @@
   background-color: #1e1e1e;
   border-radius: 10px;
   margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+  border: 2px solid #aea6a6; /* Shadow for depth */
 }
 
 .user-profile-dark {
@@ -32,12 +32,12 @@
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 15px;
-  border: 3px solid #6200ee;
+  border: 3px solid #a59f9f;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Shadow for profile pic */
 }
 
 .user-name-dark {
-  color: #6200ee; /* Primary color for name */
+  color: white; /* Primary color for name */
   font-size: 1.8rem;
   font-weight: 600; /* Semi-bold */
 }
@@ -56,11 +56,11 @@
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* Shadow for depth */
+  border: 2px solid #aea6a6; /* 2px width, solid style, light gray color */
 }
 
 .card-title-dark {
-  color: #6200ee; /* Primary color for title */
+  color: white; /* Primary color for title */
   font-size: 1.5rem;
   font-weight: 600; /* Semi-bold */
   margin-bottom: 15px;
@@ -89,7 +89,6 @@
 }
 
 .section-title-dark {
-  color: #6200ee; /* Primary color for section titles */
   font-size: 2rem;
   font-weight: 600; /* Semi-bold */
   margin-bottom: 20px;
@@ -106,7 +105,7 @@
 
 .applied-scholarship-item-dark,
 .enrolled-course-item-dark {
-  border-bottom: 1px solid #333;
+  border-bottom: 1px solid #181717;
   padding-bottom: 10px;
   margin-bottom: 10px;
 }
@@ -132,9 +131,9 @@
 }
 
 .card {
-  background-color: #1e1e1e;
+  background-color: black;
   color: white; /* White text for cards */
-  border: none;
+  
 }
 
 /* Full height and width */
@@ -143,4 +142,62 @@ html, body, #root {
   width: 100%;
   margin: 0;
   padding: 0;
+}
+
+.applied-scholarships-dark {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping if necessary */
+  gap: 20px; /* Space between items */
+}
+
+.applied-scholarship-item-dark {
+  flex: 1 1 calc(50% - 20px); /* Each item takes up 50% width minus gap */
+  background-color: #151414; /* Slightly different from the main card */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.enrolled-courses-dark {
+  display: flex;
+  flex-wrap: wrap; /* Allows wrapping if necessary */
+  gap: 20px; /* Space between items */
+}
+
+.enrolled-course-item-dark {
+  flex: 1 1 calc(50% - 20px); /* Each item takes up 50% width minus gap */
+  background-color: #2a2a2a; /* Slightly different from the main card */
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+/* Ensure the dashboard takes the full viewport height */
+.dashboard-container-dark {
+  height: 100vh; /* Full screen height */
+  overflow: hidden; /* Prevent page scrolling */
+}
+
+/* Left section: Fixed, Full Height */
+.left-section-dark {
+  margin-top: 30px;
+  border: 2px solid #3e3d3d; /* 2px width, solid style, light gray color */
+  width: 25%; /* Adjust width as needed */
+  height: 100vh; /* Full height of viewport */
+  position: sticky;
+  top: 0;
+  overflow: hidden; /* No scrolling */
+  padding: 20px;
+  background-color: black; /* Keep dark mode styling */
+  flex-shrink: 0; /* Prevent resizing */
+  flex-direction: column;
+  justify-content: space-between; /* Even spacing */
+}
+
+/* Right section: Scrollable and takes remaining space */
+.right-section-dark {
+  flex-grow: 1;
+  height: 100vh; /* Full viewport height */
+  overflow-y: auto; /* Enable scrolling */
+  padding: 20px;
+  margin-top: 20px;
 }

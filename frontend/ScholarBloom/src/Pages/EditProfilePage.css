@@ -1,69 +1,79 @@
-/* Page Background */
+/* Edit Profile Container */
 .edit-profile-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    background: #000; /* Black background */
-  }
-  
-  /* Profile Card */
-  .edit-profile-card {
-    background: #111;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.1);
-    text-align: center;
-    width: 400px;
-  }
-  
-  /* Profile Image */
-  .profile-img {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #f39c12;
-  }
-  
-  /* Upload Button */
-  .upload-btn {
-    display: block;
-    margin-top: 10px;
-    color: #f39c12;
-    cursor: pointer;
-    text-decoration: underline;
-  }
-  
-  /* Input Fields */
-  .input-dark {
-    background: #222;
-    color: white;
-    border: 1px solid #555;
-    padding: 12px;
-    border-radius: 8px;
-    outline: none;
-  }
-  
-  .input-dark::placeholder {
-    color: #aaa;
-  }
-  
-  .input-dark:focus {
-    border-color: #f39c12;
-    box-shadow: 0 0 10px rgba(243, 156, 18, 0.5);
-  }
-  
-  /* Save Button */
-  .btn-primary {
-    background: #f39c12;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-weight: bold;
-  }
-  
-  .btn-primary:hover {
-    background: #d68910;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 150vh;
+  background: #000;
+}
+
+/* Edit Profile Card */
+.edit-profile-card {
+  background: #594e4e;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.1);
+  text-align: center;
+  width: 400px;
+}
+
+/* Profile Image */
+.profile-img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #f39c12;
+}
+
+/* Upload Button */
+.upload-btn {
+  display: block;
+  margin-top: 10px;
+  color: #f39c12;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* Form Fields */
+.form-group {
+  width: 100%;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+/* Text Fields */
+.form-control {
+  width: 100%;
+  background: #222;
+  color: white;
+  border: 1px solid #555;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.form-control:focus {
+  border-color: #f39c12;
+  outline: none;
+  box-shadow: 0 0 5px #f39c12;
+}
+
+/* Skills Textarea */
+.skills-textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+/* Save Button */
+.save-btn {
+  background: #2409bc;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: bold;
+  width: 100%;
+}
+
+.save-btn:hover {
+  background: #0d2894;
+}

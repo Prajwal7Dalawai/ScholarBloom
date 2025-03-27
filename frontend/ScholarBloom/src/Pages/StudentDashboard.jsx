@@ -70,12 +70,15 @@ function StudentDashboard() {
                   <h3 className="applied-scholarship-name-dark">{scholarship.name}</h3>
                   <p><span className="applied-scholarship-label-dark">University:</span> {scholarship.university}</p>
                   <p><span className="applied-scholarship-label-dark">Applied Date:</span> {scholarship.applicationDate}</p>
-                  <p><span className="applied-scholarship-label-dark">Status:</span> {scholarship.status}</p>
+                  <p>
+                    <span className="applied-scholarship-label-dark">Status:</span> 
+                    <span className={`status-badge status-${scholarship.status.toLowerCase()}`}>{scholarship.status}</span>
+                  </p>
                 </div>
               ))}
             </div>
 
-            {/* Jobs Applied - Grid Layout */}
+            {/* Jobs Applied - Grid Layout (No Color Change) */}
             <h2 className="section-title-dark mt-4 mb-3">Jobs Applied</h2>
             <div className="jobs-applied-dark card p-3">
               <div className="row">
@@ -86,8 +89,8 @@ function StudentDashboard() {
                       <p><span className="job-label-dark">Company:</span> {job.company}</p>
                       <p><span className="job-label-dark">Applied Date:</span> {job.applicationDate}</p>
                       <p>
-  <span className={`status-badge status-${job.status.toLowerCase()}`}>{job.status}</span>
-</p>
+                        <span className={`status-badge status-${job.status.toLowerCase()}`}>{job.status}</span>
+                      </p>
                     </div>
                   </div>
                 ))}

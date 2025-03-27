@@ -7,12 +7,30 @@
     color: #fcfbfb;
 }
 
+
 .job-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 cards per row */
-    gap: 50px; /* Space between cards */
-    justify-content: center;
+    grid-template-columns: repeat(3, 1fr); /* Ensures exactly 3 columns per row */
+    gap: 15px; /* Space between cards */
+    justify-content: center; /* Centers the grid */
+    align-items: start; /* Aligns cards properly */
+    max-width: 1200px; /* Prevents excessive stretching */
+    margin: 0 auto; /* Centers the entire grid */
 }
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 900px) {
+    .job-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on medium screens */
+    }
+}
+
+@media (max-width: 600px) {
+    .job-grid {
+        grid-template-columns: repeat(1, 1fr); /* 1 card per row on small screens */
+    }
+}
+
 
 /* Full Page Container */
 .job-application-container {

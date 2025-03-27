@@ -1,63 +1,103 @@
 import React, { useState } from "react";
-import "./EditProfilePage.css"; // Import custom styles
-import image from "../assets/defaultImage.png"
-const EditProfilePage = () => {
-  // State for user details
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "johndoe@example.com",
-    bio: "Passionate learner and tech enthusiast.",
-    profilePic: image, // Default Profile Picture
+import { useNavigate } from "react-router-dom";
+import "./EditProfilePage.css";
+import defaultImage from "../assets/defaultImage.png";
+
+const EditProfile = () => {
+  const navigate = useNavigate();
+
+  // Retrieve user data from localStorage
+  const [user, setUser] = useState(() => {
+    const savedUser = JSON.parse(localStorage.getItem("user"));
+    return savedUser || {
+      name: "John Doe",
+      email: "johndoe@example.com",
+      grades: "A",
+      skills: ["JavaScript", "React"],
+      profilePic: defaultImage,
+    };
   });
 
-  // Handle input changes
-  const handleChange = (event) => {
-    setUser({ ...user, [event.target.name]: event.target.value });
-  };
+  // Form State
+  const [name, setName] = useState(user.name);
+  const [email, setEmail] = useState(user.email);
+  const [grades, setGrades] = useState(user.grades);
+  const [skills, setSkills] = useState(user.skills.join(", "));
+  const [profilePic, setProfilePic] = useState(user.profilePic || defaultImage);
 
-  // Handle Profile Picture Change
+  // Handle Image Change
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      setUser({ ...user, profilePic: URL.createObjectURL(file) });
+      const imageUrl = URL.createObjectURL(file);
+      setProfilePic(imageUrl);
     }
   };
 
-  // Handle Save (For now, just log the data)
+  // Save Profile
   const handleSave = () => {
-    console.log("Updated User Data:", user);
-    alert("Profile updated successfully!");
+    const updatedUser = {
+      name,
+      email,
+      grades,
+      skills: skills.split(",").map((skill) => skill.trim()),
+      profilePic,
+    };
+
+    localStorage.setItem("user", JSON.stringify(updatedUser));
+    navigate("/profile");
   };
 
   return (
-    <div className="container edit-profile-container">
-      <div className="card edit-profile-card">
-        
-        {/* Profile Image Section */}
+    <div className="edit-profile-container">
+      <div className="edit-profile-card">
+        <h2 className="text-white">Edit Profile</h2>
+
+        {/* Profile Picture Upload */}
         <div className="profile-img-section text-center">
-          <img src={user.profilePic} alt="Profile" className="profile-img" />
+          <img src={profilePic} alt="Profile" className="profile-img" />
           <input type="file" id="fileUpload" accept="image/*" onChange={handleImageChange} hidden />
           <label htmlFor="fileUpload" className="upload-btn">Change Profile Picture</label>
         </div>
 
-        {/* Edit Form */}
-        <div className="profile-details">
-          <label className="text-light">Full Name</label>
-          <input type="text" className="form-control input-dark" name="name" value={user.name} onChange={handleChange} />
-
-          <label className="text-light mt-3">Email</label>
-          <input type="email" className="form-control input-dark" name="email" value={user.email} onChange={handleChange} />
-
-          <label className="text-light mt-3">Bio</label>
-          <textarea className="form-control input-dark" name="bio" rows="3" value={user.bio} onChange={handleChange}></textarea>
-
-          {/* Save Button */}
-          <button className="btn btn-primary mt-4 w-100" onClick={handleSave}>Save Changes</button>
+        <div className="form-group">
+          <label className="text-light">Name</label>
+          <input type="text" className="form-control" value={name} onChange={(e) => setName(e.target.value)} />
         </div>
 
+        <div className="form-group">
+          <label className="text-light">Email</label>
+          <input type="email" className="form-control" value={email} onChange={(e) => setEmail(e.target.value)} />
+        </div>
+
+        <div className="form-group">
+          <label className="text-light">Grades</label>
+          <select className="form-control" value={grades} onChange={(e) => setGrades(e.target.value)}>
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+            <option value="D">D</option>
+            <option value="F">F</option>
+          </select>
+        </div>
+
+        <div className="form-group">
+          <label className="text-light">Skills (comma-separated)</label>
+          <textarea
+            className="form-control skills-textarea"
+            rows="4"
+            value={skills}
+            onChange={(e) => setSkills(e.target.value)}
+            placeholder="Enter skills separated by commas (e.g., JavaScript, React, Python)"
+          ></textarea>
+        </div>
+
+        <button className="btn btn-success save-btn" onClick={handleSave}>
+          Save Changes
+        </button>
       </div>
     </div>
   );
 };
 
-export default EditProfilePage;
+export default EditProfile;

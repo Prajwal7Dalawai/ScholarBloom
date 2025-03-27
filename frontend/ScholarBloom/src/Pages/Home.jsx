@@ -1,43 +1,35 @@
 import React from "react";
-
 import "bootstrap/dist/css/bootstrap.min.css";
-// import Navbar from "../Components/header/Header.jsx";
-// import Footer from "../Components/footer/Footer.jsx";
 import CardsSection from "../Components/Home/CardsSection.jsx";
 import UniversitiesSection from "../Components/Home/UniversitiesSection.jsx";
-import AboutSection from "./About.jsx";
-import schoolbanner from "../assets/scholarship-banner.webp"
+import AboutSection from "../pages/About.jsx"; // ✅ Corrected Import Path
+import schoolbanner from "../assets/scholarship-banner.webp";
 
 const Home = () => {
   return (
-    
-    <div className="flex flex-col min-h-screen">
-
-      {/* <Navbar /> */}
-     
-
+    <div className="d-flex flex-column min-vh-100">
       {/* Hero Section with Image Side by Side */}
-      <div className="container flex-grow-1 flex items-center">
-
+      <div className="container flex-grow-1 d-flex align-items-center mt-5 pt-5">
         <div className="row align-items-center w-100">
-          <div className="col-md-6  md:text-left">
-
-
+          {/* Left Side - Text Content */}
+          <div className="col-md-6 text-md-left">
             <h1 className="fw-bold">
               <span className="text-primary">Unlock</span> Your Career
             </h1>
-            <p className="text-gray-300">
+            <p className="text-light mt-3">
               Explore opportunities from across the globe to grow, showcase skills, gain CV points & get hired by your dream company.
             </p>
-            <button className="btn btn-primary mt-3">Get Started</button>
+            <button className="btn btn-primary mt-3 shadow-lg">Get Started</button>
           </div>
 
           {/* Right Side - Image */}
           <div className="col-md-6 text-center">
-            <img src={schoolbanner} alt="Career Growth" className="img-fluid rounded shadow-lg" />
+            <img src={schoolbanner} alt="Career Growth" className="img-fluid rounded-lg shadow-xl" />
           </div>
         </div>
       </div>
+
+      {/* Sections */}
       <div id="about">
         <AboutSection />
       </div>
@@ -47,8 +39,6 @@ const Home = () => {
       <div id="universities">
         <UniversitiesSection />
       </div>
-      
-      {/* <Footer /> */}
     </div>
   );
 };
