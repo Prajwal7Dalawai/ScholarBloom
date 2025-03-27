@@ -167,3 +167,122 @@ game-header p{
 .play-button:hover{
   background-color: #4a00c2;
 }
+
+/* Challenge.css - Light Mode */
+
+body.light-mode .challenge-page-container {
+  color: #1e1e1e; /* Dark text for readability */
+}
+
+body.light-mode .intro-section h2 {
+  color: #222222; /* Darker primary heading */
+}
+
+body.light-mode .intro-section p {
+  color: #555555; /* Slightly darker text */
+}
+
+body.light-mode .game-card {
+  background-color: #ffffff; /* Light card background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+body.light-mode .game-header h2 {
+  color: #222222; /* Darker text */
+}
+
+body.light-mode .game-header p {
+  color: #666666; /* Muted text */
+}
+
+body.light-mode .game-content {
+  width: 100%; /* Ensure content takes full card width */
+}
+
+body.light-mode .game-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+body.light-mode .play-button {
+  background-color: #007bff; /* Light blue button */
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+}
+
+body.light-mode .play-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+body.light-mode .coming-soon-section h2 {
+  color: #222222;
+}
+
+body.light-mode .coming-soon-section p {
+  color: #666666;
+}
+
+body.light-mode .coming-soon-placeholder {
+  color: #ff9800; /* Orange for under construction */
+}
+
+/* GameCard.css - Light Mode */
+body.light-mode .game-card {
+  background-color: #ffffff; /* Light background */
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  margin-bottom: 40px;
+}
+
+body.light-mode .game-header h2 {
+  color: #222222;
+}
+
+body.light-mode .game-header p {
+  color: #666666;
+}
+
+body.light-mode .game-content {
+  width: 100%;
+}
+
+body.light-mode .game-image {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  object-fit: cover;
+}
+
+body.light-mode .play-button {
+  background-color: #007bff;
+  color: white;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  max-width: 250px;
+}
+
+body.light-mode .play-button:hover {
+  background-color: #0056b3;
+}

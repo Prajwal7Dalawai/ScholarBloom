@@ -12,7 +12,7 @@
     color: #ffffff;
     padding: 40px;  /* Increased padding */
     border-radius: 12px; /* Softer corners */
-
+    margin-top: 10px;
     width: 450px;  /* Increased width */
     max-width: 90%;
     margin: auto;
@@ -103,6 +103,108 @@
 }
 
 .google-icon {
+    height: 24px;
+    width: 24px;
+    margin-right: 10px;
+}
+
+/* Full Page Container */
+body.light-mode .login-container {
+    color: #000000;
+}
+
+/* Bigger Login Card */
+body.light-mode .login-card {
+    color: #000000;
+    padding: 40px; /* Increased padding */
+    border-radius: 12px; /* Softer corners */
+    width: 450px; /* Increased width */
+    max-width: 90%;
+    margin-top: 10px;
+    border: 1px solid #444; /* Darker border */
+    background-color: #ffffff; /* Light background */
+}
+
+/* Title */
+body.light-mode .login-title {
+    font-size: 28px; /* Bigger title */
+    font-weight: bold;
+    margin-bottom: 25px;
+    text-align: center;
+    color: #000000;
+}
+
+/* Input Fields */
+body.light-mode .input-group label {
+    font-size: 16px; /* Bigger label text */
+    margin-bottom: 6px;
+    color: #000000;
+}
+
+body.light-mode .input-group input {
+    width: 100%;
+    padding: 12px; /* Bigger input fields */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f8f8f8;
+    color: #000000;
+    font-size: 16px; /* Bigger text */
+}
+
+body.light-mode .input-group input::placeholder {
+    color: #666666;
+}
+
+/* Smaller and Beautiful Login Button */
+body.light-mode .login-btn {
+    width: 80%; /* Slightly smaller width */
+    padding: 8px 14px; /* Reduced padding */
+    font-size: 16px; /* Smaller text */
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    border-radius: 20px; /* Rounded edges for a modern look */
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    display: block;
+    margin: 15px auto; /* Center the button */
+    text-align: center;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    margin-top: 50px;
+}
+
+body.light-mode .login-btn:hover {
+    background-color: #003c7c;
+    transform: scale(1.05); /* Subtle zoom effect */
+}
+
+/* Google Login */
+body.light-mode .google-login {
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+body.light-mode .google-btn {
+    display: flex;
+    align-items: center;
+    background-color: #d62d20;
+    color: white;
+    padding: 12px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-size: 16px;
+    transition: background 0.3s;
+}
+
+body.light-mode .google-btn:hover {
+    background-color: #b92412;
+}
+
+body.light-mode .google-icon {
     height: 24px;
     width: 24px;
     margin-right: 10px;

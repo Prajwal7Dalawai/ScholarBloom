@@ -17,7 +17,7 @@ function Challenge() {
         <h2>More Gaming Coming Soon</h2>
         <p>Stay tuned for more exciting challenges to boost your IQ and earn EduCoins!</p>
         <div className="coming-soon-placeholder">
-          <span role="img" aria-label="construction">🚧</span> Under Construction <span role="img" aria-label="construction">🚧IP</span>
+          <span role="img" aria-label="construction">🚧</span> Under Construction <span role="img" aria-label="construction">🚧</span>
         </div>
       </div>
     </div>

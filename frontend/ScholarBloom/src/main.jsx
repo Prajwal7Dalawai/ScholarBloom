@@ -1,20 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+import React from "react";
+import ReactDOM from "react-dom/client";
 import "bootstrap/dist/css/bootstrap.min.css"; // Import Bootstrap
 import "aos/dist/aos.css";
-import AOS from "aos";
 import "./index.css";
-AOS.init();
-import App from './App.jsx'
+import App from "./App.jsx";
+import { ThemeProvider } from "./ThemeContext"; // ✅ Import ThemeProvider
 
-
-
-createRoot(document.getElementById('root')).render(
+// Initialize AOS inside App.jsx (not here)
+createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
-  </StrictMode>,
-)
-
-
+    <ThemeProvider>
+      <App />
+    </ThemeProvider>
+  </StrictMode>
+);

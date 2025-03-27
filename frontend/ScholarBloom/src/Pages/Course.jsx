@@ -11,7 +11,7 @@ import blockchain from "../assets/CoursePhotos/c6.png";
 const courses = [
   { 
     id: 1, 
-    title: "", 
+    title: "AI Fundamentals", 
     instructor: "Dr. John Doe", 
     duration: "6 Weeks", 
     image: aiCourse 
