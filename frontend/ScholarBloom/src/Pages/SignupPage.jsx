@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./SignupPage.css"; // Import custom styles
 import google from '../assets/google.png';
+import { useNavigate } from 'react-router-dom';
+import { handleStudentSignin, handleUniversitySignin } from "../controls/login-signup";
 
 const SignupPage = () => {
   const [isLightMode, setIsLightMode] = useState(false);
@@ -14,7 +16,7 @@ const SignupPage = () => {
     document.body.classList.toggle("light-mode");
     setIsLightMode(!isLightMode);
   };
-
+  const navigate = useNavigate();
   return (
     <div className="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
       <div className="row w-100 px-3 px-md-5">
@@ -45,9 +47,9 @@ const SignupPage = () => {
           <div className="text-center my-3">OR</div>
 
           {/* Sign Up with Google */}
-          <button className="btn btn-google w-100">
-            <img src={google} alt="Google" className="google-icon" /> Sign Up with Google
-          </button>
+          <button className="btn btn-google w-100" onClick={() => handleStudentSignin(navigate)}>
+  <img src={google} alt="Google" className="google-icon" /> Sign Up with Google
+</button>
 
           <p className="mt-3">
             Already have an account? <a href="#" className="text-success fw-bold">Log in</a>
@@ -75,12 +77,12 @@ const SignupPage = () => {
           <div className="text-center my-3">OR</div>
 
           {/* Sign Up with Google */}
-          <button className="btn btn-google w-100">
-            <img src={google} alt="Google" className="google-icon" /> Sign Up with Google
-          </button>
+          <button className="btn btn-google w-100" onClick={() => handleUniversitySignin(navigate)}>
+  <img src={google} alt="Google" className="google-icon" /> Sign Up with Google
+</button>
 
-          <p className="mt-3">
-            Already have an account? <a href="#" className="text-success fw-bold">Log in</a>
+          <p className="mt-3 text-light">
+            Already have an account? <a href="/login" className="text-success fw-bold">Log in</a>
           </p>
         </div>
       </div>

@@ -2,6 +2,6 @@ const express = require('express');
 const router = express.Router();
 const scholarship = require('../controls/scholarshipController');
 const middleware = require('../middleware');
-
-router.get('/jobs', middleware.verifySession, scholarship.listAllJobs);
+const wrapAsync = require("../utils/wrapAsync.js");
+router.get('/jobs', middleware.verifySession, wrapAsync(scholarship.listAllJobs));
 module.exports = router;
