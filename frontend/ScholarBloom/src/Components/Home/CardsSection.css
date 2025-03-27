@@ -25,3 +25,33 @@
     text-align: center;
   }
   
+  body.light-mode .section-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #222; /* Dark text for contrast in light mode */
+    margin-bottom: 1.5rem;
+  }
+  
+  body.light-mode .custom-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff; /* White background */
+    border: 1px solid #ddd; /* Light gray border */
+  }
+  
+  body.light-mode .custom-card img {
+    height: 200px;
+    object-fit: cover;
+  }
+  
+  body.light-mode .custom-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* Softer shadow for light mode */
+  }
+  
+  body.light-mode .card-body {
+    text-align: center;
+    color: #333; /* Darker text for readability */
+  }
+  
