@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import "./UniversityDashboard.css"; // Reusing the same CSS
+import "./StudentDashboard.css"; // Reusing the same CSS
 
-
-function ScholarshipApplicants() {
+function JobApplicants() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // Sample data for applicants
+  // Sample job applicant data
   const [applicants, setApplicants] = useState([
-    { id: 1, name: "Alice Johnson", studentId: "20231001", email: "alice@example.com", eduCoins: 150, status: "Under Review", profilePic: "/assets/defaultImage.png" },
-    { id: 2, name: "Michael Smith", studentId: "20231002", email: "michael@example.com", eduCoins: 120, status: "Pending", profilePic:  "/assets/defaultImage.png" },
-    { id: 3, name: "Emily Davis", studentId: "20231003", email: "emily@example.com", eduCoins: 200, status: "Under Review", profilePic:  "/assets/defaultImage.png" },
+    { id: 1, name: "Alice Johnson", studentId: "20231001", email: "alice@example.com", status: "Pending", profilePic: "/assets/defaultImage.png" },
+    { id: 2, name: "Michael Smith", studentId: "20231002", email: "michael@example.com", status: "Approved", profilePic: "/assets/defaultImage.png" },
+    { id: 3, name: "Emily Davis", studentId: "20231003", email: "emily@example.com", status: "Under Review", profilePic: "/assets/defaultImage.png" },
+    { id: 4, name: "David Wilson", studentId: "20231004", email: "david@example.com", status: "Rejected", profilePic: "/assets/defaultImage.png" },
   ]);
 
   // Handle Approve/Reject Status Change
@@ -25,16 +25,16 @@ function ScholarshipApplicants() {
   return (
     <div className="dashboard-container-dark container-fluid">
       <div className="card p-4">
-        <h2 className="text-white">Scholarship Applicants</h2>
+        <h2 className="text-white">Job Applicants</h2>
 
         {/* Applicants List */}
         <table className="table table-dark table-hover mt-3">
           <thead>
             <tr>
+              
               <th>Name</th>
               <th>Student ID</th>
               <th>Email</th>
-              <th>EduCoins</th>
               <th>Status</th>
               <th>Actions</th>
               <th>Profile</th>
@@ -43,16 +43,14 @@ function ScholarshipApplicants() {
           <tbody>
             {applicants.length === 0 ? (
               <tr>
-                <td colSpan="8" className="text-center text-light">No applicants found.</td>
+                <td colSpan="7" className="text-center text-light">No applicants found.</td>
               </tr>
             ) : (
               applicants.map((applicant) => (
                 <tr key={applicant.id}>
-                 
                   <td>{applicant.name}</td>
                   <td>{applicant.studentId}</td>
                   <td>{applicant.email}</td>
-                  <td>{applicant.eduCoins}</td>
                   <td>
                     <span className={`status-badge status-${applicant.status.toLowerCase()}`}>
                       {applicant.status}
@@ -81,4 +79,4 @@ function ScholarshipApplicants() {
   );
 }
 
-export default ScholarshipApplicants;
+export default JobApplicants;

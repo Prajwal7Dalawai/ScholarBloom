@@ -22,13 +22,13 @@ const SignupPage = () => {
           <input type="password" className="form-control mb-3 input-dark" placeholder="Enter Password" />
 
           {/* Sign Up Button */}
-          <button className="btn btn-primary btn-lg w-100">Sign Up</button>
+          <button className="btn btn-outline-primary btn-lg w-100">Sign Up</button>
 
           {/* OR Divider */}
           <div className="text-center text-light my-3">OR</div>
 
           {/* Sign Up with Google */}
-          <button className="btn btn-google w-100">
+          <button className="btn btn-google w-100"> 
   <img src={google} alt="Google" className="google-icon" /> Sign Up with Google
 </button>
 

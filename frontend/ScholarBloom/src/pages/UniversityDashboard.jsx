@@ -31,8 +31,27 @@ function UniversityDashboard() {
     },
   ];
 
+  const availableJobs = [
+    {
+      id: 1,
+      title: 'Software Engineer Intern',
+      company: 'Google',
+      salary: '$3000/month',
+      applicants: 45,
+      status: 'Open',
+    },
+    {
+      id: 2,
+      title: 'Data Scientist',
+      company: 'Microsoft',
+      salary: '$5000/month',
+      applicants: 60,
+      status: 'Closed',
+    },
+  ];
+
   return (
-    <div class="fullBody">
+    <div className="fullBody">
       <div className="dashboard-container-dark container-fluid">
         <div className="row">
           
@@ -64,15 +83,9 @@ function UniversityDashboard() {
               {availableScholarships.map((scholarship, index) => (
                 <div key={index} className="applied-scholarship-item-dark mb-3">
                   <h3 className="applied-scholarship-name-dark">{scholarship.name}</h3>
-                  <p>
-                    <span className="applied-scholarship-label-dark">Amount:</span> {scholarship.amount}
-                  </p>
-                  <p>
-                    <span className="applied-scholarship-label-dark">Applicants:</span> {scholarship.applicants}
-                  </p>
-                  <p>
-                    <span className="applied-scholarship-label-dark">Status:</span> {scholarship.status}
-                  </p>
+                  <p><span className="applied-scholarship-label-dark">Amount:</span> {scholarship.amount}</p>
+                  <p><span className="applied-scholarship-label-dark">Applicants:</span> {scholarship.applicants}</p>
+                  <p><span className="applied-scholarship-label-dark">Status:</span> {scholarship.status}</p>
 
                   {/* View Applicants Button */}
                   <button 
@@ -81,7 +94,28 @@ function UniversityDashboard() {
                   >
                     View Applicants
                   </button>
+                </div>
+              ))}
+            </div>
 
+            {/* Available Jobs */}
+            <h2 className="section-title-dark mt-4 mb-3">Jobs Available</h2>
+            <div className="available-jobs-dark card p-3">
+              {availableJobs.map((job, index) => (
+                <div key={index} className="available-job-item-dark mb-3">
+                  <h3 className="available-job-title-dark">{job.title}</h3>
+                  <p><span className="available-job-label-dark">Company:</span> {job.company}</p>
+                  <p><span className="available-job-label-dark">Salary:</span> {job.salary}</p>
+                  <p><span className="available-job-label-dark">Applicants:</span> {job.applicants}</p>
+                  <p><span className="available-job-label-dark">Status:</span> {job.status}</p>
+
+                  {/* View Job Applicants Button */}
+                  <button 
+                    className="btn btn-primary mt-2"
+                    onClick={() => navigate(`/job-applicants/${job.id}`)}
+                  >
+                    View Applicants
+                  </button>
                 </div>
               ))}
             </div>
