@@ -9,11 +9,15 @@ import Challenge from "./Pages/Challenge.jsx";
 import JobApplication from "./Pages/JobApplication.jsx";
 import Header from "./Components/header/Header.jsx";
 import Scholarship from "./pages/Scholarship.jsx";
+import Course from './Pages/Course.jsx'
 import Footer from "./Components/footer/Footer.jsx";
 import UniversityDashboard from "./pages/UniversityDashboard";
 import ScholarshipApplicants from "./pages/ScholarshipApplicants";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
+import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
+
 function App() {
   return (
     <BrowserRouter>
@@ -31,6 +35,9 @@ function App() {
           <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
           <Route path="/profile" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfilePage />} />
+          <Route path="/courses" element={<Course />} />
+          <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
+          <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
         </Routes>
       </div>
       <Footer className="footer" />
