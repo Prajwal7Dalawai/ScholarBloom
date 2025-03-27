@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './StudentDashboard.css';
-import ScCard from '../Components/ui/scCard'; // Correct path to ScCard component
+import ScCard from '../Components/ui/scCard'; 
 import Person from '../assets/person.png';
 
 function StudentDashboard() {
+  useEffect(() => {
+    document.body.classList.add('student-dashboard-page');
+    return () => {
+      document.body.classList.remove('student-dashboard-page');
+    };
+  }, []);
+
   const user = {
     name: 'Alice Johnson',
     studentId: '20231001',
@@ -13,23 +20,6 @@ function StudentDashboard() {
   };
 
   const educoins = 150;
-
-  const scholarships = [
-    {
-      name: 'AI Research Grant',
-      university: 'Stanford University',
-      amount: '$1000',
-      status: 'Awarded',
-      icon: '🏆',
-    },
-    {
-      name: 'Future Scientists Fund',
-      university: 'University of Cambridge',
-      amount: '$500',
-      status: 'Pending',
-      icon: '⏳',
-    },
-  ];
 
   const appliedScholarships = [
     {
@@ -60,8 +50,7 @@ function StudentDashboard() {
   ];
 
   return (
-    <div class="fullBody">
-      <div className="dashboard-container-dark container-fluid">
+    <div className="dashboard-container-dark container-fluid">
       <div className="row">
         
         {/* Left Section */}
@@ -133,7 +122,6 @@ function StudentDashboard() {
         </div>
         
       </div>
-    </div>
     </div>
   );
 }
