@@ -1,13 +1,45 @@
+/* Default Dark Mode */
+:root {
+    --text-color: white;
+    --background-color: black;
+    --card-bg: black;
+    --card-border: #ffffff;
+    --info-text: #9CA3AF;
+    --button-bg: #f6f6f8;
+    --button-text: #141212;
+    --button-hover-bg: #1e40af;
+}
+
+/* Light Mode */
+body.light-mode {
+    --text-color: black;
+    --background-color: white;
+    --card-bg: #f8f9fa;
+    --card-border: #000000;
+    --info-text: #555;
+    --button-bg: #000000;
+    --button-text: #ffffff;
+    --button-hover-bg: #444;
+}
+
+/* Apply Background and Text Color */
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Portal Title */
 .portal-title {
     font-size: 3rem;
     font-weight: bold;
     margin-top: 50px;
     padding: 50px;
     text-align: center;
-    color: #fcfbfb;
+    color: var(--text-color);
 }
 
-
+/* Job Grid */
 .job-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); /* Ensures exactly 3 columns per row */
@@ -31,22 +63,9 @@
     }
 }
 
-
 /* Full Page Container */
 .job-application-container {
-    background-color: #2a2a2a; /* Updated background color */
-    padding: 20px; /* Adjust padding as needed */
-}
-
-/* Responsive Layout */
-@media (max-width: 900px) {
-    .job-grid {
-        grid-template-columns: repeat(2, 1fr); /* 2 cards per row on smaller screens */
-    }
-}
-
-@media (max-width: 600px) {
-    .job-grid {
-        grid-template-columns: repeat(1, 1fr); /* 1 card per row on mobile */
-    }
+    background-color: var(--background-color);
+    padding: 20px;
+    transition: background-color 0.3s ease;
 }

@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useTheme } from "./ThemeContext"; // Import Theme Context
 import "./App.css";
-
 import Home from "./Pages/Home";
 import SignupPage from "./Pages/SignupPage.jsx";
 import StudentDashboard from "./Pages/StudentDashboard.jsx";
@@ -20,14 +21,28 @@ import ApplicantProfile from "./pages/ApplicantProfile.jsx";
 import JobApplicants from "./pages/JobApplicants.jsx";
 
 import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+
 import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
 import uniProfile from './pages/UniProfile.jsx'
 import uniEditProfile from './pages/EditUniversityProfile.jsx'
 function App() {
+  const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
+
+  // Apply dark mode to <body>
+  useEffect(() => {
+    document.body.classList.toggle("dark-mode", theme === "dark");
+  }, [theme]);
+
   return (
     <BrowserRouter>
       <Header className="header" />
-      <div className="main-content">
+      
+      {/* Theme Toggle Button (Fixed Floating) */}
+      <button className="theme-toggle-btn" onClick={toggleTheme}>
+        {theme === "light" ? "🌙" : "☀️"}
+      </button>
+
+      <div className={`main-content`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/signUp" element={<SignupPage />} />
@@ -37,8 +52,10 @@ function App() {
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
+
           <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
           <Route path="/studprofile" element={<ProfilePage />} />
+
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/uniProfile" element={<uniProfile />} />
           <Route path="/editUniprofile" element={<uniEditProfile />} />
@@ -51,7 +68,8 @@ function App() {
 
         </Routes>
       </div>
-      <Footer className="footer" />
+
+      <Footer />
     </BrowserRouter>
   );
 }

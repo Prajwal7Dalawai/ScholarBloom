@@ -2,7 +2,7 @@ const Job = require('../models/job-schema.js');
 const User = require('../models/user-schema.js');
 const wrapAsync = require('../utils/wrapAsync.js');
 
-module.exports.createJob = wrapAsync(async (req, res) => {
+module.exports.createJob = async (req, res) => {
     try{
     const user = User.findOne({ email: res.locals.currentUser.email });
     const {title, desc, deadline} = req.body;
@@ -19,9 +19,9 @@ module.exports.createJob = wrapAsync(async (req, res) => {
 catch(err){
     res.status(400).json({error: err.message});
 }
-});
+};
 
-module.exports.listAllJobs = wrapAsync(async (req, res) => {
+module.exports.listAllJobs = async (req, res) => {
     try{
     const jobs = await Job.find({},"jobTitle, jobDescription, deadline").populate('universityId','fullName location');
     res.json(jobs);
@@ -29,9 +29,9 @@ module.exports.listAllJobs = wrapAsync(async (req, res) => {
     catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.listJobApplicants = wrapAsync(async (req, res) => {
+module.exports.listJobApplicants = async (req, res) => {
     try{
     const user = User.findOne({ email: res.locals.currentUser.email });
     const job = Job.find({universityId: user._id}, "applicants").populate('applicants.studentId', 'fullName email studentDetails.grades studentDetails.eduCoins');
@@ -40,9 +40,9 @@ module.exports.listJobApplicants = wrapAsync(async (req, res) => {
     catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.applyJob = wrapAsync(async (req, res) => {
+module.exports.applyJob = async (req, res) => {
     try{
     const user = User.findOne({ email: res.locals.currentUser.email });
     const {jobId, resume} = req.body;
@@ -61,9 +61,9 @@ module.exports.applyJob = wrapAsync(async (req, res) => {
 catch(err){
     res.status(400).json({error: err.message});
 }
-});
+};
 
-module.exports.AppliedJobs = wrapAsync(async (req, res) => {
+module.exports.AppliedJobs = async (req, res) => {
     try{
         const user = User.findOne({ email: res.locals.currentUser.email });
         const jobs = user.StudentDetails.appliedJobs;
@@ -72,9 +72,9 @@ module.exports.AppliedJobs = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.acceptApplicant = wrapAsync(async (req, res) => {
+module.exports.acceptApplicant = async (req, res) => {
     try{
         const user = User.findOne({ email: res.locals.currentUser.email });
         const {jobId, studentId} = req.body;
@@ -88,9 +88,9 @@ module.exports.acceptApplicant = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.rejectApplicant = wrapAsync(async (req, res) => {
+module.exports.rejectApplicant = async (req, res) => {
     try{
         const user = User.findOne({ email: res.locals.currentUser.email });
         const {jobId, studentId} = req.body;
@@ -104,4 +104,4 @@ module.exports.rejectApplicant = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};

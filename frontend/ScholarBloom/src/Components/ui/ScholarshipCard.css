@@ -69,4 +69,79 @@
     transform: scale(0.95);
   }
   
-  
+
+  /* Light Mode */
+body.light-mode .scholarship-card {
+  border: 1px solid black;
+  color: black;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  max-width: 20rem;
+  margin: 1rem auto;
+  align-items: center;
+}
+
+body.light-mode .scholarship-card img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+}
+
+body.light-mode .scholarship-card .content {
+  padding: 1rem;
+}
+
+body.light-mode .scholarship-card h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+body.light-mode .scholarship-card .info {
+  font-size: 0.875rem;
+  color: #555; /* Darker text for light mode */
+  margin-bottom: 0.5rem;
+}
+
+body.light-mode .scholarship-card a {
+  border: 1px solid #110c0c;
+  display: block;
+  width: 100%;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  transition: background-color 0.3s ease-in-out;
+}
+
+body.light-mode .scholarship-card a:hover {
+  background-color: rgba(0, 0, 0, 0.8); /* Black hover */
+}
+
+/* Apply Button */
+body.light-mode .apply-btn {
+  display: block;
+  width: 100%;
+  background-color: black;
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: 600;
+  text-align: center;
+  transition: background-color 0.3s ease-in-out, transform 0.2s ease;
+  text-decoration: none;
+  margin-top: 20px;
+}
+
+body.light-mode .apply-btn:hover {
+  background-color: #444; /* Darker hover */
+  transform: scale(1.05);
+}
+
+body.light-mode .apply-btn:active {
+  background-color: #222; /* Even darker */
+  transform: scale(0.95);
+}

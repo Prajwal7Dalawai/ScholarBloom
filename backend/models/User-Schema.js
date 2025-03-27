@@ -24,10 +24,6 @@ UserSchema.add({
         appliedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }]
     },
     universityDetails: {
-        universityName: {
-            type: String,
-            required: function () { return this.role === "university"; } // Required only for universities
-        },
         postedJobs: [{ type: mongoose.Schema.Types.ObjectId, ref: "Job" }],
         scholarshipsOffered: [{ type: mongoose.Schema.Types.ObjectId, ref: "Scholarship" }]
     }
