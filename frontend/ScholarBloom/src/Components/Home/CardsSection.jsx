@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "./CardsSection.css"; // Import custom styles
+
 import job from '../../assets/job.jpeg'
 import internship from '../../assets/internship.jpeg'
 import challenge from '../../assets/challenge.jpeg'

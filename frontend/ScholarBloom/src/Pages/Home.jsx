@@ -1,7 +1,6 @@
 import React from "react";
+
 import "bootstrap/dist/css/bootstrap.min.css";
-
-
 // import Navbar from "../Components/header/Header.jsx";
 // import Footer from "../Components/footer/Footer.jsx";
 import CardsSection from "../Components/Home/CardsSection.jsx";
@@ -15,14 +14,14 @@ const Home = () => {
     <div className="flex flex-col min-h-screen">
 
       {/* <Navbar /> */}
-      <button className="btn btn-danger">Test Bootstrap</button>
+     
 
       {/* Hero Section with Image Side by Side */}
       <div className="container flex-grow-1 flex items-center">
 
         <div className="row align-items-center w-100">
-          {/* Left Side - Hero Text */}
           <div className="col-md-6  md:text-left">
+
 
             <h1 className="fw-bold">
               <span className="text-primary">Unlock</span> Your Career
