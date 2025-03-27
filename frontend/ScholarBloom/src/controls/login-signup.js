@@ -89,16 +89,16 @@ const login = async(navigate) => {
     }
 }
 
-const logout = async () => {
+const logout = async (navigate) => {
     try {
         const response = await fetch("http://localhost:3000/auth/logout", {
-            method: "POST",
+            method: "GET",
             credentials: "include",
         });
 
         const data = await response.json();
         console.log(data);
-        window.location.reload();
+        navigate("/signup");
     } catch (error) {
         console.error("Logout Error:", error);
     }

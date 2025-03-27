@@ -32,15 +32,6 @@ app.use("/job", require("./Routes/jobRoute"));
 app.use("/sch", require("./Routes/scholarshipRoute"));
 app.use("/student", require("./Routes/studentRoute"));
 
-// ✅ Route to get user data (requires session token)
-app.get("/user/data", verifySession, (req, res) => {
-    res.json({ user: req.user });
-});
-
-// ✅ Route to check if session is active
-app.get("/dashboard", verifySession, (req, res) => {
-    res.json({ message: "Welcome to your dashboard", user: req.user });
-});
 
 // ✅ Connect to MongoDB
 connectDB();

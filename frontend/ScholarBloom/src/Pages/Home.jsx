@@ -32,7 +32,8 @@ const Home = () => {
             <h1 className="fw-bold">
               <span className="text-primary">Unlock</span> Your Career
             </h1>
-            <p className={isLightMode ? "text-gray-700" : "text-gray-300"} mt-3>
+            <p className={isLightMode ? "text-gray-700 mt-3" : "text-gray-300 mt-3"}>
+
               Explore opportunities from across the globe to grow, showcase skills, gain CV points & get hired by your dream company.
             </p>
             <button className="btn btn-primary mt-3 shadow-lg">Get Started</button>

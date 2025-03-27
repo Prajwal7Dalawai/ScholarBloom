@@ -1,8 +1,11 @@
 import React from "react";
 import "./Header.css";
 import { Link } from "react-router-dom";
+import { logout } from "../../controls/login-signup";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
     <header className="header-container">
       <div className="logo">Scholar-Bloom</div>
@@ -14,9 +17,9 @@ const Header = () => {
         <Link to="/courses" className="nav-item">Courses</Link>
         <Link to="/studentDashboard" className="nav-item">Dashboard</Link>
         <button className="get-started" onClick={() => (window.location.href = "/signup")}>
-  Get Started
+  Signup
 </button>
-
+<button className="get-started" onClick={async () => logout(navigate)}>Logout</button>
       </nav>
     </header>
   );

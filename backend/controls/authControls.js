@@ -81,7 +81,7 @@ module.exports.logout = async (req, res) => {
     try {
         res.clearCookie("session", {
             httpOnly: true,
-            secure: false, // Set to true if using HTTPS
+            secure: true, // Set to true if using HTTPS
             sameSite: "lax" // Adjust if frontend & backend have different origins
         });
         return res.status(200).json({ message: "Logout successful" });

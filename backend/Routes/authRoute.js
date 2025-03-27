@@ -10,6 +10,6 @@ router.post("/login", wrapAsync(authController.login));
 
 
 // 🔹 Logout API
-router.get("/logout", verifySession, wrapAsync(authController.logout));
+router.get("/logout",verifySession ,wrapAsync(authController.logout));
 
 module.exports = router;
