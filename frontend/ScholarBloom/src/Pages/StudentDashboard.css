@@ -166,7 +166,7 @@ html, body, #root {
 
 .enrolled-course-item-dark {
   flex: 1 1 calc(50% - 20px); /* Each item takes up 50% width minus gap */
-  background-color: #2a2a2a; /* Slightly different from the main card */
+  background-color: #151414; /* Slightly different from the main card */
   padding: 15px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
@@ -179,7 +179,7 @@ html, body, #root {
 
 /* Left section: Fixed, Full Height */
 .left-section-dark {
-  margin-top: 30px;
+  margin-top: 10px;
   border: 2px solid #3e3d3d; /* 2px width, solid style, light gray color */
   width: 25%; /* Adjust width as needed */
   height: 100vh; /* Full height of viewport */
@@ -200,4 +200,96 @@ html, body, #root {
   overflow-y: auto; /* Enable scrolling */
   padding: 20px;
   margin-top: 20px;
+}
+
+
+/* Light Mode - Applied When body.light-mode is Active */
+body.light-mode .dashboard-container-dark {
+  background-color: #f9f9f9;
+  color: black;
+}
+
+body.light-mode .left-section-dark {
+  background-color: white;
+  border: 2px solid #dcdcdc;
+}
+
+body.light-mode .user-card-dark {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+}
+
+body.light-mode .user-profile-dark {
+  background-color: #ffffff;
+}
+
+body.light-mode .profile-picture-dark {
+  border: 3px solid #ccc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .user-name-dark {
+  color: black;
+}
+
+body.light-mode .detail-label-dark {
+  color: #444;
+}
+
+body.light-mode .educoins-card-dark {
+  background-color: #ffffff;
+  border: 2px solid #ccc;
+}
+
+body.light-mode .card-title-dark {
+  color: black;
+}
+
+body.light-mode .educoins-value-dark {
+  color: #ff9800;
+}
+
+body.light-mode .right-section-dark {
+  background-color: #ffffff;
+}
+
+body.light-mode .applied-scholarships-dark,
+body.light-mode .enrolled-courses-dark {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.light-mode .applied-scholarship-item-dark,
+body.light-mode .enrolled-course-item-dark {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+body.light-mode .applied-scholarship-name-dark,
+body.light-mode .enrolled-course-name-dark {
+  color: #007bff;
+}
+
+body.light-mode .applied-scholarship-label-dark,
+body.light-mode .enrolled-course-label-dark {
+  color: #444;
+}
+
+body.light-mode .applied-scholarship-item-dark,
+body.light-mode .enrolled-course-item-dark {
+  background-color: #f4f4f4;
+}
+
+body.light-mode .left-section-dark {
+  background-color: white;
+  border: 2px solid #dcdcdc;
+}
+
+body.light-mode .right-section-dark {
+  background-color: #ffffff;
+  color: black;
+}
+
+body.light-mode .card {
+  background-color: white;
+  color: black;
 }

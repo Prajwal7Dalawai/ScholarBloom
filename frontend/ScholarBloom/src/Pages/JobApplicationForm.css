@@ -1,5 +1,5 @@
 /* Full Page Container */
-.login-container {
+.application-container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -8,8 +8,8 @@
     margin-top: 50px;
 }
 
-/* Bigger Login Card */
-.login-card {
+/* Bigger Application Card */
+.application-card {
     color: #ffffff;
     padding: 40px;  /* Increased padding */
     border-radius: 12px; /* Softer corners */
@@ -21,7 +21,7 @@
 }
 
 /* Title */
-.login-title {
+.application-title {
     font-size: 28px;  /* Bigger title */
     font-weight: bold;
     margin-bottom: 25px;
@@ -29,18 +29,18 @@
 }
 
 /* Input Fields */
-.input-group {
+.form-group {
     margin-bottom: 20px;
     text-align: left;
 }
 
-.input-group label {
+.form-group label {
     display: block;
     font-size: 16px;  /* Bigger label text */
     margin-bottom: 6px;
 }
 
-.input-group input {
+.form-group input {
     width: 100%;
     padding: 12px;  /* Bigger input fields */
     border: 1px solid #444;
@@ -50,12 +50,12 @@
     font-size: 16px; /* Bigger text */
 }
 
-.input-group input::placeholder {
+.form-group input::placeholder {
     color: #aaaaaa;
 }
 
-/* Smaller and Beautiful Login Button */
-.login-btn {
+/* Smaller and Beautiful Submit Button */
+.application-btn {
     width: 80%;  /* Slightly smaller width */
     padding: 8px 14px; /* Reduced padding */
     font-size: 16px;  /* Smaller text */
@@ -73,20 +73,20 @@
     margin-top: 50px;
 }
 
-.login-btn:hover {
+.application-btn:hover {
     background-color: #0056b3;
     transform: scale(1.05); /* Subtle zoom effect */
 }
 
 /* Google Login */
-.google-login {
+.google-auth {
     margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.google-btn {
+.google-signin-btn {
     display: flex;
     align-items: center;
     background-color: #ea4335;
@@ -99,12 +99,62 @@
     transition: background 0.3s;
 }
 
-.google-btn:hover {
+.google-signin-btn:hover {
     background-color: #d62d20;
 }
 
-.google-icon {
+.google-logo {
     height: 24px;
     width: 24px;
     margin-right: 10px;
+}
+/* Full Page Container - White Theme */
+body.light-mode .application-container {
+    background-color: white; /* Light Gray Background */
+    color: #000000;
+}
+
+/* Application Card - White Theme */
+body.light-mode .application-card {
+    background-color: #ffffff; /* Pure White Card */
+    color: #000000; /* Dark text */
+    border: 1px solid #cccccc; /* Lighter Border */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Soft Shadow */
+}
+
+/* Title - White Theme */
+body.light-mode .application-title {
+    color: #333333; /* Dark Gray */
+}
+
+/* Input Fields - White Theme */
+body.light-mode .form-group input {
+    background-color: #ffffff; /* White Background */
+    color: #000000; /* Black Text */
+    border: 1px solid #cccccc; /* Light Gray Border */
+}
+
+body.light-mode .form-group input::placeholder {
+    color: #777777; /* Slightly Darker Placeholder */
+}
+
+/* Submit Button - White Theme */
+body.light-mode .application-btn {
+    background-color: #007bff; /* Blue Button */
+    color: white;
+    box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);
+}
+
+body.light-mode .application-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Google Sign-In - White Theme */
+body.light-mode .google-signin-btn {
+    background-color: #ea4335; /* Google Red */
+    color: white;
+}
+
+body.light-mode .google-signin-btn:hover {
+    background-color: #d62d20;
 }
