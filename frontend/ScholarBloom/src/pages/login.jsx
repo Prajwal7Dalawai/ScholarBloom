@@ -1,9 +1,10 @@
 import './login.css'; // Ensure this file is properly linked
 import { createGlobalStyle } from 'styled-components';
-import {handleStudentSignin, handleUniversitySignin} from '../controls/login-signup'; // Import the function from login-signup.js
+import {login} from '../controls/login-signup'; // Import the function from login-signup.js
 import React, { useState } from "react";
 import "./login.css"; // Make sure this file is properly linked 
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from 'react-router-dom';
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -75,24 +76,17 @@ const GlobalStyle = createGlobalStyle`
     }
 };
 `;
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    console.log("Login attempted with:", { email, password });
-  };
-
-  const handleGoogleLogin = async () => {
-    console.log("Google login attempted");
-  };
+  const navigate = useNavigate();
 
   return (
     <div className="login-container">
       <div className="login-card">
         <h2 className="login-title">Login</h2>
-        <form className="login-form" onSubmit={handleLogin}>
+        <form className="login-form">
           
           {/* Email Input */}
           <div className="input-group">
@@ -128,12 +122,11 @@ const LoginPage = () => {
           </button>
 
           {/* Google Login Button */}
-          <div className="google-login">
-            <span>Or login with  <a href=""><FcGoogle /></a></span>
-            
-
-          </div>
+          
         </form>
+        <div className="google-login">
+            <button className='g-login-btn' onClick={() => login(navigate)}>Or login with <a href=""><FcGoogle /></a></button>
+          </div>
       </div>
     </div>
   );
