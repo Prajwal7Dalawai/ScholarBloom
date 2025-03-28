@@ -55,8 +55,8 @@ function App() {
           <Route path="/studprofile" element={<ProfilePage />} />
 
           <Route path="/edit-profile" element={<EditProfilePage />} />
-          <Route path="/uniProfile" element={<uniProfile />} />
-          <Route path="/editUniprofile" element={<uniEditProfile />} />
+          <Route path="/uniProfile" element={<UniProfile />} />
+          <Route path="/editUniprofile" element={<UniEditProfile />} />
           <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
         <Route path="/job-applicants/:id" element={<JobApplicants />} />
 

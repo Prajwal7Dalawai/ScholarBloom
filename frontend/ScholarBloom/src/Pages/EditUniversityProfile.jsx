@@ -12,7 +12,7 @@ const EditUniversityProfile = () => {
     return savedUniversity || {
       name: "Stanford University",
       email: "contact@stanford.edu",
-      naacGrade: "A++",
+      website: "https://www.stanford.edu",
       profilePic: defaultImage,
     };
   });
@@ -20,7 +20,8 @@ const EditUniversityProfile = () => {
   // Form State
   const [name, setName] = useState(university.name);
   const [email, setEmail] = useState(university.email);
-  const [naacGrade, setNaacGrade] = useState(university.naacGrade);
+  const [website, setWebsite] = useState(university.website);
+  const [password, setPassword] = useState(""); // Change Password Field
   const [profilePic, setProfilePic] = useState(university.profilePic || defaultImage);
 
   // Handle Image Change
@@ -37,9 +38,13 @@ const EditUniversityProfile = () => {
     const updatedUniversity = {
       name,
       email,
-      naacGrade,
+      website,
       profilePic,
     };
+
+    if (password.trim() !== "") {
+      updatedUniversity.password = password; // Store new password if provided
+    }
 
     localStorage.setItem("university", JSON.stringify(updatedUniversity));
     navigate("/university-profile");
@@ -68,17 +73,14 @@ const EditUniversityProfile = () => {
         </div>
 
         <div className="form-group">
-          <label className="text-light">NAAC Grade</label>
-          <select className="form-control" value={naacGrade} onChange={(e) => setNaacGrade(e.target.value)}>
-            <option value="A++">A++</option>
-            <option value="A+">A+</option>
-            <option value="A">A</option>
-            <option value="B++">B++</option>
-            <option value="B+">B+</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-            <option value="D">D</option>
-          </select>
+          <label className="text-light">University Website</label>
+          <input type="url" className="form-control" value={website} onChange={(e) => setWebsite(e.target.value)} />
+        </div>
+
+        {/* Change Password Field */}
+        <div className="form-group">
+          <label className="text-light">Change Password</label>
+          <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter new password" />
         </div>
 
         <button className="btn btn-success save-btn" onClick={handleSave}>
