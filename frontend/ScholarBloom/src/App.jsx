@@ -24,21 +24,11 @@ import uniProfile from './pages/UniProfile.jsx'
 import uniEditProfile from './pages/EditUniversityProfile.jsx'
 
 function App() {
-  const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
-
-  // Apply dark mode to <body>
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", theme === "dark");
-  }, [theme]);
 
   return (
     <BrowserRouter>
       <Header className="header" />
       
-      {/* Theme Toggle Button (Fixed Floating) */}
-      <button className="theme-toggle-btn" onClick={toggleTheme}>
-        {theme === "light" ? "🌙" : "☀️"}
-      </button>
 
       <div className={`main-content`}>
         <Routes>
@@ -59,11 +49,9 @@ function App() {
           <Route path="/editUniprofile" element={<UniEditProfile />} />
           <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
         <Route path="/job-applicants/:id" element={<JobApplicants />} />
-
           <Route path="/courses" element={<Course />} />
           <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
           <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
-
         </Routes>
       </div>
 
