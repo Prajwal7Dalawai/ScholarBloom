@@ -1,0 +1,54 @@
+/* Profile Page Container */
+.profile-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #000; /* Black background */
+}
+
+/* Profile Card */
+.profile-card {
+    background: #594e4e;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.1);
+    text-align: center;
+    width: 400px;
+}
+
+/* Profile Image */
+.profile-img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #f39c12;
+}
+
+/* Upload Button */
+.upload-btn {
+    display: block;
+    margin-top: 10px;
+    color: #f39c12;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* User Details */
+.text-light {
+    color: #a01010;
+}
+
+/* Edit Profile Button */
+.btn-primary {
+    background: #f39c12;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background: #d68910;
+}

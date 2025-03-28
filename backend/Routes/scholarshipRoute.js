@@ -1,10 +1,9 @@
 const express = require('express');
+const authMiddleware = require('../middleware'); // Import the auth middleware
+const scholarshipController = require('../controls/scholarshipController');
+const wrapAsync = require("../utils/wrapAsync.js");
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-    res.send("<h1>Hey I m Scholarship Route</h1>");
-});
+router.get('/', authMiddleware.verifySession ,wrapAsync(scholarshipController.getAllScholarships));
 
 module.exports = router;
-
-

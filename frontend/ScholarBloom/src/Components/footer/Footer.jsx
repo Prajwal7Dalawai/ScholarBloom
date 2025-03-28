@@ -1,7 +1,4 @@
-import React from 'react'
-import './Footer.css'
-import { AiFillFacebook, AiFillInstagram  } from "react-icons/ai";
-import { FaSquareXTwitter } from "react-icons/fa6";
+import React from "react";
 
 const Footer = () => {
   return (
@@ -17,8 +14,10 @@ const Footer = () => {
                 <a href=""><AiFillInstagram/></a>
             </div>
         </div>
+    <footer className="bg-dark text-white text-center py-3 mt-auto">
+      <p className="mb-0">© 2025 My Website. All rights reserved.</p>
     </footer>
   );
 };
 
-export default Footer
+export default Footer;

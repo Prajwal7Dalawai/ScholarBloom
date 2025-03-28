@@ -1,22 +1,43 @@
-const express = require('express');
-const User = require('./models/User-Schema');
-const mongoose = require('mongoose');
-const EduCoins = require('./models/EduCoins-Schema');
-const Scholarship = require('./models/Scholarship-Schema');
+const express = require("express");
+const cors = require("cors");
 const app = express();
-
-const connectDB = require('./mongo-Connect');
+const connectDB = require("./mongo-Connect");
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const { verifySession } = require("./middleware");
+
+// ✅ Enable CORS with Credentials to Allow Cookies
+app.use(cors({
+    origin: "http://localhost:5173", // Adjust based on your frontend URL
+    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+}));
+
+app.use((req,res,next)=>{
+    res.locals.currUser = req.user;
+    next();
+});
+
+
+app.set("trust proxy", true);
+
+
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
-const authRoute = require('./Routes/authRoute');
-const scholarRoute = require('./Routes/scholarshipRoute');
+// ✅ Route for authentication (stores session token in cookies)
+app.use("/auth", require("./Routes/authRoute"));
+app.use("/uni", require("./Routes/uniRoute"));
+app.use("/job", require("./Routes/jobRoute"));
+app.use("/sch", require("./Routes/scholarshipRoute"));
+app.use("/student", require("./Routes/studentRoute"));
 
-app.use("/auth",authRoute);
-app.use("/scholarship",scholarRoute);
 
-const port  = 3000;
-
-app.listen(port,()=>{console.log(`Server is listening to port ${port}`)});
-
+// ✅ Connect to MongoDB
 connectDB();
+
+// ✅ Start server
+const port = 3000;
+app.listen(port, () => {
+    console.log(`Server is listening to port ${port}`);
+});

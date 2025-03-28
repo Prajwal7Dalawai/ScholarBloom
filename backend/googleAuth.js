@@ -24,4 +24,4 @@ const signInWithGoogle = async () => {
 // To test
 // signInWithGoogle().then(user => console.log(user)).catch(console.error);
 
-module.exports = { signInWithGoogle };
+module.exports = { signInWithGoogle, auth };

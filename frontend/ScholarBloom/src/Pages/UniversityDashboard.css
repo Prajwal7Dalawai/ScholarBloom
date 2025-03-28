@@ -1,0 +1,123 @@
+/* Applicants List Container */
+.applicants-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Individual Applicant Card */
+  .applicant-card {
+    background: #111;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .applicant-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0px 8px 12px rgba(255, 255, 255, 0.15);
+  }
+  
+  /* Profile Image (Reduced Size) */
+  .applicant-profile-img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 1.5px solid #f39c12;
+  }
+  
+  /* Labels */
+  .applicant-label {
+    font-weight: bold;
+    color: #f39c12;
+  }
+  
+  /* Status Badges */
+  .status-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 5px;
+    font-size: 0.8rem;
+    font-weight: bold;
+  }
+  
+  /* Different Status Colors */
+  .status-approved {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .status-under-review {
+    background-color: #ffc107;
+    color: black;
+  }
+  
+  .status-rejected {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .status-pending {
+    background-color: #17a2b8;
+    color: white;
+  }
+  
+  /* Filter Dropdown */
+  .filter-container select {
+    width: 180px;
+    background: #222;
+    color: white;
+    border: 1px solid #555;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 0.9rem;
+  }
+  
+  
+  /* Table Styling */
+.table-dark th, .table-dark td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+/* Profile Image Small */
+.applicant-profile-img-small {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #f39c12;
+}
+
+/* Profile Image Large */
+.applicant-profile-img-large {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 3px solid #f39c12;
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.status-approved {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-pending {
+  background-color: #ffc107;
+  color: black;
+}
+
+.status-rejected {
+  background-color: #dc3545;
+  color: white;
+}
