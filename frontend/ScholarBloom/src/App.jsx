@@ -3,29 +3,25 @@ import { useEffect } from "react";
 import { useTheme } from "./ThemeContext"; // Import Theme Context
 import "./App.css";
 import Home from "./Pages/Home";
-import SignupPage from "./Pages/SignupPage.jsx";
-import StudentDashboard from "./Pages/StudentDashboard.jsx";
-import LoginPage from "./Pages/login.jsx";
-import Challenge from "./Pages/Challenge.jsx";
-import JobApplication from "./Pages/JobApplication.jsx";
+import SignupPage from "./pages/SignupPage.jsx";
+import StudentDashboard from "./pages/StudentDashboard.jsx";
+import LoginPage from "./pages/login.jsx";
+import Challenge from "./pages/Challenge.jsx";
+import JobApplication from "./pages/JobApplication.jsx";
 import Header from "./Components/header/Header.jsx";
 import Scholarship from "./pages/Scholarship.jsx";
-import Course from './Pages/Course.jsx'
+import Course from './pages/Course.jsx'
 import Footer from "./Components/footer/Footer.jsx";
 import UniversityDashboard from "./pages/UniversityDashboard";
 import ScholarshipApplicants from "./pages/ScholarshipApplicants";
 import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
-
 import ApplicantProfile from "./pages/ApplicantProfile.jsx";
 import JobApplicants from "./pages/JobApplicants.jsx";
-
-import JobApplicationForm from './Pages/JobApplicationForm.jsx'
-
-import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
-import UniProfile from './pages/UniProfile.jsx'
-import UniEditProfile from './pages/EditUniversityProfile.jsx'
-
+import JobApplicationForm from './pages/JobApplicationForm.jsx'
+import ScholarshipApplicationForm from './pages/ScholarshipApplicationForm.jsx'
+import uniProfile from './pages/UniProfile.jsx'
+import uniEditProfile from './pages/EditUniversityProfile.jsx'
 
 function App() {
   const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function

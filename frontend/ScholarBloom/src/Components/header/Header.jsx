@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Header.css";
 import { Link, useNavigate } from "react-router-dom";
-
+import { logout } from "../../controls/login-signup";
 const Header = () => {
   const navigate = useNavigate();
 
