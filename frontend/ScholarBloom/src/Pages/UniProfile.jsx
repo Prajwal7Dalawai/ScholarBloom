@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./uniProfile.css";
-import defaultImage from "../assets/defaultImage.png"; // Default university logo
+import defaultImage from "../assets/defaultImage.png";
 
 const UniversityProfile = () => {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const UniversityProfile = () => {
     return savedUniversity || {
       name: "Stanford University",
       email: "contact@stanford.edu",
-      naacGrade: "A++", // Default NAAC Grade
+      website: "https://www.stanford.edu",
       profilePic: defaultImage,
     };
   });
@@ -32,11 +32,16 @@ const UniversityProfile = () => {
         <div className="profile-details text-center">
           <h2 className="text-primary">{university.name}</h2>
           <p className="text-light">{university.email}</p>
-          <p className="text-light"><strong>NAAC Grade:</strong> {university.naacGrade}</p>
+          <p className="text-light">
+            <strong>Website:</strong>{" "}
+            <a href={university.website} target="_blank" rel="noopener noreferrer" className="text-link">
+              {university.website}
+            </a>
+          </p>
 
           <button
             className="btn btn-primary mt-3"
-            onClick={() => navigate("/edit-university-profile")}
+            onClick={() => navigate("/editUniprofile")}
           >
             Edit Profile
           </button>

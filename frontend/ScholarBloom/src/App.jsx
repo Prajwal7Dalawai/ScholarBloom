@@ -21,8 +21,10 @@ import JobApplicants from "./pages/JobApplicants.jsx";
 
 import JobApplicationForm from './Pages/JobApplicationForm.jsx'
 import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
-import uniProfile from './pages/UniProfile.jsx'
-import uniEditProfile from './pages/EditUniversityProfile.jsx'
+import UniProfile from './pages/UniProfile.jsx'
+import UniEditProfile from './pages/EditUniversityProfile.jsx'
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -40,8 +42,8 @@ function App() {
           <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
           <Route path="/studprofile" element={<ProfilePage />} />
           <Route path="/edit-profile" element={<EditProfilePage />} />
-          <Route path="/uniProfile" element={<uniProfile />} />
-          <Route path="/editUniprofile" element={<uniEditProfile />} />
+          <Route path="/uniProfile" element={<UniProfile />} />
+          <Route path="/editUniprofile" element={<UniEditProfile />} />
           <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
         <Route path="/job-applicants/:id" element={<JobApplicants />} />
 

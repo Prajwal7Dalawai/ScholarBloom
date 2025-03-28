@@ -15,6 +15,7 @@ const EditProfile = () => {
       grades: "A",
       skills: ["JavaScript", "React"],
       profilePic: defaultImage,
+      password: "",
     };
   });
 
@@ -24,6 +25,7 @@ const EditProfile = () => {
   const [grades, setGrades] = useState(user.grades);
   const [skills, setSkills] = useState(user.skills.join(", "));
   const [profilePic, setProfilePic] = useState(user.profilePic || defaultImage);
+  const [password, setPassword] = useState(""); // Change Password Field
 
   // Handle Image Change
   const handleImageChange = (event) => {
@@ -43,6 +45,10 @@ const EditProfile = () => {
       skills: skills.split(",").map((skill) => skill.trim()),
       profilePic,
     };
+
+    if (password.trim() !== "") {
+      updatedUser.password = password; // Store new password if provided
+    }
 
     localStorage.setItem("user", JSON.stringify(updatedUser));
     navigate("/profile");
@@ -90,6 +96,12 @@ const EditProfile = () => {
             onChange={(e) => setSkills(e.target.value)}
             placeholder="Enter skills separated by commas (e.g., JavaScript, React, Python)"
           ></textarea>
+        </div>
+
+        {/* Change Password Field */}
+        <div className="form-group">
+          <label className="text-light">Change Password</label>
+          <input type="password" className="form-control" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Enter new password" />
         </div>
 
         <button className="btn btn-success save-btn" onClick={handleSave}>
