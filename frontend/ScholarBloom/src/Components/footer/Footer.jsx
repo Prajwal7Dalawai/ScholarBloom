@@ -8,7 +8,7 @@ const Footer = () => {
     <footer>
         <div className="footer-content">
             <p>
-                &copy; 2024 <strong>Edu-Quest</strong>. All rights reserved.<br/>
+                &copy; 2025 <strong>Scholar-Bloom</strong>. All rights reserved.<br/>
                 Learn, Earn & Apply.
             </p>
             <div className="social-links">

@@ -16,21 +16,11 @@ import JobApplicationForm from "./Pages/JobApplicationForm.jsx";
 import ScholarshipApplicationForm from "./Pages/ScholarshipApplicationForm.jsx";
 
 function App() {
-  const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
-
-  // Apply dark mode to <body>
-  useEffect(() => {
-    document.body.classList.toggle("dark-mode", theme === "dark");
-  }, [theme]);
 
   return (
     <BrowserRouter>
       <Header className="header" />
       
-      {/* Theme Toggle Button (Fixed Floating) */}
-      <button className="theme-toggle-btn" onClick={toggleTheme}>
-        {theme === "light" ? "🌙" : "☀️"}
-      </button>
 
       <div className={`main-content`}>
         <Routes>
@@ -42,8 +32,8 @@ function App() {
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
           <Route path="/courses" element={<Course />} />
-          <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
-          <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
+          <Route path="/jobApplicationForm/:id" element={<JobApplicationForm />} />
+          <Route path="/scholarshipApplicationForm/:id" element={<ScholarshipApplicationForm />} />
         </Routes>
       </div>
 
