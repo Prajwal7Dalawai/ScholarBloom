@@ -4,10 +4,11 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const User = require("../models/user-schema.js");
 
 
-module.exports.createScholarship = wrapAsync(async (req, res) => {
+module.exports.createScholarship = async (req, res) => {
     try{
     const {name, desc, uni, eligibleCr, minEdu, deadline} = req.body;
     const date = Date.now();
+    const user = await User.findOne({ email: res.locals.currentUser.email });
     const newScholar = new Scholar({
         title: name,
         description: desc,
@@ -23,9 +24,9 @@ module.exports.createScholarship = wrapAsync(async (req, res) => {
 }catch(err){
     res.status(400).json({error: err.message});
 }
-});
+};
 
-module.exports.listScholarships = wrapAsync(async (req, res) => {
+module.exports.listScholarships =async (req, res) => {
     try{
     const currUser = res.locals.currUser;
     const user = await Scholar.find({name: currUser.name});
@@ -33,18 +34,18 @@ module.exports.listScholarships = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.getAllScholarships = wrapAsync(async (req, res) => {
+module.exports.getAllScholarships = async (req, res) => {
     try{
     const scholarships = await Scholar.find({}).select("title description university eligibilityCriteria requiredEduCoins deadline");
     res.status(200).json({ scholarships });
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.listSelectedScholarships = wrapAsync(async (req, res) => {
+module.exports.listSelectedScholarships = async (req, res) => {
     try{
     const currUser = res.locals.currUser;
     const user = await Scholar.find({name: currUser.name});
@@ -52,9 +53,9 @@ module.exports.listSelectedScholarships = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.ScholarshipApplicants = wrapAsync(async (req, res) => {
+module.exports.ScholarshipApplicants =async (req, res) => {
     try{
     const currUser = res.locals.currUser;
     const user = await Scholar.find({name: currUser.name});
@@ -62,11 +63,11 @@ module.exports.ScholarshipApplicants = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.applyScholarship = wrapAsync(async (req, res) => {
+module.exports.applyScholarship =async (req, res) => {
     try{
-        const user = User.findOne({ email: res.locals.currentUser.email });
+        const user = await User.findOne({ email: res.locals.currentUser.email });
         const {scholarshipId} = req.body;
         const scholarship = await Scholar.findById(scholarshipId);
         if(scholarship.requiredEduCoins <= user.eduCoins){
@@ -80,9 +81,9 @@ module.exports.applyScholarship = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.appliedScholarships = wrapAsync(async (req, res) => {
+module.exports.appliedScholarships = async (req, res) => {
     try{
     const user = User.findById(res.locals.currentUser.email);
     const scholarships = user.StudentDetails.appliedScholarships;
@@ -91,9 +92,9 @@ module.exports.appliedScholarships = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};
 
-module.exports.acceptStudent = wrapAsync(async (req, res) => {
+module.exports.acceptStudent = async (req, res) => {
     try{
         const user = User.findById(res.locals.currentUser.email);
         const {scholarshipId, studentId} = req.body;
@@ -107,4 +108,4 @@ module.exports.acceptStudent = wrapAsync(async (req, res) => {
     }catch(err){
         res.status(400).json({error: err.message});
     }
-});
+};

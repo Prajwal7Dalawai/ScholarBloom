@@ -4,13 +4,25 @@
     justify-content: space-between;
     align-items: center;
     padding: 16px 32px;
-    background-color: #000000; /* Pure Black */
+    background-color: #000000; /* Default: Pure Black */
     color: #ffffff;
-    box-shadow: 0px 4px 10px #000000;
     position: fixed;
     width: 100%;
     top: 0;
     z-index: 1000;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+/* Remove shadow in Dark Mode */
+body:not(.light-mode) .header-container {
+    box-shadow: none;
+}
+
+/* Light Mode Navbar */
+body.light-mode .header-container {
+    background-color: #ffffff; /* White Background */
+    color: #000000;
+    
 }
 
 /* Logo Styling */
@@ -19,6 +31,12 @@
     font-weight: bold;
     font-family: 'Orbitron', sans-serif;
     color: white;
+    transition: color 0.3s ease-in-out;
+}
+
+/* Light Mode Logo */
+body.light-mode .logo {
+    color: black;
 }
 
 /* Navigation Links */
@@ -41,6 +59,15 @@
     color: #1c8cd6; /* Highlight Color */
 }
 
+/* Light Mode Navigation Items */
+body.light-mode .nav-item {
+    color: black;
+}
+
+body.light-mode .nav-item:hover {
+    color: #1c8cd6;
+}
+
 /* Get Started Button */
 .get-started {
     background-color: white;
@@ -57,18 +84,15 @@
     background-color: #1c8cd6;
     color: black;
 }
-.logout-btn {
-    background: #dc3545;
+
+
+/* Light Mode Button */
+body.light-mode .get-started {
+    background-color: black;
     color: white;
-    padding: 8px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.3s;
-  }
-  
-  .logout-btn:hover {
-    background: #c82333;
-  }
-  
+}
+
+body.light-mode .get-started:hover {
+    background-color: #1c8cd6;
+    color: black;
+}

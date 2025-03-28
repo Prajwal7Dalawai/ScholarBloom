@@ -18,3 +18,26 @@
     text-align: center;
   }
   
+  body.light-mode .university-card {
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #ffffff; /* White background */
+    border: 1px solid #ddd; /* Light gray border */
+  }
+  
+  body.light-mode .university-card img {
+    height: 220px;
+    object-fit: cover;
+  }
+  
+  body.light-mode .university-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); /* Softer shadow in light mode */
+  }
+  
+  body.light-mode .card-body {
+    text-align: center;
+    color: #333; /* Dark text for contrast */
+  }
+  

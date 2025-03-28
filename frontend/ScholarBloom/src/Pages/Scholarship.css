@@ -49,3 +49,56 @@
         grid-template-columns: repeat(1, 1fr); /* 1 card per row on mobile */
     }
 }
+
+/* Light Mode Styles */
+
+body.light-mode .scholarship-title {
+    font-size: 3rem;
+    font-weight: bold;
+    padding: 50px;
+    text-align: center;
+    color: #222222; /* Dark text for readability */
+    margin-top: 50px;
+}
+
+body.light-mode .scholarship-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    justify-content: center;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Responsive Design */
+@media (max-width: 900px) {
+    body.light-mode .scholarship-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    body.light-mode .scholarship-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+/* Full Page Container */
+body.light-mode .scholarship-container {
+    padding: 20px;
+    background-color: #ffffff; /* Light background */
+}
+
+/* Adjustments for Grid Responsiveness */
+@media (max-width: 900px) {
+    body.light-mode .scholarship-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    body.light-mode .scholarship-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}

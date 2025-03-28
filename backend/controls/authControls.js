@@ -3,6 +3,7 @@ const User = require("../models/user-schema");
 const serviceAccount = require("../utils/scholarbloom-ffaa4-firebase-adminsdk-fbsvc-6046a0601b.json");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const axios = require("axios");
 
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
@@ -80,7 +81,7 @@ module.exports.logout = async (req, res) => {
     try {
         res.clearCookie("session", {
             httpOnly: true,
-            secure: false, // Set to true if using HTTPS
+            secure: true, // Set to true if using HTTPS
             sameSite: "lax" // Adjust if frontend & backend have different origins
         });
         return res.status(200).json({ message: "Logout successful" });
@@ -89,3 +90,26 @@ module.exports.logout = async (req, res) => {
         res.status(500).json({ error: "Logout failed" });
     }
 }
+
+module.exports.login = async (req, res) => {
+    try {
+        const idToken = req.body.idToken; // Get the ID token from the client
+        
+        if (!idToken) {
+            return res.status(400).json({ error: "ID token is required" });
+        }
+        
+        const decodedToken = await admin.auth().verifyIdToken(idToken);
+        const user = decodedToken; // Decoded token contains user info
+        let verifyEmail = await User.findOne({ email: user.email });
+        
+        if (verifyEmail) {
+            const sessionToken = jwt.sign({ uid: user.uid, role: verifyEmail.role, email:user.email, name:user.name }, process.env.SECRET_KEY, { expiresIn: "720h" });
+            res.cookie("session", sessionToken, { httpOnly: true, secure: true, sameSite: "none" , maxAge: 30*24*60*60*1000});
+            return res.status(200).json({ message: "Login successful", sessionToken, verifyEmail });
+        } 
+        return res.status(400).json({error: "User not found, Please sign in"  });
+    }catch(error){
+        res.status(500).json({ error: "Login failed" });
+    }
+};

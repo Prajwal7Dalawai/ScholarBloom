@@ -10,17 +10,17 @@ const JobApplicationForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Application submitted with:", { name, email, phone, resume, coverLetter });
+    console.log("Application submitted with:", { name, email, phone, resume });
   };
 
   return (
-    <div className="login-container"> 
-      <div className="login-card">
-        <h2 className="login-title">Job Application</h2>
-        <form className="login-form" onSubmit={handleSubmit}>
+    <div className="application-container"> 
+      <div className="application-card">
+        <h2 className="application-title">Job Application</h2>
+        <form className="application-form" onSubmit={handleSubmit}>
           
           {/* Name Input */}
-          <div className="input-group">
+          <div className="form-group">
             <label htmlFor="name">Full Name:</label>
             <input
               type="text"
@@ -34,7 +34,7 @@ const JobApplicationForm = () => {
           </div>
 
           {/* Email Input */}
-          <div className="input-group">
+          <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
               type="email"
@@ -48,7 +48,7 @@ const JobApplicationForm = () => {
           </div>
 
           {/* Phone Input */}
-          <div className="input-group">
+          <div className="form-group">
             <label htmlFor="phone">Phone:</label>
             <input
               type="tel"
@@ -62,7 +62,7 @@ const JobApplicationForm = () => {
           </div>
 
           {/* Resume Upload */}
-          <div className="input-group">
+          <div className="form-group">
             <label htmlFor="resume">Upload Resume:</label>
             <input
               type="file"
@@ -74,14 +74,11 @@ const JobApplicationForm = () => {
             />
           </div>
 
-
-
           {/* Submit Button */}
-          <button type="submit" className="login-btn">
+          <button type="submit" className="application-btn">
             Submit Application
           </button>
 
-          
         </form>
       </div>
     </div>

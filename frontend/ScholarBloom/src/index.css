@@ -1,10 +1,58 @@
-body {
-    background-color: #000000; /* Pure black */
-    min-height: 100vh; /* Full viewport height */
-    margin: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white; /* Text color */
-    font-family: Arial, sans-serif; /* Adjust font if needed */
+/* Default Dark Mode */
+:root {
+  --text-color: white;
+  --background-color: black;
+  --card-bg: black;
+  --card-border: #ffffff;
+  --info-text: #9CA3AF;
+  --button-bg: white;
+  --button-text: #141212;
+  --button-hover-bg:rgb(151, 152, 156);
 }
+
+/* Light Mode (Applied only when .light-mode is added to body) */
+body.light-mode {
+  --text-color: black;
+  --background-color: white;
+  --card-bg: #f8f9fa;
+  --card-border: #000000;
+  --info-text: #555;
+  --button-bg: #f6f6f8;
+  --button-text: #ffffff;
+  --button-hover-bg: #444;
+}
+
+/* Apply background and text color */
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+  
+  /* Apply to Main Content */
+  .main-content {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    transition: background 0.3s ease, color 0.3s ease;
+  }
+  
+  /* Floating Theme Toggle Button */
+  .theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .theme-toggle-btn:hover {
+    opacity: 0.8;
+  }
+
+ 
