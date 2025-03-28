@@ -25,7 +25,8 @@ import JobApplicationForm from './Pages/JobApplicationForm.jsx'
 import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
 import UniProfile from './pages/UniProfile.jsx'
 import UniEditProfile from './pages/EditUniversityProfile.jsx'
-
+import HostScholarship from "./pages/HostScholarship.jsx";
+import HostJob from "./pages/HostJob.jsx";
 
 function App() {
   const { theme, toggleTheme } = useTheme(); // Get theme state and toggle function
@@ -67,7 +68,8 @@ function App() {
           <Route path="/courses" element={<Course />} />
           <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
           <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
-
+          <Route path="/hostScholarship" element={<HostScholarship/>}/>
+          <Route path="/hostJob" element={<HostJob/>}/>
         </Routes>
       </div>
 
