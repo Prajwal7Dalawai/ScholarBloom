@@ -2,18 +2,26 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './UniversityDashboard.css'; // Using the same CSS as Student Dashboard
 import UniversityIcon from '../assets/harvard-university.avif'; // Default university image
+import { fetchUniData } from '../controls/dataController';
 
 
 
 function UniversityDashboard() {
   const navigate = useNavigate();
+  const [data, setData] = React.useState({ user: {} });
+  
+  React.useEffect(() => {
+    fetchUniData().then((data) => {
+      setData(data);
+      console.log(data);
+    });
+  }, []);
 
   const university = {
-    name: 'Stanford University',
-    universityId: 'UNI20231001',
-    email: 'contact@stanford.edu',
-    totalStudents: 5000,
-    profilePicture: UniversityIcon,
+    name: data.user.fullName,
+    universityId: data.user._id,
+    email: data.user.email,
+    profilePicture:data.user.profilePic,
   };
 
   const availableScholarships = [
@@ -71,7 +79,7 @@ function UniversityDashboard() {
               <div className="user-details-dark card-body">
                 <p><span className="detail-label-dark">University ID:</span> {university.universityId}</p>
                 <p><span className="detail-label-dark">Email:</span> {university.email}</p>
-                <p><span className="detail-label-dark">Total Students:</span> {university.totalStudents}</p>
+                {/* <p><span className="detail-label-dark">Total Students:</span> {university.totalStudents}</p> */}
               </div>
             </div>
           </div>

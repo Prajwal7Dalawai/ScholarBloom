@@ -96,3 +96,23 @@ body.light-mode .get-started:hover {
     background-color: #1c8cd6;
     color: black;
 }
+
+/* Floating Theme Toggle Button */
+.theme-toggle-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: var(--text-color);
+    color: var(--bg-color);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .theme-toggle-btn:hover {
+    opacity: 0.8;
+  }
+
+ 
