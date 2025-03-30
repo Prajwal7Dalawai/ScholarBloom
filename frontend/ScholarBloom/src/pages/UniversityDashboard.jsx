@@ -24,37 +24,29 @@ function UniversityDashboard() {
 
   const availableScholarships = [
     {
-      id: 1,
-      name: 'AI Research Grant',
-      amount: '$1000',
-      applicants: 120,
-      status: 'Open',
+      id: data.scholarships[0]._id,
+      name: data.scholarships[0].title,
+      amount: data.scholarships[0].amount,
+      status: data.scholarships[0].status,
     },
     {
-      id: 2,
-      name: 'Future Scientists Fund',
-      amount: '$500',
-      applicants: 75,
-      status: 'Closed',
+      id: data.scholarships[1]._id,
+      name: data.scholarships[1].title,
+      amount: data.scholarships[1].amount,
+      status: data.scholarships[1].status,
     },
   ];
 
   const availableJobs = [
     {
-      id: 1,
-      title: 'Software Engineer Intern',
-      company: 'Google',
-      salary: '$3000/month',
-      applicants: 45,
-      status: 'Open',
+      id: data.jobs[0]._id,
+      title: data.jobs[0].jobTitle,
+      status: data.jobs[0].status,
     },
     {
-      id: 2,
-      title: 'Data Scientist',
-      company: 'Microsoft',
-      salary: '$5000/month',
-      applicants: 60,
-      status: 'Closed',
+      id: data.jobs[0]._id,
+      title: data.jobs[0].jobTitle,
+      status: data.jobs[0].status,
     },
   ];
 
@@ -92,7 +84,6 @@ function UniversityDashboard() {
                 <div key={index} className="applied-scholarship-item-dark mb-3">
                   <h3 className="applied-scholarship-name-dark">{scholarship.name}</h3>
                   <p><span className="applied-scholarship-label-dark">Amount:</span> {scholarship.amount}</p>
-                  <p><span className="applied-scholarship-label-dark">Applicants:</span> {scholarship.applicants}</p>
                   <p><span className="applied-scholarship-label-dark">Status:</span> {scholarship.status}</p>
 
                   {/* View Applicants Button */}
@@ -112,8 +103,6 @@ function UniversityDashboard() {
               {availableJobs.map((job, index) => (
                 <div key={index} className="available-job-item-dark mb-3">
                   <h3 className="available-job-title-dark">{job.title}</h3>
-                  <p><span className="available-job-label-dark">Company:</span> {job.company}</p>
-                  <p><span className="available-job-label-dark">Salary:</span> {job.salary}</p>
                   <p><span className="available-job-label-dark">Applicants:</span> {job.applicants}</p>
                   <p><span className="available-job-label-dark">Status:</span> {job.status}</p>
 

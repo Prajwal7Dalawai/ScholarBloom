@@ -10,7 +10,8 @@ const ScholarshipSchema = new mongoose.Schema({
     applicants: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // List of students who applied
     selectedStudents: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }], // List of students awarded
     status: { type: String, enum: ["open", "closed", "awarded"], default: "open" },
-    createdAt: { type: Date, default: Date.now }
+    createdAt: { type: Date, default: Date.now },
+    amount: {type: Number, required:true, default:0}
 });
 
 module.exports = mongoose.model("Scholarship", ScholarshipSchema);

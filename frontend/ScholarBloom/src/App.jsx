@@ -20,8 +20,8 @@ import ApplicantProfile from "./pages/ApplicantProfile.jsx";
 import JobApplicants from "./pages/JobApplicants.jsx";
 import JobApplicationForm from './pages/JobApplicationForm.jsx'
 import ScholarshipApplicationForm from './pages/ScholarshipApplicationForm.jsx'
-import uniProfile from './pages/UniProfile.jsx'
-import uniEditProfile from './pages/EditUniversityProfile.jsx'
+import UniProfile from './pages/UniProfile.jsx'
+import UniEditProfile from './pages/EditUniversityProfile.jsx'
 
 function App() {
 
@@ -40,10 +40,8 @@ function App() {
           <Route path="/jobApplication" element={<JobApplication />} />
           <Route path="/scholarship" element={<Scholarship />} />
           <Route path="/university-dashboard" element={<UniversityDashboard />} />
-
           <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
           <Route path="/studprofile" element={<ProfilePage />} />
-
           <Route path="/edit-profile" element={<EditProfilePage />} />
           <Route path="/uniProfile" element={<UniProfile />} />
           <Route path="/editUniprofile" element={<UniEditProfile />} />

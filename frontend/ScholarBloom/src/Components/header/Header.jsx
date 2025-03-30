@@ -34,6 +34,7 @@ const Header = () => {
         </button>
     </header>
   );
+}
 };
 
 export default Header;

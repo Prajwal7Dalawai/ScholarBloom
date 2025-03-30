@@ -44,6 +44,11 @@ const JobApplicationSchema = new mongoose.Schema({
     deadline: {
         type: Date, // Application deadline
         required: true,
+    },
+    status:{
+        type:String,
+        enum:["open","closed"],
+        default:"open"
     }
 });
 
