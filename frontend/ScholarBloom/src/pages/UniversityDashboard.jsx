@@ -4,6 +4,8 @@ import './UniversityDashboard.css'; // Using the same CSS as Student Dashboard
 import UniversityIcon from '../assets/harvard-university.avif'; // Default university image
 import { fetchUniData } from '../controls/dataController';
 
+
+
 function UniversityDashboard() {
   const navigate = useNavigate();
   const [data, setData] = React.useState({ user: {} });
@@ -76,8 +78,10 @@ function UniversityDashboard() {
 
           {/* Right Section */}
           <div className="right-section-dark col-md-8">
-
             {/* Available Scholarships */}
+            <button className='btn btn-primary'
+                  onClick={() => navigate(`/hostScholarship`)}
+                  >Add Scholarship</button>
             <h2 className="section-title-dark mt-4 mb-3">Available Scholarships</h2>
             <div className="applied-scholarships-dark card p-3">
               {availableScholarships.map((scholarship, index) => (
@@ -93,11 +97,15 @@ function UniversityDashboard() {
                   >
                     View Applicants
                   </button>
+                  
                 </div>
               ))}
             </div>
 
             {/* Available Jobs */}
+            <button className='btn btn-primary'
+                  onClick={() => navigate(`/hostJob`)}
+                  >Add Jobs</button>
             <h2 className="section-title-dark mt-4 mb-3">Jobs Available</h2>
             <div className="available-jobs-dark card p-3">
               {availableJobs.map((job, index) => (

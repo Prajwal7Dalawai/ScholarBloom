@@ -18,10 +18,14 @@ import ProfilePage from "./pages/ProfilePage";
 import EditProfilePage from "./pages/EditProfilePage";
 import ApplicantProfile from "./pages/ApplicantProfile.jsx";
 import JobApplicants from "./pages/JobApplicants.jsx";
-import JobApplicationForm from './pages/JobApplicationForm.jsx'
-import ScholarshipApplicationForm from './pages/ScholarshipApplicationForm.jsx'
+
+import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+
+import ScholarshipApplicationForm from './Pages/ScholarshipApplicationForm.jsx'
 import UniProfile from './pages/UniProfile.jsx'
 import UniEditProfile from './pages/EditUniversityProfile.jsx'
+import HostScholarship from "./pages/HostScholarship.jsx";
+import HostJob from "./pages/HostJob.jsx";
 
 function App() {
 
@@ -50,6 +54,8 @@ function App() {
           <Route path="/courses" element={<Course />} />
           <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
           <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
+          <Route path="/hostScholarship" element={<HostScholarship/>}/>
+          <Route path="/hostJob" element={<HostJob/>}/>
         </Routes>
       </div>
 
