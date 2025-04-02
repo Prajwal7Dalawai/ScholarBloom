@@ -43,8 +43,13 @@ const Home = () => {
 
           {/* Right Side - Image */}
           <div className="col-md-6 text-center">
-            <img src={schoolbanner} alt="Career Growth" className="img-fluid rounded-lg shadow-xl" />
-          </div>
+          <img
+            src={schoolbanner}
+            alt="Career Growth"
+            className="img-fluid rounded-2xl shadow-xl "
+          />
+        </div>
+
         </div>
       </div>
 

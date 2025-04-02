@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../../ThemeContext"; // Import theme context
 import "./Header.css";
+import GeminiChat from "../GeminiChat";
 
 const Header = () => {
   const { theme, toggleTheme } = useTheme();

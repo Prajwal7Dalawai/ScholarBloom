@@ -14,6 +14,7 @@ import Course from "./Pages/Course.jsx";
 import Footer from "./Components/footer/Footer.jsx";
 import JobApplicationForm from "./Pages/JobApplicationForm.jsx";
 import ScholarshipApplicationForm from "./Pages/ScholarshipApplicationForm.jsx";
+import GeminiChat from './Components/GeminiChat.jsx'
 
 function App() {
 
@@ -36,7 +37,7 @@ function App() {
           <Route path="/scholarshipApplicationForm/:id" element={<ScholarshipApplicationForm />} />
         </Routes>
       </div>
-
+      <GeminiChat />
       <Footer />
     </BrowserRouter>
   );

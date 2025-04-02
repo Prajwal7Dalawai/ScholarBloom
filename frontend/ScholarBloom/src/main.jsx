@@ -8,6 +8,7 @@ import "./index.css";
 import App from "./App.jsx";
 import { ThemeProvider } from "./ThemeContext"; // ✅ Import ThemeProvider
 
+
 // Initialize AOS inside App.jsx (not here)
 createRoot(document.getElementById("root")).render(
   <StrictMode>

@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@heroicons/react": "^2.2.0",
     "@shadcn/ui": "^0.0.4",
     "aos": "^2.3.4",
+    "axios": "^1.8.4",
     "bootstrap": "^5.3.3",
+    "framer-motion": "^12.6.3",
     "justd-icons": "^1.10.25",
     "lucide": "^0.479.0",
     "lucide-react": "^0.479.0",
