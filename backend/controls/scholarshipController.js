@@ -1,111 +1,216 @@
 require("dotenv").config();
-const Scholar = require("../models/Scholarship-Schema.js");
+const Scholarship = require("../models/scholarship-schema.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const User = require("../models/user-schema.js");
 
-
-module.exports.createScholarship = async (req, res) => {
-    try{
-    const {name, desc, uni, eligibleCr, minEdu, deadline} = req.body;
-    const date = Date.now();
-    const user = await User.findOne({ email: res.locals.currentUser.email });
-    const newScholar = new Scholar({
-        title: name,
-        description: desc,
-        university: uni,
-        eligibilityCriteria: eligibleCr,
-        requiredEduCoins: minEdu,
-        deadline: deadline,
-        createdAt: date
-    });
-    await user.updateOne({ $push: { "universityDetails.scholarshipsOffered": newScholar._id } });
-    await newScholar.save();
-    res.status(200).json({ message: "Scholarship created" });
-}catch(err){
-    res.status(400).json({error: err.message});
-}
-};
-
-module.exports.listScholarships =async (req, res) => {
-    try{
-    const currUser = res.locals.currUser;
-    const user = await Scholar.find({name: currUser.name});
-    res.status(200).json({ scholarships: user.scholarships });
-    }catch(err){
-        res.status(400).json({error: err.message});
-    }
-};
-
-module.exports.getAllScholarships = async (req, res) => {
-    try{
-    const scholarships = await Scholar.find({}).select("title description university eligibilityCriteria requiredEduCoins deadline");
-    res.status(200).json({ scholarships });
-    }catch(err){
-        res.status(400).json({error: err.message});
-    }
-};
-
-module.exports.listSelectedScholarships = async (req, res) => {
-    try{
-    const currUser = res.locals.currUser;
-    const user = await Scholar.find({name: currUser.name});
-    res.status(200).json({ scholarships: user.selectedScholarships });
-    }catch(err){
-        res.status(400).json({error: err.message});
-    }
-};
-
-module.exports.ScholarshipApplicants =async (req, res) => {
-    try{
-    const currUser = res.locals.currUser;
-    const user = await Scholar.find({name: currUser.name});
-    res.status(200).json({ applicants: user.applicants });
-    }catch(err){
-        res.status(400).json({error: err.message});
-    }
-};
-
-module.exports.applyScholarship =async (req, res) => {
-    try{
-        const user = await User.findOne({ email: res.locals.currentUser.email });
-        const {scholarshipId} = req.body;
-        const scholarship = await Scholar.findById(scholarshipId);
-        if(scholarship.requiredEduCoins <= user.eduCoins){
-            scholarship.applicants.push(user._id);
+// Create scholarship
+const createScholarship = async (req, res) => {
+    try {
+        const scholarship = new Scholarship({
+            ...req.body,
+            universityId: req.user.uid
+        });
         await scholarship.save();
-        res.json({message: "Applied to scholarship successfully"});
-        }else{
-            res.status(400).json({error: "Insufficient EduCoins"});
+        return res.status(201).json(scholarship);
+    } catch (error) {
+        console.error("Create Scholarship Error:", error);
+        return res.status(500).json({ error: "Failed to create scholarship" });
+    }
+};
+
+// List scholarships
+const listScholarships = async (req, res) => {
+    try {
+        const currUser = res.locals.currUser;
+        const user = await Scholarship.find({ name: currUser.name });
+        res.status(200).json({ scholarships: user.scholarships });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+// Get all scholarships
+const getAllScholarships = async (req, res) => {
+    try {
+        const scholarships = await Scholarship.find();
+        return res.status(200).json(scholarships);
+    } catch (error) {
+        console.error("Get All Scholarships Error:", error);
+        return res.status(500).json({ error: "Failed to get scholarships" });
+    }
+};
+
+// List selected scholarships
+const listSelectedScholarships = async (req, res) => {
+    try {
+        const currUser = res.locals.currUser;
+        const user = await Scholarship.find({ name: currUser.name });
+        res.status(200).json({ scholarships: user.selectedScholarships });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+// Get scholarship applicants
+const getScholarshipApplicants = async (req, res) => {
+    try {
+        const currUser = res.locals.currUser;
+        const user = await Scholarship.find({ name: currUser.name });
+        res.status(200).json({ applicants: user.applicants });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
+    }
+};
+
+// Apply for scholarship
+const applyForScholarship = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
         }
-        
-    }catch(err){
-        res.status(400).json({error: err.message});
+        if (scholarship.applicants.includes(req.user.uid)) {
+            return res.status(400).json({ error: "Already applied for this scholarship" });
+        }
+        scholarship.applicants.push(req.user.uid);
+        await scholarship.save();
+        return res.status(200).json(scholarship);
+    } catch (error) {
+        console.error("Apply for Scholarship Error:", error);
+        return res.status(500).json({ error: "Failed to apply for scholarship" });
     }
 };
 
-module.exports.appliedScholarships = async (req, res) => {
-    try{
-    const user = User.findById(res.locals.currentUser.email);
-    const scholarships = user.StudentDetails.appliedScholarships;
-    appliedscholarships = await Promise.all(scholarships.map(schId=> Scholar.findById(schId)));
-    res.status(200).json({appliedscholarships});
-    }catch(err){
-        res.status(400).json({error: err.message});
+// Get applied scholarships
+const getAppliedScholarships = async (req, res) => {
+    try {
+        const user = await User.findById(res.locals.currentUser.email);
+        const scholarships = user.StudentDetails.appliedScholarships;
+        const appliedScholarships = await Promise.all(scholarships.map(schId => Scholarship.findById(schId)));
+        res.status(200).json({ appliedScholarships });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
 };
 
-module.exports.acceptStudent = async (req, res) => {
-    try{
-        const user = User.findById(res.locals.currentUser.email);
-        const {scholarshipId, studentId} = req.body;
-        const scholarship = await Scholar.findOne({_id: scholarshipId, applicants: {$elemMatch: studentId}});
+// Accept student
+const acceptStudent = async (req, res) => {
+    try {
+        const user = await User.findById(res.locals.currentUser.email);
+        const { scholarshipId, studentId } = req.body;
+        const scholarship = await Scholarship.findOne({ _id: scholarshipId, applicants: { $elemMatch: studentId } });
         scholarship.applicants.forEach(applicant => {
-            if(applicant.studentId == studentId){
+            if (applicant.studentId == studentId) {
                 applicant.status = "awarded";
             }
         });
-
-    }catch(err){
-        res.status(400).json({error: err.message});
+        await scholarship.save();
+        return res.status(200).json({ message: "Student accepted successfully" });
+    } catch (err) {
+        res.status(400).json({ error: err.message });
     }
+};
+
+// Get scholarship details
+const getScholarshipDetails = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
+        }
+        return res.status(200).json(scholarship);
+    } catch (error) {
+        console.error("Get Scholarship Details Error:", error);
+        return res.status(500).json({ error: "Failed to get scholarship details" });
+    }
+};
+
+// Update scholarship
+const updateScholarship = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
+        }
+        if (scholarship.universityId !== req.user.uid) {
+            return res.status(403).json({ error: "Not authorized to update this scholarship" });
+        }
+        Object.assign(scholarship, req.body);
+        await scholarship.save();
+        return res.status(200).json(scholarship);
+    } catch (error) {
+        console.error("Update Scholarship Error:", error);
+        return res.status(500).json({ error: "Failed to update scholarship" });
+    }
+};
+
+// Delete scholarship
+const deleteScholarship = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
+        }
+        if (scholarship.universityId !== req.user.uid) {
+            return res.status(403).json({ error: "Not authorized to delete this scholarship" });
+        }
+        await scholarship.deleteOne();
+        return res.status(200).json({ message: "Scholarship deleted successfully" });
+    } catch (error) {
+        console.error("Delete Scholarship Error:", error);
+        return res.status(500).json({ error: "Failed to delete scholarship" });
+    }
+};
+
+// Get scholarship applications
+const getScholarshipApplications = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
+        }
+        if (scholarship.universityId !== req.user.uid) {
+            return res.status(403).json({ error: "Not authorized to view applications" });
+        }
+        return res.status(200).json(scholarship.applicants);
+    } catch (error) {
+        console.error("Get Scholarship Applications Error:", error);
+        return res.status(500).json({ error: "Failed to get scholarship applications" });
+    }
+};
+
+// Update scholarship application status
+const updateScholarshipApplicationStatus = async (req, res) => {
+    try {
+        const scholarship = await Scholarship.findById(req.params.id);
+        if (!scholarship) {
+            return res.status(404).json({ error: "Scholarship not found" });
+        }
+        if (scholarship.universityId !== req.user.uid) {
+            return res.status(403).json({ error: "Not authorized to update application status" });
+        }
+        const { applicationId } = req.params;
+        const { status } = req.body;
+        // Update application status logic here
+        return res.status(200).json({ message: "Application status updated successfully" });
+    } catch (error) {
+        console.error("Update Scholarship Application Status Error:", error);
+        return res.status(500).json({ error: "Failed to update application status" });
+    }
+};
+
+module.exports = {
+    getAllScholarships,
+    createScholarship,
+    getScholarshipDetails,
+    updateScholarship,
+    deleteScholarship,
+    applyForScholarship,
+    getScholarshipApplications,
+    updateScholarshipApplicationStatus,
+    listScholarships,
+    listSelectedScholarships,
+    getScholarshipApplicants,
+    getAppliedScholarships,
+    acceptStudent
 };

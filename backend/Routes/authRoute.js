@@ -1,15 +1,23 @@
 const express = require("express");
-const authController = require("../controls/authControls.js");
 const router = express.Router();
-const wrapAsync = require("../utils/wrapAsync.js");
-const { verifySession } = require("../middleware.js");
+const { verifyToken } = require("../middleware/auth");
+const {
+    register,
+    login,
+    googleLogin,
+    googleSignin,
+    logout,
+    verify
+} = require("../controls/authControls");
+const wrapAsync = require("../utils/wrapAsync");
 
-router.post("/google/Studentsignin", wrapAsync(authController.StudentSignin));
-router.post("/google/UniSignin", wrapAsync(authController.UniSignin));
-router.post("/login", wrapAsync(authController.login));
-
-
-// 🔹 Logout API
-router.get("/logout",verifySession ,wrapAsync(authController.logout));
+// Auth Routes
+router.post("/register", wrapAsync(register));
+router.post("/login", wrapAsync(login));
+router.post('/google/login', wrapAsync(googleLogin));
+router.post("/google/student", wrapAsync(googleSignin));
+router.post("/google/university", wrapAsync(googleSignin));
+router.get("/logout", wrapAsync(logout));
+router.get("/verify", verifyToken, wrapAsync(verify));
 
 module.exports = router;

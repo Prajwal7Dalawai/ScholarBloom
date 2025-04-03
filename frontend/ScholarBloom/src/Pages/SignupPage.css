@@ -1,165 +1,62 @@
-/* Set the black background */
+/* Base styles */
 .container-fluid {
-    background: #000; /* Black background */
-    padding: 50px 0;
-  }
-  
-  /* Styling for signup sections */
-  .signup-section {
-    background: #111; /* Dark gray card */
-    border-radius: 12px;
-    padding: 40px;
-    box-shadow: 0px 8px 16px rgba(255, 255, 255, 0.1); /* Soft glow effect */
-    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-  }
-  
-  /* Hover effect for cards */
-  .signup-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 20px rgba(255, 255, 255, 0.2);
-  }
-  
-  /* Highlight color for key words */
-  .highlight {
-    color: #1e2894; /* Golden color */
-  }
-  
-  /* Badges styling */
-  .badge {
-    font-size: 0.9rem;
-    font-weight: bold;
-    border-radius: 20px;
-  }
-  
-  /* Buttons */
-  .btn-primary {
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-weight: bold;
-    background-color: #17298e;
-    border: none;
-  }
-  
-  .btn-primary:hover {
-    background-color: #0f1f78;
-  }
-  
-  /* Outline button */
-  .btn-outline-primary {
-    border-radius: 8px;
-    padding: 12px 20px;
-    font-weight: bold;
-    border-color: #090e87;
-    color: #181094;
-  }
-  
-  .btn-outline-primary:hover {
-    background-color: #161f80;
-    color: white;
-  }
-  
-  /* Input Fields */
-  .input-dark {
-    background: #222;
-    color: white;
-    border: 1px solid #555;
-    padding: 12px;
-    border-radius: 8px;
-    outline: none;
-  }
-  
-  .input-dark::placeholder {
-    color: #aaa;
-  }
-  
-  .input-dark:focus {
-    border-color: #1a157b;
-    box-shadow: 0 0 10px rgba(13, 31, 109, 0.5);
-  }
-  
-  /* Google Signup Button */
-  .btn-google {
-    background: #fff;
-    color: #000;
-    font-weight: bold;
-    padding: 12px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: 0.3s;
-  }
-  
-  .btn-google:hover {
-    background: #f1f1f1;
-  }
-  
-  /* Google Icon */
-  .google-icon {
-    width: 20px;
-    margin-right: 10px;
-  }
-  
-  /* Text improvements */
-  .text-light {
-    color: #ccc !important;
-  }
-  
-  h2 {
-    font-size: 2rem;
-    font-weight: bold;
-  }
-
-  /* Set the white background */
-body.light-mode .container-fluid {
-  background: #f9f9f9; /* Light background */
+  background: #000;
   padding: 50px 0;
+  min-height: 100vh;
 }
 
-/* Styling for signup sections */
+/* Light Mode Background */
+body.light-mode .container-fluid {
+  background: #f9f9f9;
+}
+
+/* Signup sections */
+.signup-section {
+  border-radius: 15px;
+  background: linear-gradient(145deg, #1a1a1a, #2d2d2d);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  color: #fff;
+}
+
+/* Light Mode Signup Section */
 body.light-mode .signup-section {
-  background: #ffffff; /* White card */
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
-  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  background: #ffffff;
+  color: #333;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Hover effect for cards */
-body.light-mode .signup-section:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
+/* Highlight color */
+.highlight {
+  color: #4f46e5;
 }
 
-/* Highlight color for key words */
-body.light-mode .highlight {
-  color: #1e2894; /* Keep same golden color */
-}
-
-/* Badges styling */
-body.light-mode .badge {
-  font-size: 0.9rem;
-  font-weight: bold;
+/* Badges */
+.badge {
+  background: rgba(79, 70, 229, 0.2);
+  color: #4f46e5;
+  font-weight: 500;
   border-radius: 20px;
 }
 
+body.light-mode .badge {
+  background: rgba(79, 70, 229, 0.1);
+}
+
 /* Buttons */
-body.light-mode .btn-primary {
+.btn-primary {
   border-radius: 8px;
   padding: 12px 20px;
   font-weight: bold;
   background-color: #17298e;
   border: none;
-  color: white;
 }
 
-body.light-mode .btn-primary:hover {
+.btn-primary:hover {
   background-color: #0f1f78;
 }
 
-/* Outline button */
-body.light-mode .btn-outline-primary {
+.btn-outline-primary {
   border-radius: 8px;
   padding: 12px 20px;
   font-weight: bold;
@@ -167,61 +64,92 @@ body.light-mode .btn-outline-primary {
   color: #181094;
 }
 
-body.light-mode .btn-outline-primary:hover {
+.btn-outline-primary:hover {
   background-color: #161f80;
   color: white;
 }
 
 /* Input Fields */
-body.light-mode .input-dark {
-  background: #ffffff;
-  color: black;
-  border: 1px solid #ccc;
+.input-dark {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #fff;
   padding: 12px;
   border-radius: 8px;
-  outline: none;
+  transition: all 0.3s ease;
+}
+
+body.light-mode .input-dark {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  color: #333;
+}
+
+.input-dark::placeholder {
+  color: #aaa;
 }
 
 body.light-mode .input-dark::placeholder {
   color: #666;
 }
 
-body.light-mode .input-dark:focus {
+.input-dark:focus {
   border-color: #1a157b;
-  box-shadow: 0 0 10px rgba(13, 31, 109, 0.3);
+  box-shadow: 0 0 10px rgba(13, 31, 109, 0.5);
 }
 
-/* Google Signup Button */
-body.light-mode .btn-google {
-  background: #f9f9f9;
-  color: #000;
-  font-weight: bold;
+/* Google Button */
+.btn-google {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ddd;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #ccc;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: 0.3s;
+  gap: 10px;
+  transition: all 0.3s ease;
 }
 
-body.light-mode .btn-google:hover {
-  background: #e9e9e9;
+.btn-google:hover {
+  background: #f5f5f5;
 }
 
 /* Google Icon */
-body.light-mode .google-icon {
+.google-icon {
   width: 20px;
-  margin-right: 10px;
+  height: 20px;
 }
 
-/* Text improvements */
+/* Text */
+.text-light {
+  color: #ccc !important;
+}
+
 body.light-mode .text-light {
   color: #333 !important;
 }
 
-body.light-mode h2 {
+h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: black;
+}
+
+.mode-toggle-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.light-mode .mode-toggle-btn {
+  background: rgba(0, 0, 0, 0.1);
+  color: #333;
 }

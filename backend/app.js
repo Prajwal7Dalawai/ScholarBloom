@@ -8,7 +8,7 @@ const { verifySession } = require("./middleware");
 
 // ✅ Enable CORS with Credentials to Allow Cookies
 app.use(cors({
-    origin: "http://localhost:5173", // Adjust based on your frontend URL
+    origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001"],
     credentials: true // Allow credentials (cookies, authorization headers, etc.)
 }));
 

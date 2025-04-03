@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - ScholarBloom</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <link rel="stylesheet" href="../styles/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
+</head>
+<body>
+    <div class="container-fluid min-vh-100 d-flex align-items-center justify-content-center">
+        <div class="row w-100 px-3 px-md-5">
+            <!-- Mode Toggle Button -->
+            <button id="modeToggle" class="mode-toggle-btn">
+                <span class="mode-icon">☀️</span> <span class="mode-text">Light Mode</span>
+            </button>
+
+            <!-- Left Section - For Students -->
+            <div class="col-md-6 text-center text-md-start p-5 signup-section">
+                <div class="badge px-3 py-2 mb-3">STUDENT</div>
+                <h2 class="fw-bold">
+                    For <span class="highlight">Students</span>
+                </h2>
+                <p>
+                    Join thousands of students, explore internship & scholarship opportunities, and take your academic journey to the next level.
+                </p>
+
+                <form id="studentSignupForm" class="auth-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-3 input-dark" id="studentFullName" name="fullName" placeholder="Enter Full Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control mb-3 input-dark" id="studentEmail" name="email" placeholder="Enter Email Address" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="password-input">
+                            <input type="password" class="form-control mb-3 input-dark" id="studentPassword" name="password" placeholder="Enter Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="password-input">
+                            <input type="password" class="form-control mb-3 input-dark" id="studentConfirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-3 input-dark" id="studentUniversity" name="university" placeholder="Enter University" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-3 input-dark" id="studentMajor" name="major" placeholder="Enter Major" required>
+                    </div>
+                    <div class="form-group">
+                        <select class="form-control mb-3 input-dark" id="studentYear" name="year" required title="Year of Study">
+                            <option value="">Select Year of Study</option>
+                            <option value="1">First Year</option>
+                            <option value="2">Second Year</option>
+                            <option value="3">Third Year</option>
+                            <option value="4">Fourth Year</option>
+                            <option value="5">Fifth Year</option>
+                        </select>
+                    </div>
+                    <input type="hidden" name="userType" value="student">
+                    <button type="submit" class="btn btn-primary btn-lg w-100">Sign Up</button>
+                </form>
+
+                <!-- OR Divider -->
+                <div class="text-center my-3">OR</div>
+
+                <!-- Sign Up with Google -->
+                <div id="studentGoogleSignup"></div>
+
+                <p class="mt-3">
+                    Already have an account? <a href="login.html" class="text-success fw-bold">Log in</a>
+                </p>
+            </div>
+
+            <!-- Right Section - For Universities -->
+            <div class="col-md-6 text-center text-md-start p-5 signup-section">
+                <div class="badge px-3 py-2 mb-3">UNIVERSITY</div>
+                <h2 class="fw-bold">
+                    For <span class="highlight">Universities</span>
+                </h2>
+                <p>
+                    Connect with top students, promote academic programs, and offer scholarships to talented learners.
+                </p>
+
+                <form id="universitySignupForm" class="auth-form">
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-3 input-dark" id="uniName" name="universityName" placeholder="Enter University Name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" class="form-control mb-3 input-dark" id="uniEmail" name="email" placeholder="Enter University Email" required>
+                    </div>
+                    <div class="form-group">
+                        <div class="password-input">
+                            <input type="password" class="form-control mb-3 input-dark" id="uniPassword" name="password" placeholder="Enter Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="password-input">
+                            <input type="password" class="form-control mb-3 input-dark" id="uniConfirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                            <i class="fas fa-eye-slash toggle-password"></i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control mb-3 input-dark" id="uniLocation" name="location" placeholder="Enter Location" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="url" class="form-control mb-3 input-dark" id="uniWebsite" name="website" placeholder="Enter Website" required>
+                    </div>
+                    <input type="hidden" name="userType" value="university">
+                    <button type="submit" class="btn btn-outline-primary btn-lg w-100">Sign Up</button>
+                </form>
+
+                <!-- OR Divider -->
+                <div class="text-center my-3">OR</div>
+
+                <!-- Sign Up with Google -->
+                <div id="universityGoogleSignup"></div>
+
+                <p class="mt-3">
+                    Already have an account? <a href="login.html" class="text-success fw-bold">Log in</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/login-signup.js"></script>
+</body>
+</html> 

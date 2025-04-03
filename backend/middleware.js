@@ -1,20 +1,27 @@
 const jwt = require("jsonwebtoken");
 
-const verifySession = (req, res, next) => {
-    const token = req.cookies.session; // Get token from cookies
-
-    if (!token) {
-        return res.status(401).json({ error: "Unauthorized User: No session token" });
-    }
-
+const verifyToken = async (req, res, next) => {
     try {
-        const decoded = jwt.verify(token, process.env.SECRET_KEY); 
-        req.user = decoded; // Store user data in `req.user`
-        next(); // Proceed to next middleware
+        const token = req.cookies.session;
+
+        if (!token) {
+            return res.status(401).json({ error: 'No token provided' });
+        }
+
+        const decoded = jwt.verify(token, process.env.SECRET_KEY);
+        req.user = decoded;
+
+        next();
     } catch (error) {
-        console.log("Token verification failed:", error.message);
-        res.status(401).json({ error: "Invalid session token" });
+        console.error('Token verification error:', error);
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ error: 'Token expired' });
+        }
+        if (error.name === 'JsonWebTokenError') {
+            return res.status(401).json({ error: 'Invalid token' });
+        }
+        return res.status(401).json({ error: 'Authentication failed' });
     }
 };
 
-module.exports = { verifySession };
+module.exports = { verifyToken };

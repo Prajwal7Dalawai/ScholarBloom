@@ -24,36 +24,48 @@ const Home = () => {
   }, []);
 
   return (
-  <div className={`flex flex-col min-h-screen mt-5 pt-5 ${isLightMode ? "bg-white text-black" : "bg-gradient-to-b from-blue-700 to-black text-white"}`}>
-
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-blue-700 to-black text-white">
-      <div className="container flex-grow-1 flex items-center mt-5 pt-5">
+    <div 
+      className={`flex flex-col min-h-screen ${
+        isLightMode ? "bg-white text-black" : "bg-gradient-to-b from-blue-700 to-black text-white"
+      }`}
+      style={{ paddingTop: "70px" }} // Account for fixed navbar height
+    >
+      <div className="container flex-grow-1 flex items-center py-16">
         <div className="row align-items-center w-100">
           <div className="col-md-6 md:text-left">
-            <h1 className="fw-bold">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
               <span className="text-primary">Unlock</span> Your Career
             </h1>
-            <p className={isLightMode ? "text-gray-700 mt-3" : "text-gray-300 mt-3"}>
+            <p className={`text-lg md:text-xl mb-6 ${isLightMode ? "text-gray-700" : "text-gray-300"}`}>
               Explore opportunities from across the globe to grow, showcase skills, gain CV points & get hired by your dream company.
             </p>
-            <button className="btn btn-primary mt-3 shadow-lg">Get Started</button>
+            <button className="btn btn-primary text-lg px-8 py-3 shadow-lg hover:transform hover:scale-105 transition-all duration-300">
+              Get Started
+            </button>
           </div>
           <div className="col-md-6 text-center">
-            <img src={schoolbanner} alt="Career Growth" className="img-fluid rounded-lg shadow-xl" />
+            <img 
+              src={schoolbanner} 
+              alt="Career Growth" 
+              className="img-fluid rounded-lg shadow-xl hover:transform hover:scale-105 transition-all duration-300" 
+            />
           </div>
         </div>
       </div>
-      <div id="about">
+
+      <section id="about" className="py-16">
         <AboutSection />
-      </div>
-      <div id="opportunities">
+      </section>
+
+      <section id="opportunities" className="py-16">
         <CardsSection />
-      </div>
-      <div id="universities">
+      </section>
+
+      <section id="universities" className="py-16">
         <UniversitiesSection />
-      </div>
+      </section>
     </div>
-  </div>
-);
+  );
 }
+
 export default Home
