@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { userAPI } from '../../services/api';
+import { useAuth } from '../../hooks/useAuth';
 
 const Profile = () => {
   const { currentUser } = useAuth();

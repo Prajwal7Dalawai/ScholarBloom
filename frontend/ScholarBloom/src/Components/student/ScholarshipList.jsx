@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { scholarshipAPI, applicationAPI } from '../../services/api';
+import { scholarshipAPI, applicationAPI, userAPI } from '../../services/api';
 
 const ScholarshipList = () => {
   const [scholarships, setScholarships] = useState([]);
@@ -14,15 +14,7 @@ const ScholarshipList = () => {
         setLoading(true);
 
         // Get user profile first to get the user ID
-        const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-          credentials: 'include'
-        });
-
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-
-        const userProfile = await profileResponse.json();
+        const userProfile = await userAPI.getUser();
 
         const scholarshipsData = await scholarshipAPI.getScholarships({
           status: filter === 'all' ? undefined : filter,
@@ -57,15 +49,7 @@ const ScholarshipList = () => {
   const handleApply = async (scholarshipId) => {
     try {
       // Get user profile first to get the user ID
-      const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-        credentials: 'include'
-      });
-
-      if (!profileResponse.ok) {
-        throw new Error('Failed to fetch user profile');
-      }
-
-      const userProfile = await profileResponse.json();
+      const userProfile = await userAPI.getUser();
 
       await applicationAPI.createApplication({
         userId: userProfile._id,

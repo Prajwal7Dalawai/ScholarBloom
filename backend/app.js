@@ -31,6 +31,7 @@ app.use("/uni", require("./Routes/uniRoute"));
 app.use("/job", require("./Routes/jobRoute"));
 app.use("/sch", require("./Routes/scholarshipRoute"));
 app.use("/student", require("./Routes/studentRoute"));
+app.use("/challenges", require("./Routes/challengeRoute"));
 
 
 // ✅ Connect to MongoDB

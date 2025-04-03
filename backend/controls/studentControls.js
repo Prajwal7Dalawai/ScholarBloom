@@ -5,7 +5,7 @@ const Course = require("../models/course-schema");
 // Profile Controllers
 module.exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.uid);
+        const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(404).json({ error: "User not found" });
         }
@@ -26,7 +26,7 @@ module.exports.updateProfile = async (req, res) => {
     try {
         const { fullName, profilePic } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { fullName, profilePic },
             { new: true }
         );
@@ -41,7 +41,7 @@ module.exports.updateAcademicDetails = async (req, res) => {
     try {
         const { grade, skills } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { "studentDetails.grade": grade, "studentDetails.skills": skills },
             { new: true }
         );
@@ -55,7 +55,7 @@ module.exports.updateAcademicDetails = async (req, res) => {
 // EduCoins Controllers
 module.exports.getEduCoins = async (req, res) => {
     try {
-        const user = await User.findById(req.user.uid);
+        const user = await User.findById(req.user._id);
         return res.status(200).json({ eduCoins: user.studentDetails.eduCoins });
     } catch (error) {
         console.error("Get EduCoins Error:", error);
@@ -67,7 +67,7 @@ module.exports.earnEduCoins = async (req, res) => {
     try {
         const { amount } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { $inc: { "studentDetails.eduCoins": amount } },
             { new: true }
         );
@@ -84,14 +84,14 @@ module.exports.earnEduCoins = async (req, res) => {
 module.exports.spendEduCoins = async (req, res) => {
     try {
         const { amount } = req.body;
-        const user = await User.findById(req.user.uid);
+        const user = await User.findById(req.user._id);
         
         if (user.studentDetails.eduCoins < amount) {
             return res.status(400).json({ error: "Insufficient EduCoins" });
         }
 
         const updatedUser = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { $inc: { "studentDetails.eduCoins": -amount } },
             { new: true }
         );
@@ -127,7 +127,7 @@ module.exports.applyForScholarship = async (req, res) => {
         }
 
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { $addToSet: { "studentDetails.appliedScholarships": id } },
             { new: true }
         );
@@ -144,7 +144,7 @@ module.exports.applyForScholarship = async (req, res) => {
 
 module.exports.getScholarshipApplications = async (req, res) => {
     try {
-        const user = await User.findById(req.user.uid)
+        const user = await User.findById(req.user._id)
             .populate("studentDetails.appliedScholarships");
         
         return res.status(200).json(user.studentDetails.appliedScholarships);
@@ -175,7 +175,7 @@ module.exports.enrollInCourse = async (req, res) => {
         }
 
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { $addToSet: { "studentDetails.enrolledCourses": id } },
             { new: true }
         );
@@ -192,7 +192,7 @@ module.exports.enrollInCourse = async (req, res) => {
 
 module.exports.getEnrolledCourses = async (req, res) => {
     try {
-        const user = await User.findById(req.user.uid)
+        const user = await User.findById(req.user._id)
             .populate("studentDetails.enrolledCourses");
         
         return res.status(200).json(user.studentDetails.enrolledCourses);
@@ -209,7 +209,7 @@ module.exports.updateCourseProgress = async (req, res) => {
 
         const user = await User.findOneAndUpdate(
             { 
-                _id: req.user.uid,
+                _id: req.user._id,
                 "studentDetails.enrolledCourses": id
             },
             { $set: { "studentDetails.courseProgress.$[elem].progress": progress } },

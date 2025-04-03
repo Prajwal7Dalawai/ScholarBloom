@@ -7,7 +7,8 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
-import StudentDashboard from './Components/student/StudentDashboard';
+import StudentLayout from './Components/student/StudentLayout';
+import StudentOverview from './Components/student/StudentOverview';
 import UniversityDashboard from './Components/university/UniversityDashboard';
 import "./App.css";
 import SignupPage from "./pages/SignupPage.jsx";
@@ -137,11 +138,11 @@ function App() {
               path="/student/*"
               element={
                 <ProtectedRoute allowedRoles={['student']}>
-                  <StudentDashboard />
+                  <StudentLayout />
                 </ProtectedRoute>
               }
             >
-              <Route index element={<DashboardOverview />} />
+              <Route index element={<StudentOverview />} />
               <Route path="profile" element={<StudentProfile />} />
               <Route path="scholarships" element={<ScholarshipList />} />
               <Route path="jobs" element={<JobList />} />

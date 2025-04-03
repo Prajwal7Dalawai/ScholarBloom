@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { scholarshipAPI, jobAPI, challengeAPI, applicationAPI } from '../../services/api';
+import { studentService } from '../../services/studentService';
 
 const DashboardOverview = () => {
   const [stats, setStats] = useState({
@@ -17,19 +18,8 @@ const DashboardOverview = () => {
       try {
         setLoading(true);
 
-        // Get user profile first to get the user ID
-        const profileResponse = await fetch('http://localhost:3000/student/profile', {
-          credentials: 'include',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-
-        const userProfile = await profileResponse.json();
+        // Get user profile using studentService
+        const userProfile = await studentService.getProfile();
 
         // ಅರ್ಜಿಗಳನ್ನು ಪಡೆಯಿರಿ
         const applications = await applicationAPI.getApplications({

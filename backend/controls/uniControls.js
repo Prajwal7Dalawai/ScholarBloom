@@ -6,7 +6,7 @@ const Job = require("../models/job-schema");
 // Profile Controllers
 module.exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user.uid);
+        const user = await User.findById(req.user._id);
         if (!user) {
             return res.status(404).json({ error: "University not found" });
         }
@@ -27,7 +27,7 @@ module.exports.updateProfile = async (req, res) => {
     try {
         const { fullName, profilePic } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { fullName, profilePic },
             { new: true }
         );
@@ -42,7 +42,7 @@ module.exports.updateUniversityDetails = async (req, res) => {
     try {
         const { description, website, accreditation, ranking } = req.body;
         const user = await User.findByIdAndUpdate(
-            req.user.uid,
+            req.user._id,
             { 
                 "universityDetails.description": description,
                 "universityDetails.website": website,
@@ -63,7 +63,7 @@ module.exports.createScholarship = async (req, res) => {
     try {
         const scholarshipData = {
             ...req.body,
-            universityId: req.user.uid
+            universityId: req.user._id
         };
         const scholarship = await Scholarship.create(scholarshipData);
         return res.status(201).json({ message: "Scholarship created successfully", scholarship });
@@ -75,7 +75,7 @@ module.exports.createScholarship = async (req, res) => {
 
 module.exports.getScholarships = async (req, res) => {
     try {
-        const scholarships = await Scholarship.find({ universityId: req.user.uid });
+        const scholarships = await Scholarship.find({ universityId: req.user._id });
         return res.status(200).json(scholarships);
     } catch (error) {
         console.error("Get Scholarships Error:", error);
@@ -87,7 +87,7 @@ module.exports.getScholarshipDetails = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOne({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         });
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
@@ -102,7 +102,7 @@ module.exports.getScholarshipDetails = async (req, res) => {
 module.exports.updateScholarship = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOneAndUpdate(
-            { _id: req.params.id, university: req.user.uid },
+            { _id: req.params.id, university: req.user._id },
             req.body,
             { new: true }
         );
@@ -120,7 +120,7 @@ module.exports.deleteScholarship = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOneAndDelete({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         });
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
@@ -136,7 +136,7 @@ module.exports.getScholarshipApplications = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOne({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         }).populate("applicants");
         
         if (!scholarship) {
@@ -157,7 +157,7 @@ module.exports.updateApplicationStatus = async (req, res) => {
         const scholarship = await Scholarship.findOneAndUpdate(
             { 
                 _id: req.params.id,
-                university: req.user.uid,
+                university: req.user._id,
                 "applicants._id": applicationId
             },
             { $set: { "applicants.$.status": status } },
@@ -179,7 +179,7 @@ module.exports.createCourse = async (req, res) => {
     try {
         const courseData = {
             ...req.body,
-            universityId: req.user.uid
+            universityId: req.user._id
         };
         const course = await Course.create(courseData);
         return res.status(201).json({ message: "Course created successfully", course });
@@ -191,7 +191,7 @@ module.exports.createCourse = async (req, res) => {
 
 module.exports.getCourses = async (req, res) => {
     try {
-        const courses = await Course.find({ universityId: req.user.uid });
+        const courses = await Course.find({ universityId: req.user._id });
         return res.status(200).json(courses);
     } catch (error) {
         console.error("Get Courses Error:", error);
@@ -203,7 +203,7 @@ module.exports.getCourseDetails = async (req, res) => {
     try {
         const course = await Course.findOne({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         });
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -218,7 +218,7 @@ module.exports.getCourseDetails = async (req, res) => {
 module.exports.updateCourse = async (req, res) => {
     try {
         const course = await Course.findOneAndUpdate(
-            { _id: req.params.id, university: req.user.uid },
+            { _id: req.params.id, university: req.user._id },
             req.body,
             { new: true }
         );
@@ -236,7 +236,7 @@ module.exports.deleteCourse = async (req, res) => {
     try {
         const course = await Course.findOneAndDelete({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         });
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -252,7 +252,7 @@ module.exports.getCourseEnrollments = async (req, res) => {
     try {
         const course = await Course.findOne({
             _id: req.params.id,
-            university: req.user.uid
+            university: req.user._id
         }).populate("enrolledStudents");
         
         if (!course) {
@@ -270,7 +270,7 @@ module.exports.createJobPosting = async (req, res) => {
     try {
         const jobData = {
             ...req.body,
-            universityId: req.user.uid
+            universityId: req.user._id
         };
         const job = await Job.create(jobData);
         return res.status(201).json({ message: "Job posting created successfully", job });
@@ -282,7 +282,7 @@ module.exports.createJobPosting = async (req, res) => {
 
 module.exports.getJobPostings = async (req, res) => {
     try {
-        const jobs = await Job.find({ universityId: req.user.uid });
+        const jobs = await Job.find({ universityId: req.user._id });
         return res.status(200).json(jobs);
     } catch (error) {
         console.error("Get Job Postings Error:", error);
@@ -294,7 +294,7 @@ module.exports.getJobDetails = async (req, res) => {
     try {
         const job = await Job.findOne({
             _id: req.params.id,
-            universityId: req.user.uid
+            universityId: req.user._id
         });
         if (!job) {
             return res.status(404).json({ error: "Job posting not found" });
@@ -309,7 +309,7 @@ module.exports.getJobDetails = async (req, res) => {
 module.exports.updateJobPosting = async (req, res) => {
     try {
         const job = await Job.findOneAndUpdate(
-            { _id: req.params.id, universityId: req.user.uid },
+            { _id: req.params.id, universityId: req.user._id },
             req.body,
             { new: true }
         );
@@ -327,7 +327,7 @@ module.exports.deleteJobPosting = async (req, res) => {
     try {
         const job = await Job.findOneAndDelete({
             _id: req.params.id,
-            universityId: req.user.uid
+            universityId: req.user._id
         });
         if (!job) {
             return res.status(404).json({ error: "Job posting not found" });
@@ -343,7 +343,7 @@ module.exports.getJobApplications = async (req, res) => {
     try {
         const job = await Job.findOne({
             _id: req.params.id,
-            universityId: req.user.uid
+            universityId: req.user._id
         }).populate("applications.studentId");
         
         if (!job) {
@@ -364,7 +364,7 @@ module.exports.updateJobApplicationStatus = async (req, res) => {
         const job = await Job.findOneAndUpdate(
             { 
                 _id: req.params.id,
-                universityId: req.user.uid,
+                universityId: req.user._id,
                 "applications._id": applicationId
             },
             { $set: { "applications.$.status": status } },
@@ -384,7 +384,7 @@ module.exports.updateJobApplicationStatus = async (req, res) => {
 // Analytics Controllers
 module.exports.getScholarshipAnalytics = async (req, res) => {
     try {
-        const scholarships = await Scholarship.find({ universityId: req.user.uid });
+        const scholarships = await Scholarship.find({ universityId: req.user._id });
         const analytics = {
             totalScholarships: scholarships.length,
             activeScholarships: scholarships.filter(s => s.status === 'active').length,
@@ -403,7 +403,7 @@ module.exports.getScholarshipAnalytics = async (req, res) => {
 
 module.exports.getCourseAnalytics = async (req, res) => {
     try {
-        const courses = await Course.find({ universityId: req.user.uid });
+        const courses = await Course.find({ universityId: req.user._id });
         const analytics = {
             totalCourses: courses.length,
             activeCourses: courses.filter(c => c.status === 'active').length,
@@ -418,7 +418,7 @@ module.exports.getCourseAnalytics = async (req, res) => {
 
 module.exports.getJobAnalytics = async (req, res) => {
     try {
-        const jobs = await Job.find({ universityId: req.user.uid });
+        const jobs = await Job.find({ universityId: req.user._id });
         const analytics = {
             totalJobs: jobs.length,
             activeJobs: jobs.filter(j => j.status === 'active').length,
@@ -432,5 +432,42 @@ module.exports.getJobAnalytics = async (req, res) => {
     } catch (error) {
         console.error("Get Job Analytics Error:", error);
         return res.status(500).json({ error: "Failed to get job analytics" });
+    }
+};
+
+// Get all applications for all scholarships
+module.exports.getAllApplications = async (req, res) => {
+    try {
+        const { limit } = req.query;
+        const query = { universityId: req.user._id };
+        
+        // Get all scholarships for this university
+        const scholarships = await Scholarship.find(query);
+        
+        // Extract all applications from all scholarships
+        let allApplications = [];
+        for (const scholarship of scholarships) {
+            if (scholarship.applicants && scholarship.applicants.length > 0) {
+                const applications = scholarship.applicants.map(applicant => ({
+                    ...applicant.toObject(),
+                    scholarshipId: scholarship._id,
+                    scholarshipTitle: scholarship.title
+                }));
+                allApplications = [...allApplications, ...applications];
+            }
+        }
+        
+        // Sort applications by date (newest first)
+        allApplications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        // Apply limit if provided
+        if (limit) {
+            allApplications = allApplications.slice(0, parseInt(limit));
+        }
+        
+        return res.status(200).json(allApplications);
+    } catch (error) {
+        console.error("Get All Applications Error:", error);
+        return res.status(500).json({ error: "Failed to get applications" });
     }
 }; 

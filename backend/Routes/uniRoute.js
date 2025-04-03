@@ -27,7 +27,8 @@ const {
     updateJobApplicationStatus,
     getScholarshipAnalytics,
     getCourseAnalytics,
-    getJobAnalytics
+    getJobAnalytics,
+    getAllApplications
 } = require("../controls/uniControls");
 
 // Profile Routes
@@ -43,6 +44,7 @@ router.put("/scholarships/:id", verifyToken, updateScholarship);
 router.delete("/scholarships/:id", verifyToken, deleteScholarship);
 router.get("/scholarships/:id/applications", verifyToken, getScholarshipApplications);
 router.put("/scholarships/:id/applications/:applicationId", verifyToken, updateApplicationStatus);
+router.get("/scholarships/applications", verifyToken, getAllApplications);
 
 // Course Routes
 router.post("/courses", verifyToken, createCourse);

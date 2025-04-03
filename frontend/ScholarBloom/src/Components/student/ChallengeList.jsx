@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { challengeAPI, submissionAPI } from '../../services/api';
+import { challengeAPI, submissionAPI, userAPI } from '../../services/api';
 
 const ChallengeList = () => {
   const [challenges, setChallenges] = useState([]);
@@ -14,15 +14,7 @@ const ChallengeList = () => {
         setLoading(true);
 
         // Get user profile first to get the user ID
-        const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-          credentials: 'include'
-        });
-
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-
-        const userProfile = await profileResponse.json();
+        const userProfile = await userAPI.getUser();
 
         const challengesData = await challengeAPI.getChallenges({
           status: filter === 'all' ? undefined : filter,
@@ -56,15 +48,7 @@ const ChallengeList = () => {
   const handleSubmit = async (challengeId) => {
     try {
       // Get user profile first to get the user ID
-      const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-        credentials: 'include'
-      });
-
-      if (!profileResponse.ok) {
-        throw new Error('Failed to fetch user profile');
-      }
-
-      const userProfile = await profileResponse.json();
+      const userProfile = await userAPI.getUser();
 
       await submissionAPI.createSubmission({
         userId: userProfile._id,

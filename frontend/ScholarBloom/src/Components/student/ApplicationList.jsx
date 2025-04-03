@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { applicationAPI } from '../../services/api';
+import { applicationAPI, userAPI } from '../../services/api';
 
 const ApplicationList = () => {
   const [applications, setApplications] = useState([]);
@@ -13,15 +13,7 @@ const ApplicationList = () => {
         setLoading(true);
 
         // Get user profile first to get the user ID
-        const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-          credentials: 'include'
-        });
-
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch user profile');
-        }
-
-        const userProfile = await profileResponse.json();
+        const userProfile = await userAPI.getUser();
 
         const applicationsData = await applicationAPI.getApplications({
           userId: userProfile._id,
@@ -49,8 +41,8 @@ const ApplicationList = () => {
 
   if (error) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-        <p className="text-red-600">{error}</p>
+      <div className="text-center text-red-600">
+        {error}
       </div>
     );
   }
