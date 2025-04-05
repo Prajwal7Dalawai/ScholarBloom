@@ -61,9 +61,10 @@ const register = async (req, res) => {
 const googleSignin = async (req, res) => {
     try {
         console.log('Processing Google signin...');
-        const { idToken } = req.body;
+        const { idToken, email, displayName, photoURL } = req.body;
         const userType = req.path.includes('university') ? 'university' : 'student';
         
+        console.log('Usertype:', userType);
         if (!idToken) {
             console.log('No Google credential provided');
             return res.status(400).json({ error: "Google credential is required" });
@@ -78,35 +79,83 @@ const googleSignin = async (req, res) => {
         
         if (!user) {
             console.log('Creating new user for:', decodedToken.email);
-            // Create new user with MongoDB schema
-            const locationResponse = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.GEO_LOCATION}`);
-            const locationData = await locationResponse.json();
             
-            user = await User.create({
-                fullName: decodedToken.name,
+            // Default location data
+            let locationData = {
+                city: "Unknown",
+                state_prov: "Unknown",
+                country_name: "Unknown"
+            };
+
+            // Try to get location data, but don't fail if it errors
+            try {
+                const locationResponse = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.GEO_LOCATION}`);
+                if (locationResponse.ok) {
+                    locationData = await locationResponse.json();
+                }
+            } catch (locationError) {
+                console.warn('Failed to fetch location data:', locationError.message);
+            }
+            
+            // Generate a random password for Google auth users
+            const randomPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+            const salt = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(randomPassword, salt);
+            
+            // Create new user with MongoDB schema
+            const newUserData = {
+                fullName: displayName || decodedToken.name,
                 email: decodedToken.email,
                 firebaseUID: decodedToken.uid,
                 role: userType,
-                profilePic: decodedToken.picture,
+                profilePic: photoURL || decodedToken.picture,
+                password: hashedPassword, // Add hashed password
+                isGoogleAuth: true, // Flag to indicate this is a Google auth user
                 location: {
                     city: locationData.city || "Unknown",
                     state: locationData.state_prov || "Unknown",
                     country: locationData.country_name || "Unknown"
-                },
-                studentDetails: userType === 'student' ? {
+                }
+            };
+
+            // Add role-specific details
+            if (userType === 'student') {
+                newUserData.studentDetails = {
                     eduCoins: 0,
                     grade: "",
                     skills: [],
                     appliedScholarships: [],
                     appliedJobs: []
-                } : undefined,
-                universityDetails: userType === 'university' ? {
+                };
+            } else if (userType === 'university') {
+                newUserData.universityDetails = {
                     courses: [],
                     scholarships: [],
-                    jobs: []
-                } : undefined
+                    jobs: [],
+                    verified: false,
+                    description: "",
+                    website: "",
+                    contactEmail: decodedToken.email
+                };
+            }
+
+            try {
+                user = await User.create(newUserData);
+                console.log('New user created:', user._id);
+            } catch (dbError) {
+                console.error('Database error creating user:', dbError);
+                return res.status(500).json({ 
+                    error: "Failed to create user account", 
+                    details: dbError.message 
+                });
+            }
+        }
+
+        // Check if the user's role matches the requested role
+        if (user.role !== userType) {
+            return res.status(400).json({ 
+                error: `This email is already registered as a ${user.role}. Please use a different email for ${userType} registration.` 
             });
-            console.log('New user created:', user._id);
         }
 
         // Generate JWT token

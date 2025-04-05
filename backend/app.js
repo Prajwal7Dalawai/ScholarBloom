@@ -26,13 +26,14 @@ const jobRoutes = require("./routes/jobs");
 const challengeRoutes = require("./Routes/challengeRoute");
 const submissionRoutes = require("./Routes/submissionRoute");
 const studentRoutes = require("./Routes/studentRoute");
-
+const uniRoutes = require("./Routes/uniRoute");
 app.use("/api/auth", authRoutes);
 app.use("/api/scholarships", scholarshipRoutes);
 app.use("/api/jobs", jobRoutes);
 app.use("/api/challenges/submissions", submissionRoutes);
 app.use("/api/challenges", challengeRoutes);
 app.use("/api/student", studentRoutes);
+app.use("/api/university", uniRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

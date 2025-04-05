@@ -69,12 +69,42 @@ const applyForScholarship = async (req, res) => {
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
         }
-        if (scholarship.applicants.includes(req.user.uid)) {
+
+        // Check if student has already applied
+        const alreadyApplied = scholarship.applicants.some(app => 
+            app.studentId.toString() === req.user._id.toString()
+        );
+
+        if (alreadyApplied) {
             return res.status(400).json({ error: "Already applied for this scholarship" });
         }
-        scholarship.applicants.push(req.user.uid);
+
+        // Get student details
+        const student = await User.findById(req.user._id);
+        if (!student) {
+            return res.status(404).json({ error: "Student not found" });
+        }
+
+        // Add application
+        scholarship.applicants.push({
+            studentId: req.user._id,
+            status: "pending",
+            grade: student.studentDetails?.grade,
+            eduCoins: student.studentDetails?.eduCoins
+        });
+
         await scholarship.save();
-        return res.status(200).json(scholarship);
+
+        // Add scholarship to student's applied list
+        await User.findByIdAndUpdate(
+            req.user._id,
+            { $addToSet: { "studentDetails.appliedScholarships": scholarship._id } }
+        );
+
+        return res.status(200).json({ 
+            message: "Application submitted successfully",
+            scholarshipId: scholarship._id
+        });
     } catch (error) {
         console.error("Apply for Scholarship Error:", error);
         return res.status(500).json({ error: "Failed to apply for scholarship" });

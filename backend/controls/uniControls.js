@@ -439,19 +439,28 @@ module.exports.getJobAnalytics = async (req, res) => {
 module.exports.getAllApplications = async (req, res) => {
     try {
         const { limit } = req.query;
-        const query = { universityId: req.user._id };
         
-        // Get all scholarships for this university
-        const scholarships = await Scholarship.find(query);
+        // Get all scholarships for this university with populated applicants
+        const scholarships = await Scholarship.find({ universityId: req.user._id })
+            .populate({
+                path: 'applicants.studentId',
+                select: 'fullName email studentDetails'
+            });
         
         // Extract all applications from all scholarships
         let allApplications = [];
         for (const scholarship of scholarships) {
             if (scholarship.applicants && scholarship.applicants.length > 0) {
                 const applications = scholarship.applicants.map(applicant => ({
-                    ...applicant.toObject(),
+                    type: 'scholarship',
                     scholarshipId: scholarship._id,
-                    scholarshipTitle: scholarship.title
+                    scholarshipTitle: scholarship.title,
+                    studentName: applicant.studentId?.fullName || 'Unknown',
+                    studentEmail: applicant.studentId?.email || 'Unknown',
+                    studentGrade: applicant.studentId?.studentDetails?.grade || 'N/A',
+                    status: applicant.status || 'pending',
+                    createdAt: applicant.appliedAt || applicant.createdAt || new Date(),
+                    eduCoins: applicant.eduCoins || 0
                 }));
                 allApplications = [...allApplications, ...applications];
             }

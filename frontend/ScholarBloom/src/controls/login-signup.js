@@ -3,6 +3,10 @@ import { signInWithPopup } from 'firebase/auth';
 
 export const handleGoogleSignIn = async (role, navigate) => {
     try {
+        if (!role || !['student', 'university'].includes(role)) {
+            throw new Error('Invalid role specified');
+        }
+
         // Set custom parameters with a new nonce
         provider.setCustomParameters({
             prompt: 'select_account',
@@ -10,41 +14,71 @@ export const handleGoogleSignIn = async (role, navigate) => {
         });
         
         const result = await signInWithPopup(auth, provider);
-        const idToken = await result.user.getIdToken();
+        if (!result.user) {
+            throw new Error('No user data received from Google');
+        }
 
-        const response = await fetch(`http://localhost:3000/api/auth/google/${role === 'student' ? 'student' : 'university'}`, {
+        const idToken = await result.user.getIdToken();
+        if (!idToken) {
+            throw new Error('Failed to get ID token');
+        }
+
+        const endpoint = `http://localhost:3000/api/auth/google/${role}`;
+        console.log(`Sending request to: ${endpoint}`);
+
+        const response = await fetch(endpoint, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Accept": "application/json"
             },
             credentials: "include",
-            body: JSON.stringify({ idToken }),
+            body: JSON.stringify({ 
+                idToken,
+                email: result.user.email,
+                displayName: result.user.displayName,
+                photoURL: result.user.photoURL
+            }),
         });
 
-        const data = await response.json();
-
         if (!response.ok) {
-            throw new Error(data.error || "Failed to sign in with Google");
+            const errorData = await response.json().catch(() => ({}));
+            console.error('Server response:', {
+                status: response.status,
+                statusText: response.statusText,
+                error: errorData
+            });
+            throw new Error(errorData.error || `Failed to sign in as ${role}`);
+        }
+
+        const data = await response.json();
+        if (!data.token || !data.user) {
+            throw new Error('Invalid response data from server');
         }
 
         // Store token and user data in localStorage
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
         
-        // Set session cookie
-        document.cookie = `session=${idToken}; path=/; max-age=3600; SameSite=Strict`;
+        // Set session cookie with secure flags
+        document.cookie = `session=${idToken}; path=/; max-age=3600; SameSite=Strict; Secure`;
         
         // Navigate based on role
-        if(data.user.role === 'student') {
+        if (data.user.role === 'student') {
             navigate('/student');
-        } else if(data.user.role === 'university') {
+        } else if (data.user.role === 'university') {
             navigate("/university");
         }
         
         return { data, role: data.user.role };
     } catch (error) {
-        console.error("Google Sign-In Error:", error);
-        throw error;
+        console.error("Google Sign-In Error:", {
+            message: error.message,
+            stack: error.stack,
+            role: role
+        });
+        // Rethrow with more descriptive message
+        throw new Error(`Failed to sign in with Google as ${role}: ${error.message}`);
     }
 };
 

@@ -1,121 +1,142 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline';
 
 const ScholarshipManagement = () => {
-  const [showAddModal, setShowAddModal] = useState(false);
+  const [scholarships, setScholarships] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('deadline');
 
-  const scholarships = [
-    {
-      id: 1,
-      title: 'STEM Excellence Scholarship',
-      amount: '$10,000',
-      deadline: '2024-05-15',
-      requirements: ['GPA > 3.5', 'STEM Major', 'Research Experience'],
-      status: 'active',
-      applicants: 25,
-      selected: 5,
-    },
-    {
-      id: 2,
-      title: 'Merit Scholarship',
-      amount: '$5,000',
-      deadline: '2024-06-01',
-      requirements: ['GPA > 3.0', 'Community Service'],
-      status: 'active',
-      applicants: 45,
-      selected: 10,
-    },
-    {
-      id: 3,
-      title: 'Innovation Grant',
-      amount: '$7,500',
-      deadline: '2024-04-30',
-      requirements: ['Project Proposal', 'Innovation Portfolio'],
-      status: 'closed',
-      applicants: 30,
-      selected: 3,
-    },
-  ];
+  useEffect(() => {
+    const fetchScholarships = async () => {
+      try {
+        setLoading(true);
+        setError(null);
 
-  const filteredScholarships = scholarships.filter(scholarship => {
-    if (filter === 'all') return true;
-    if (filter === 'active') return scholarship.status === 'active';
-    if (filter === 'closed') return scholarship.status === 'closed';
-    return true;
-  });
+        const response = await fetch('http://localhost:3000/api/university/scholarships', {
+          credentials: 'include'
+        });
 
-  const sortedScholarships = [...filteredScholarships].sort((a, b) => {
-    if (sortBy === 'deadline') {
-      return new Date(a.deadline) - new Date(b.deadline);
+        if (!response.ok) {
+          throw new Error('Failed to fetch scholarships');
+        }
+
+        const data = await response.json();
+        setScholarships(data);
+      } catch (error) {
+        console.error('Error fetching scholarships:', error);
+        setError('ವಿದ್ಯಾರ್ಥಿವೇತನಗಳನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchScholarships();
+  }, []);
+
+  const handleCreateScholarship = () => {
+    // TODO: Implement scholarship creation
+  };
+
+  const handleEditScholarship = (id) => {
+    // TODO: Implement scholarship editing
+  };
+
+  const handleDeleteScholarship = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:3000/api/university/scholarships/${id}`, {
+        method: 'DELETE',
+        credentials: 'include'
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete scholarship');
+      }
+
+      setScholarships(prev => prev.filter(s => s._id !== id));
+    } catch (error) {
+      console.error('Error deleting scholarship:', error);
+      setError('ವಿದ್ಯಾರ್ಥಿವೇತನವನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ');
     }
-    if (sortBy === 'amount') {
-      return parseInt(b.amount.replace(/[^0-9]/g, '')) - parseInt(a.amount.replace(/[^0-9]/g, ''));
-    }
-    if (sortBy === 'applicants') {
-      return b.applicants - a.applicants;
-    }
-    return 0;
-  });
+  };
+
+  const filteredScholarships = scholarships
+    .filter(scholarship => {
+      if (filter === 'all') return true;
+      return scholarship.status === filter;
+    })
+    .sort((a, b) => {
+      switch (sortBy) {
+        case 'deadline':
+          return new Date(a.deadline) - new Date(b.deadline);
+        case 'amount':
+          return b.amount - a.amount;
+        case 'applicants':
+          return b.applicants.length - a.applicants.length;
+        default:
+          return 0;
+      }
+    });
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold text-gray-900">Scholarship Management</h2>
-        <button
-          onClick={() => setShowAddModal(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-        >
-          Add New Scholarship
-        </button>
-      </div>
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+          {error}
+        </div>
+      )}
 
-      {/* Filters and Sort */}
-      <div className="bg-white rounded-lg shadow p-4">
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between space-y-4 md:space-y-0">
-          <div className="flex space-x-4">
-            <button
-              onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
-                filter === 'all'
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              All Scholarships
-            </button>
-            <button
-              onClick={() => setFilter('active')}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
-                filter === 'active'
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Active
-            </button>
-            <button
-              onClick={() => setFilter('closed')}
-              className={`px-4 py-2 rounded-md text-sm font-medium ${
-                filter === 'closed'
-                  ? 'bg-indigo-100 text-indigo-700'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Closed
-            </button>
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">ವಿದ್ಯಾರ್ಥಿವೇತನ ನಿರ್ವಹಣೆ</h2>
+            <p className="text-gray-500">ವಿದ್ಯಾರ್ಥಿವೇತನಗಳನ್ನು ರಚಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ</p>
           </div>
+          <button
+            onClick={handleCreateScholarship}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
+          >
+            <PlusIcon className="h-5 w-5 mr-2" />
+            ಹೊಸ ವಿದ್ಯಾರ್ಥಿವೇತನ
+          </button>
+        </div>
+
+        {/* Filters */}
+        <div className="mt-4 flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <FunnelIcon className="h-5 w-5 text-gray-400" />
+            <select
+              value={filter}
+              onChange={(e) => setFilter(e.target.value)}
+              className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            >
+              <option value="all">ಎಲ್ಲಾ ಸ್ಥಿತಿಗಳು</option>
+              <option value="active">ಸಕ್ರಿಯ</option>
+              <option value="inactive">ನಿಷ್ಕ್ರಿಯ</option>
+              <option value="draft">ಕರಡು</option>
+            </select>
+          </div>
+
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">Sort by:</label>
+            <label className="text-sm font-medium text-gray-700">ವಿಂಗಡಿಸು:</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="deadline">Deadline</option>
-              <option value="amount">Amount</option>
-              <option value="applicants">Applicants</option>
+              <option value="deadline">ಕೊನೆಯ ದಿನಾಂಕ</option>
+              <option value="amount">ಮೊತ್ತ</option>
+              <option value="applicants">ಅರ್ಜಿದಾರರು</option>
             </select>
           </div>
         </div>
@@ -126,25 +147,23 @@ const ScholarshipManagement = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicants</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಶೀರ್ಷಿಕೆ</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಮೊತ್ತ</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಕೊನೆಯ ದಿನಾಂಕ</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಸ್ಥಿತಿ</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಅರ್ಜಿದಾರರು</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಕ್ರಿಯೆಗಳು</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {sortedScholarships.map((scholarship) => (
-              <tr key={scholarship.id}>
+            {filteredScholarships.map((scholarship) => (
+              <tr key={scholarship._id}>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm font-medium text-gray-900">{scholarship.title}</div>
-                  <div className="text-sm text-gray-500">
-                    {scholarship.requirements.join(', ')}
-                  </div>
+                  <div className="text-sm text-gray-500">{scholarship.description}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">{scholarship.amount}</div>
+                  <div className="text-sm text-gray-900">₹{scholarship.amount.toLocaleString()}</div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="text-sm text-gray-900">
@@ -153,27 +172,28 @@ const ScholarshipManagement = () => {
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                    scholarship.status === 'active'
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
+                    scholarship.status === 'active' ? 'bg-green-100 text-green-800' :
+                    scholarship.status === 'inactive' ? 'bg-red-100 text-red-800' :
+                    'bg-gray-100 text-gray-800'
                   }`}>
                     {scholarship.status}
                   </span>
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
-                  <div className="text-sm text-gray-900">
-                    {scholarship.selected} / {scholarship.applicants} selected
-                  </div>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {scholarship.applicants.length}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-4">
-                    View Applications
+                <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                  <button
+                    onClick={() => handleEditScholarship(scholarship._id)}
+                    className="text-indigo-600 hover:text-indigo-900 mr-4"
+                  >
+                    ಸಂಪಾದಿಸು
                   </button>
-                  <button className="text-indigo-600 hover:text-indigo-900 mr-4">
-                    Edit
-                  </button>
-                  <button className="text-red-600 hover:text-red-900">
-                    Delete
+                  <button
+                    onClick={() => handleDeleteScholarship(scholarship._id)}
+                    className="text-red-600 hover:text-red-900"
+                  >
+                    ಅಳಿಸು
                   </button>
                 </td>
               </tr>
@@ -181,70 +201,6 @@ const ScholarshipManagement = () => {
           </tbody>
         </table>
       </div>
-
-      {/* Add Scholarship Modal */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 flex items-center justify-center">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg font-medium text-gray-900">Add New Scholarship</h3>
-              <button
-                onClick={() => setShowAddModal(false)}
-                className="text-gray-400 hover:text-gray-500"
-              >
-                <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            <form className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Title</label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Amount</label>
-                <input
-                  type="text"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Deadline</label>
-                <input
-                  type="date"
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700">Requirements</label>
-                <textarea
-                  rows={3}
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                />
-              </div>
-              <div className="flex justify-end space-x-3">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700"
-                >
-                  Create Scholarship
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

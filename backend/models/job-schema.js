@@ -52,5 +52,7 @@ const JobApplicationSchema = new mongoose.Schema({
     }
 });
 
-const JobApplication = mongoose.model("JobApplication", JobApplicationSchema);
+// Check if model exists before creating
+const JobApplication = mongoose.models.JobApplication || mongoose.model("JobApplication", JobApplicationSchema);
+
 module.exports = JobApplication;

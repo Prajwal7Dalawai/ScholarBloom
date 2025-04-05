@@ -56,18 +56,19 @@ import { useNavigate } from 'react-router-dom';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { user, loading } = useAuth();
+  const { user, loading, isAuthenticated } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    if (!loading) {
-      if (!user) {
-        navigate('/login', { replace: true });
-      } else if (allowedRoles && !allowedRoles.includes(user.role)) {
-        navigate('/', { replace: true });
-      }
+    if (!loading && !isAuthenticated) {
+      // Store the attempted URL
+      navigate('/login', { 
+        replace: true,
+        state: { from: location.pathname }
+      });
     }
-  }, [loading, user, allowedRoles, navigate]);
+  }, [loading, isAuthenticated, navigate, location]);
 
   if (loading) {
     return (
@@ -77,7 +78,7 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
     );
   }
 
-  if (!user || (allowedRoles && !allowedRoles.includes(user.role))) {
+  if (!isAuthenticated || (allowedRoles && !allowedRoles.includes(user?.role))) {
     return null;
   }
 
@@ -104,6 +105,8 @@ function App() {
                   <Route path="/login" element={<Login />} />
                   <Route path="/signup" element={<SignupPage />} />
                   <Route path="/forgot-password" element={<ForgotPassword />} />
+                  
+                  {/* Protected Student Routes */}
                   <Route
                     path="/student/*"
                     element={
@@ -121,6 +124,8 @@ function App() {
                     <Route path="applications" element={<MyApplications />} />
                     <Route path="ai-recommendations" element={<AIRecommendations />} />
                   </Route>
+
+                  {/* Protected University Routes */}
                   <Route
                     path="/university/*"
                     element={
@@ -135,21 +140,8 @@ function App() {
                     <Route path="challenges" element={<ManageChallenges />} />
                     <Route path="applications" element={<ApplicationsList />} />
                   </Route>
-                  <Route path="/challenge" element={<Challenge />} />
-                  <Route path="/jobApplication" element={<JobApplication />} />
-                  <Route path="/scholarship" element={<Scholarship />} />
-                  <Route path="/scholarship-applicants/:id" element={<ScholarshipApplicants />} />
-                  <Route path="/studprofile" element={<ProfilePage />} />
-                  <Route path="/edit-profile" element={<EditProfilePage />} />
-                  <Route path="/uniProfile" element={<UniProfile />} />
-                  <Route path="/editUniprofile" element={<UniEditProfile />} />
-                  <Route path="/applicant-profile/:id" element={<ApplicantProfile />} />
-                  <Route path="/job-applicants/:id" element={<JobApplicants />} />
-                  <Route path="/courses" element={<Course />} />
-                  <Route path="/jobApplicationForm" element={<JobApplicationForm />} />
-                  <Route path="/scholarshipApplicationForm" element={<ScholarshipApplicationForm />} />
-                  <Route path="/hostScholarship" element={<HostScholarship/>}/>
-                  <Route path="/hostJob" element={<HostJob/>}/>
+
+                  {/* Protected Admin Routes */}
                   <Route
                     path="/admin/*"
                     element={
@@ -162,6 +154,12 @@ function App() {
                     <Route path="organizations" element={<ManageOrganizations />} />
                     <Route path="settings" element={<SystemSettings />} />
                   </Route>
+
+                  {/* Public Routes */}
+                  <Route path="/challenge" element={<Challenge />} />
+                  <Route path="/jobApplication" element={<JobApplication />} />
+                  <Route path="/scholarship" element={<Scholarship />} />
+                  <Route path="/courses" element={<Course />} />
                   <Route path="*" element={<NotFound />} />
                 </Routes>
               </main>
