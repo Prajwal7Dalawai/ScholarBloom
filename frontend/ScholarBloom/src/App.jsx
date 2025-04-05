@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './Components/Navbar';
 import Footer from './Components/Footer';
@@ -85,15 +85,18 @@ const ProtectedRoute = ({ children, allowedRoles }) => {
 };
 
 function App() {
+  const location = useLocation();
+  const isDashboardRoute = location.pathname.match(/^\/(?:student|university|admin)/);
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={`min-h-screen ${isDashboardRoute ? 'bg-gray-50' : ''}`}>
       <AuthProvider>
         <ThemeProvider>
-          <div className="flex">
-            <Sidebar />
-            <div className="flex-1 pl-4 pr-6">
+          <div className={`${isDashboardRoute ? 'flex' : ''}`}>
+            {isDashboardRoute && <Sidebar />}
+            <div className={`${isDashboardRoute ? 'flex-1 pl-4 pr-6' : 'w-full'}`}>
               <Navbar />
-              <main className="p-6">
+              <main className={`${isDashboardRoute ? 'p-6' : 'p-0'}`}>
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/about" element={<About />} />

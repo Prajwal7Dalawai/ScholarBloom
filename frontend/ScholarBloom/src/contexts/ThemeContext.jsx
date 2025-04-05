@@ -7,28 +7,30 @@ export function useTheme() {
 }
 
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(() => {
-    const savedTheme = localStorage.getItem('theme');
-    return savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const [isLightMode, setIsLightMode] = useState(() => {
+    const savedMode = localStorage.getItem('lightMode');
+    return savedMode === 'true';
   });
 
   useEffect(() => {
-    const root = window.document.documentElement;
-    if (isDarkMode) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
+    const body = document.body;
+    if (isLightMode) {
+      body.classList.add('light-mode');
+      body.classList.remove('dark-mode');
+      localStorage.setItem('lightMode', 'true');
     } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
+      body.classList.remove('light-mode');
+      body.classList.add('dark-mode');
+      localStorage.setItem('lightMode', 'false');
     }
-  }, [isDarkMode]);
+  }, [isLightMode]);
 
   const toggleTheme = () => {
-    setIsDarkMode(prev => !prev);
+    setIsLightMode(prev => !prev);
   };
 
   return (
-    <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ isLightMode, toggleTheme }}>
       {children}
     </ThemeContext.Provider>
   );

@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
@@ -8,64 +8,75 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem('token'));
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const storedToken = localStorage.getItem('token');
-        const userData = localStorage.getItem('user');
+  const checkAuth = async () => {
+    try {
+      const storedToken = localStorage.getItem('token');
+      const userData = localStorage.getItem('user');
 
-        if (!storedToken || !userData) {
-          setUser(null);
-          setToken(null);
-          setLoading(false);
+      if (!storedToken || !userData) {
+        setUser(null);
+        setToken(null);
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch('http://localhost:3000/api/auth/verify', {
+        headers: {
+          'Authorization': `Bearer ${storedToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        const parsedUser = JSON.parse(userData);
+        console.log('Stored user data:', parsedUser);
+        
+        if (!parsedUser.role) {
+          console.error('No role found in user data');
+          handleAuthFailure();
           return;
         }
 
-        const response = await fetch('http://localhost:3000/api/auth/verify', {
-          headers: {
-            'Authorization': `Bearer ${storedToken}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.ok) {
-          const parsedUser = JSON.parse(userData);
-          console.log('Stored user data:', parsedUser); // Debug log
-          
-          if (!parsedUser.role) {
-            console.error('No role found in user data');
-            setUser(null);
-            setToken(null);
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            return;
-          }
-
-          setUser(parsedUser);
-          setToken(storedToken);
-        } else {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          setUser(null);
-          setToken(null);
-        }
-      } catch (error) {
-        console.error('Auth verification failed:', error);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        setUser(null);
-        setToken(null);
-      } finally {
-        setLoading(false);
+        setUser(parsedUser);
+        setToken(storedToken);
+      } else {
+        handleAuthFailure();
       }
-    };
+    } catch (error) {
+      console.error('Auth verification failed:', error);
+      // Only clear auth if it's not a network error
+      if (error.name !== 'TypeError') {
+        handleAuthFailure();
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  const handleAuthFailure = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setUser(null);
+    setToken(null);
+  };
+
+  // Check auth on mount and when location changes
+  useEffect(() => {
     checkAuth();
-  }, []);
+  }, [location.pathname]);
+
+  // Periodic token verification (every 5 minutes)
+  useEffect(() => {
+    if (token) {
+      const interval = setInterval(checkAuth, 5 * 60 * 1000);
+      return () => clearInterval(interval);
+    }
+  }, [token]);
 
   const login = (userData, authToken) => {
-    console.log('Login called with:', { userData, authToken }); // Debug log
+    console.log('Login called with:', { userData, authToken });
 
     if (!userData || !userData.role) {
       console.error('Invalid user data or missing role:', userData);
@@ -77,8 +88,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token', authToken);
     
-    // Navigate based on user role
-    console.log('Navigating based on role:', userData.role); // Debug log
+    console.log('Navigating based on role:', userData.role);
     
     switch (userData.role) {
       case 'student':
@@ -107,19 +117,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.ok) {
-        setUser(null);
-        setToken(null);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        handleAuthFailure();
         navigate('/');
       }
     } catch (error) {
       console.error('Logout failed:', error);
       // Still clear local state even if server request fails
-      setUser(null);
-      setToken(null);
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
+      handleAuthFailure();
       navigate('/');
     }
   };

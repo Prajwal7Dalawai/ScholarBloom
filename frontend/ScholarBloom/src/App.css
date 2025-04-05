@@ -37,9 +37,19 @@ html {
   transition: all 0.3s ease-in-out;
 }
 
-/* Dark mode transitions */
+/* Theme transitions */
 body {
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+body.light-mode {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #ffffff;
 }
 
 /* Section spacing */
@@ -209,4 +219,34 @@ textarea {
 :focus {
   outline: none;
   box-shadow: 0 0 0 2px #2563eb;
+}
+
+/* Light mode specific styles */
+.light-mode .navbar {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .nav-link {
+  color: #111827;
+}
+
+.light-mode .card {
+  background-color: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode specific styles */
+.dark-mode .navbar {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .nav-link {
+  color: #ffffff;
+}
+
+.dark-mode .card {
+  background-color: #2d2d2d;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
