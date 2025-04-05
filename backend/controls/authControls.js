@@ -12,7 +12,7 @@ admin.initializeApp({
 // Register new user
 const register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { fullName, email, password, role } = req.body;
 
         // Check if user already exists
         const existingUser = await User.findOne({ email });
@@ -24,20 +24,23 @@ const register = async (req, res) => {
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        // Create new user
+        // Create new user with schema-compatible fields
         const user = new User({
-            name,
+            fullName,
             email,
             password: hashedPassword,
-            role
+            role: role || 'student' // Default to student if not specified
         });
+
+        // Add debug logging
+        console.log('Attempting to save user:', user);
 
         await user.save();
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: user._id, role: user.role },
-            process.env.JWT_SECRET,
+            { _id: user._id, role: user.role, email: user.email },
+            process.env.SECRET_KEY,
             { expiresIn: '1d' }
         );
 
@@ -45,8 +48,8 @@ const register = async (req, res) => {
             message: 'User registered successfully',
             token,
             user: {
-                id: user._id,
-                name: user.name,
+                _id: user._id,
+                fullName: user.fullName,
                 email: user.email,
                 role: user.role
             }
@@ -268,8 +271,12 @@ const login = async (req, res) => {
 
         // Generate JWT token
         const token = jwt.sign(
-            { userId: user._id, role: user.role },
-            process.env.JWT_SECRET,
+            { 
+                _id: user._id, 
+                role: user.role, 
+                email: user.email 
+            },
+            process.env.SECRET_KEY,
             { expiresIn: '1d' }
         );
 
@@ -277,8 +284,8 @@ const login = async (req, res) => {
             message: 'Login successful',
             token,
             user: {
-                id: user._id,
-                name: user.name,
+                _id: user._id,
+                fullName: user.fullName,
                 email: user.email,
                 role: user.role
             }
