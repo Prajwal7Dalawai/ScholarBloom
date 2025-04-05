@@ -21,12 +21,12 @@ const ChallengeList = () => {
           sortBy: sortBy
         });
 
-        // ಸವಾಲು ಸಲ್ಲಿಕೆಗಳನ್ನು ಪಡೆಯಿರಿ
+        // Get challenge submissions
         const submissions = await submissionAPI.getSubmissions({
           userId: userProfile._id
         });
 
-        // ಸವಾಲುಗಳನ್ನು ಸಲ್ಲಿಕೆ ಸ್ಥಿತಿಯೊಂದಿಗೆ ಸಂಯೋಜಿಸಿ
+        // Combine challenges with submission status
         const challengesWithStatus = challengesData.map(challenge => ({
           ...challenge,
           submitted: submissions.some(sub => sub.challengeId === challenge.id),
@@ -36,7 +36,7 @@ const ChallengeList = () => {
         setChallenges(challengesWithStatus);
       } catch (error) {
         console.error('Error fetching challenges:', error);
-        setError('ಸವಾಲುಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
+        setError('Error occurred while loading challenges');
       } finally {
         setLoading(false);
       }
@@ -57,7 +57,7 @@ const ChallengeList = () => {
         createdAt: new Date().toISOString()
       });
 
-      // ಸವಾಲು ಪಟ್ಟಿಯನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ
+      // Refresh challenge list
       const updatedChallenges = challenges.map(challenge =>
         challenge.id === challengeId
           ? { ...challenge, submitted: true, submissionStatus: 'pending' }
@@ -66,7 +66,7 @@ const ChallengeList = () => {
       setChallenges(updatedChallenges);
     } catch (error) {
       console.error('Error submitting challenge:', error);
-      setError('ಸವಾಲು ಸಲ್ಲಿಸುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
+      setError('Error submitting challenge');
     }
   };
 
@@ -88,7 +88,7 @@ const ChallengeList = () => {
 
   return (
     <div className="space-y-6">
-      {/* ಫಿಲ್ಟರ್ ಮತ್ತು ಸಾರ್ಟ್ ಆಯ್ಕೆಗಳು */}
+      {/* Filter and Sort Options */}
       <div className="flex flex-wrap gap-4">
         <div className="flex space-x-2">
           <button
@@ -99,7 +99,7 @@ const ChallengeList = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            ಎಲ್ಲಾ
+            All
           </button>
           <button
             onClick={() => setFilter('active')}
@@ -109,7 +109,7 @@ const ChallengeList = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            ಸಕ್ರಿಯ
+            Active
           </button>
           <button
             onClick={() => setFilter('closed')}
@@ -119,7 +119,7 @@ const ChallengeList = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            ಮುಚ್ಚಲಾಗಿದೆ
+            Closed
           </button>
         </div>
 
@@ -132,7 +132,7 @@ const ChallengeList = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            ಕೊನೆಯ ದಿನಾಂಕ
+            Deadline
           </button>
           <button
             onClick={() => setSortBy('reward')}
@@ -142,12 +142,12 @@ const ChallengeList = () => {
                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
             }`}
           >
-            ಬಹುಮಾನ
+            Reward
           </button>
         </div>
       </div>
 
-      {/* ಸವಾಲು ಪಟ್ಟಿ */}
+      {/* Challenge List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {challenges.map((challenge) => (
           <div key={challenge.id} className="bg-white rounded-lg shadow-sm p-6">
@@ -158,23 +158,23 @@ const ChallengeList = () => {
                   ? 'bg-green-100 text-green-700'
                   : 'bg-gray-100 text-gray-700'
               }`}>
-                {challenge.status === 'active' ? 'ಸಕ್ರಿಯ' : 'ಮುಚ್ಚಲಾಗಿದೆ'}
+                {challenge.status === 'active' ? 'Active' : 'Closed'}
               </span>
             </div>
             <p className="text-gray-600 mb-4">{challenge.description}</p>
             <div className="space-y-2 mb-4">
               <div className="flex justify-between">
-                <span className="text-gray-500">ಬಹುಮಾನ:</span>
+                <span className="text-gray-500">Reward:</span>
                 <span className="font-medium">₹{challenge.reward.toLocaleString()}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">ಕೊನೆಯ ದಿನಾಂಕ:</span>
+                <span className="text-gray-500">Deadline:</span>
                 <span className="font-medium">
-                  {new Date(challenge.deadline).toLocaleDateString('kn-IN')}
+                  {new Date(challenge.deadline).toLocaleDateString()}
                 </span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-500">ಕಷ್ಟದ ಮಟ್ಟ:</span>
+                <span className="text-gray-500">Difficulty:</span>
                 <span className="font-medium">{challenge.difficulty}</span>
               </div>
             </div>
@@ -183,7 +183,7 @@ const ChallengeList = () => {
                 onClick={() => window.location.href = `/challenges/${challenge.id}`}
                 className="text-indigo-600 hover:text-indigo-700 font-medium"
               >
-                ಹೆಚ್ಚಿನ ವಿವರಗಳು
+                View Details
               </button>
               {challenge.status === 'active' && (
                 <button
@@ -197,11 +197,11 @@ const ChallengeList = () => {
                 >
                   {challenge.submitted
                     ? challenge.submissionStatus === 'pending'
-                      ? 'ಸಲ್ಲಿಸಲಾಗಿದೆ'
+                      ? 'Submitted'
                       : challenge.submissionStatus === 'approved'
-                      ? 'ಅನುಮೋದಿಸಲಾಗಿದೆ'
-                      : 'ತಿರಸ್ಕರಿಸಲಾಗಿದೆ'
-                    : 'ಸಲ್ಲಿಸಿ'}
+                      ? 'Approved'
+                      : 'Rejected'
+                    : 'Submit'}
                 </button>
               )}
             </div>

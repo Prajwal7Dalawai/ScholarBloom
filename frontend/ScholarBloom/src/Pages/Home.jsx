@@ -5,9 +5,7 @@ import UniversitiesSection from "../Components/Home/UniversitiesSection.jsx";
 import AboutSection from "../pages/About.jsx"; // ✅ Corrected Import Path
 import schoolbanner from "../assets/scholarship-banner.webp";
 
-
 const Home = () => {
-
   const [isLightMode, setIsLightMode] = useState(false);
 
   useEffect(() => {

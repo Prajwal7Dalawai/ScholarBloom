@@ -23,6 +23,11 @@ const submissionSchema = new mongoose.Schema({
   feedback: {
     type: String,
   },
+  score: {
+    type: Number,
+    min: 0,
+    max: 100
+  }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Submission', submissionSchema); 

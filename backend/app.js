@@ -1,44 +1,49 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const cors = require("cors");
-const app = express();
-const connectDB = require("./mongo-Connect");
-require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const { verifySession } = require("./middleware");
+require("dotenv").config();
 
-// ✅ Enable CORS with Credentials to Allow Cookies
+const app = express();
+
+// Middleware
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000", "http://localhost:3001"],
-    credentials: true // Allow credentials (cookies, authorization headers, etc.)
+    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    credentials: true
 }));
-
-app.use((req,res,next)=>{
-    res.locals.currUser = req.user;
-    next();
-});
-
-
-app.set("trust proxy", true);
-
-
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
-// ✅ Route for authentication (stores session token in cookies)
-app.use("/auth", require("./Routes/authRoute"));
-app.use("/uni", require("./Routes/uniRoute"));
-app.use("/job", require("./Routes/jobRoute"));
-app.use("/sch", require("./Routes/scholarshipRoute"));
-app.use("/student", require("./Routes/studentRoute"));
-app.use("/challenges", require("./Routes/challengeRoute"));
+// Connect to MongoDB
+mongoose.connect(process.env.MongoURL)
+    .then(() => console.log("Connected to MongoDB"))
+    .catch(err => console.error("MongoDB connection error:", err));
 
+// Routes
+const authRoutes = require("./routes/authRoute");
+const scholarshipRoutes = require("./routes/scholarships");
+const jobRoutes = require("./routes/jobs");
+const challengeRoutes = require("./Routes/challengeRoute");
+const submissionRoutes = require("./Routes/submissionRoute");
+const studentRoutes = require("./Routes/studentRoute");
 
-// ✅ Connect to MongoDB
-connectDB();
+app.use("/api/auth", authRoutes);
+app.use("/api/scholarships", scholarshipRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/challenges/submissions", submissionRoutes);
+app.use("/api/challenges", challengeRoutes);
+app.use("/api/student", studentRoutes);
 
-// ✅ Start server
-const port = 3000;
-app.listen(port, () => {
-    console.log(`Server is listening to port ${port}`);
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ 
+        error: "Something went wrong!", 
+        details: err.message 
+    });
+});
+
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
 });

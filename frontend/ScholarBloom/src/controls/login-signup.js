@@ -3,11 +3,16 @@ import { signInWithPopup } from 'firebase/auth';
 
 export const handleGoogleSignIn = async (role, navigate) => {
     try {
-        provider.setCustomParameters({ prompt: 'select_account' });
+        // Set custom parameters with a new nonce
+        provider.setCustomParameters({
+            prompt: 'select_account',
+            nonce: Math.random().toString(36).substring(2)
+        });
+        
         const result = await signInWithPopup(auth, provider);
         const idToken = await result.user.getIdToken();
 
-        const response = await fetch(`http://localhost:3000/auth/google/${role === 'student' ? 'student' : 'university'}`, {
+        const response = await fetch(`http://localhost:3000/api/auth/google/${role === 'student' ? 'student' : 'university'}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -43,13 +48,18 @@ export const handleGoogleSignIn = async (role, navigate) => {
     }
 };
 
-export const login = async (navigate) => {
+export const login = async () => {
     try {
-        provider.setCustomParameters({ prompt: "select_account" });
+        // Set custom parameters with a new nonce
+        provider.setCustomParameters({
+            prompt: "select_account",
+            nonce: Math.random().toString(36).substring(2)
+        });
+        
         const result = await signInWithPopup(auth, provider);
         const idToken = await result.user.getIdToken();
 
-        const response = await fetch(`http://localhost:3000/auth/google/login`, {
+        const response = await fetch(`http://localhost:3000/api/auth/google/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -71,14 +81,11 @@ export const login = async (navigate) => {
         // Set session cookie
         document.cookie = `session=${idToken}; path=/; max-age=3600; SameSite=Strict`;
         
-        // Navigate based on role
-        if(data.user.role === 'student') {
-            navigate('/student');
-        } else if(data.user.role === 'university') {
-            navigate("/university");
-        }
-        
-        return { data, role: data.user.role };
+        return { 
+            token: data.token,
+            user: data.user,
+            role: data.user.role
+        };
     } catch (error) {
         console.error("Login Error:", error);
         throw error;
@@ -87,7 +94,7 @@ export const login = async (navigate) => {
 
 export const logout = async () => {
     try {
-        const response = await fetch("http://localhost:3000/auth/logout", {
+        const response = await fetch("http://localhost:3000/api/auth/logout", {
             method: "GET",
             credentials: "include",
         });

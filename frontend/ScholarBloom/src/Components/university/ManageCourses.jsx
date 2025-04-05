@@ -1,46 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import './ManageScholarships.css';
-import {
-  AcademicCapIcon,
-  PlusIcon,
-  PencilIcon,
-  TrashIcon,
-  CheckCircleIcon,
-  XCircleIcon
-} from '@heroicons/react/24/outline';
-import { scholarshipAPI } from '../../services/api';
+import './ManageCourses.css';
 
-const ManageScholarships = () => {
-  const [scholarships, setScholarships] = useState([]);
+const ManageCourses = () => {
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedScholarship, setSelectedScholarship] = useState(null);
+  const [selectedCourse, setSelectedCourse] = useState(null);
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    amount: '',
-    deadline: '',
-    eligibility: '',
-    requirements: '',
-    benefits: ''
+    duration: '',
+    fees: '',
+    startDate: '',
+    endDate: '',
+    prerequisites: '',
+    syllabus: '',
+    faculty: ''
   });
 
   useEffect(() => {
-    fetchScholarships();
+    fetchCourses();
   }, []);
 
-  const fetchScholarships = async () => {
+  const fetchCourses = async () => {
     try {
-      const response = await fetch('http://localhost:3000/api/university/scholarships', {
+      const response = await fetch('http://localhost:3000/api/university/courses', {
         credentials: 'include'
       });
       
       if (response.ok) {
         const data = await response.json();
-        setScholarships(data);
+        setCourses(data);
       }
     } catch (error) {
-      console.error('Error fetching scholarships:', error);
+      console.error('Error fetching courses:', error);
     } finally {
       setLoading(false);
     }
@@ -57,11 +50,11 @@ const ManageScholarships = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const url = selectedScholarship
-        ? `http://localhost:3000/api/university/scholarships/${selectedScholarship._id}`
-        : 'http://localhost:3000/api/university/scholarships';
+      const url = selectedCourse
+        ? `http://localhost:3000/api/university/courses/${selectedCourse._id}`
+        : 'http://localhost:3000/api/university/courses';
       
-      const method = selectedScholarship ? 'PUT' : 'POST';
+      const method = selectedCourse ? 'PUT' : 'POST';
       
       const response = await fetch(url, {
         method,
@@ -74,53 +67,57 @@ const ManageScholarships = () => {
 
       if (response.ok) {
         setIsModalOpen(false);
-        setSelectedScholarship(null);
-        fetchScholarships();
+        setSelectedCourse(null);
+        fetchCourses();
       }
     } catch (error) {
-      console.error('Error saving scholarship:', error);
+      console.error('Error saving course:', error);
     }
   };
 
-  const handleDelete = async (scholarshipId) => {
-    if (window.confirm('Are you sure you want to delete this scholarship?')) {
+  const handleDelete = async (courseId) => {
+    if (window.confirm('Are you sure you want to delete this course?')) {
       try {
-        const response = await fetch(`http://localhost:3000/api/university/scholarships/${scholarshipId}`, {
+        const response = await fetch(`http://localhost:3000/api/university/courses/${courseId}`, {
           method: 'DELETE',
           credentials: 'include'
         });
 
         if (response.ok) {
-          fetchScholarships();
+          fetchCourses();
         }
       } catch (error) {
-        console.error('Error deleting scholarship:', error);
+        console.error('Error deleting course:', error);
       }
     }
   };
 
-  const openModal = (scholarship = null) => {
-    if (scholarship) {
-      setSelectedScholarship(scholarship);
+  const openModal = (course = null) => {
+    if (course) {
+      setSelectedCourse(course);
       setFormData({
-        title: scholarship.title,
-        description: scholarship.description,
-        amount: scholarship.amount,
-        deadline: scholarship.deadline,
-        eligibility: scholarship.eligibility,
-        requirements: scholarship.requirements,
-        benefits: scholarship.benefits
+        title: course.title,
+        description: course.description,
+        duration: course.duration,
+        fees: course.fees,
+        startDate: course.startDate,
+        endDate: course.endDate,
+        prerequisites: course.prerequisites,
+        syllabus: course.syllabus,
+        faculty: course.faculty
       });
     } else {
-      setSelectedScholarship(null);
+      setSelectedCourse(null);
       setFormData({
         title: '',
         description: '',
-        amount: '',
-        deadline: '',
-        eligibility: '',
-        requirements: '',
-        benefits: ''
+        duration: '',
+        fees: '',
+        startDate: '',
+        endDate: '',
+        prerequisites: '',
+        syllabus: '',
+        faculty: ''
       });
     }
     setIsModalOpen(true);
@@ -135,33 +132,33 @@ const ManageScholarships = () => {
   }
 
   return (
-    <div className="scholarships-container">
-      <div className="scholarships-header">
-        <h1>Manage Scholarships</h1>
+    <div className="courses-container">
+      <div className="courses-header">
+        <h1>Manage Courses</h1>
         <button 
           className="add-button"
           onClick={() => openModal()}
         >
-          Add New Scholarship
+          Add New Course
         </button>
       </div>
 
-      <div className="scholarships-grid">
-        {scholarships.map(scholarship => (
-          <div key={scholarship._id} className="scholarship-card">
-            <h3>{scholarship.title}</h3>
-            <p className="amount">Amount: ₹{scholarship.amount}</p>
-            <p className="deadline">Deadline: {new Date(scholarship.deadline).toLocaleDateString()}</p>
+      <div className="courses-grid">
+        {courses.map(course => (
+          <div key={course._id} className="course-card">
+            <h3>{course.title}</h3>
+            <p className="duration">Duration: {course.duration} months</p>
+            <p className="fees">Fees: ₹{course.fees}</p>
             <div className="card-actions">
               <button 
                 className="edit-button"
-                onClick={() => openModal(scholarship)}
+                onClick={() => openModal(course)}
               >
                 Edit
               </button>
               <button 
                 className="delete-button"
-                onClick={() => handleDelete(scholarship._id)}
+                onClick={() => handleDelete(course._id)}
               >
                 Delete
               </button>
@@ -173,7 +170,7 @@ const ManageScholarships = () => {
       {isModalOpen && (
         <div className="modal">
           <div className="modal-content">
-            <h2>{selectedScholarship ? 'Edit Scholarship' : 'Add New Scholarship'}</h2>
+            <h2>{selectedCourse ? 'Edit Course' : 'Add New Course'}</h2>
             <form onSubmit={handleSubmit}>
               <div className="form-group">
                 <label>Title</label>
@@ -197,52 +194,74 @@ const ManageScholarships = () => {
               </div>
 
               <div className="form-group">
-                <label>Amount</label>
+                <label>Duration (months)</label>
                 <input
                   type="number"
-                  name="amount"
-                  value={formData.amount}
+                  name="duration"
+                  value={formData.duration}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Deadline</label>
+                <label>Fees</label>
+                <input
+                  type="number"
+                  name="fees"
+                  value={formData.fees}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Start Date</label>
                 <input
                   type="date"
-                  name="deadline"
-                  value={formData.deadline}
+                  name="startDate"
+                  value={formData.startDate}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Eligibility</label>
-                <textarea
-                  name="eligibility"
-                  value={formData.eligibility}
+                <label>End Date</label>
+                <input
+                  type="date"
+                  name="endDate"
+                  value={formData.endDate}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Requirements</label>
+                <label>Prerequisites</label>
                 <textarea
-                  name="requirements"
-                  value={formData.requirements}
+                  name="prerequisites"
+                  value={formData.prerequisites}
                   onChange={handleInputChange}
                   required
                 />
               </div>
 
               <div className="form-group">
-                <label>Benefits</label>
+                <label>Syllabus</label>
                 <textarea
-                  name="benefits"
-                  value={formData.benefits}
+                  name="syllabus"
+                  value={formData.syllabus}
+                  onChange={handleInputChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label>Faculty</label>
+                <textarea
+                  name="faculty"
+                  value={formData.faculty}
                   onChange={handleInputChange}
                   required
                 />
@@ -260,4 +279,4 @@ const ManageScholarships = () => {
   );
 };
 
-export default ManageScholarships; 
+export default ManageCourses; 

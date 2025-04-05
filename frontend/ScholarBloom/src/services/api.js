@@ -53,7 +53,7 @@ export const userAPI = {
 
   getUser: async () => {
     try {
-      const response = await api.get('/student/profile');
+      const response = await api.get('/api/student/profile');
       return response.data;
     } catch (error) {
       console.error('Error getting user:', error);
@@ -63,10 +63,53 @@ export const userAPI = {
 
   updateUser: async (userData) => {
     try {
-      const response = await api.put('/student/profile', userData);
+      const response = await api.put('/api/student/profile', userData);
       return response.data;
     } catch (error) {
       console.error('Error updating user:', error);
+      throw error;
+    }
+  }
+};
+
+// Student API
+export const studentAPI = {
+  getApplications: async () => {
+    try {
+      const response = await api.get('/api/student/applications');
+      return response.data;
+    } catch (error) {
+      console.error('Error getting applications:', error);
+      throw error;
+    }
+  },
+
+  getChallenges: async () => {
+    try {
+      const response = await api.get('/api/student/challenges');
+      return response.data;
+    } catch (error) {
+      console.error('Error getting challenges:', error);
+      throw error;
+    }
+  },
+
+  getEduCoins: async () => {
+    try {
+      const response = await api.get('/api/student/educoins');
+      return response.data;
+    } catch (error) {
+      console.error('Error getting EduCoins:', error);
+      throw error;
+    }
+  },
+
+  applyForScholarship: async (applicationData) => {
+    try {
+      const response = await api.post('/api/student/scholarships/apply', applicationData);
+      return response.data;
+    } catch (error) {
+      console.error('Error applying for scholarship:', error);
       throw error;
     }
   }
@@ -76,7 +119,7 @@ export const userAPI = {
 export const scholarshipAPI = {
   createScholarship: async (scholarshipData) => {
     try {
-      const response = await api.post('/sch', scholarshipData);
+      const response = await api.post('/api/scholarships', scholarshipData);
       return response.data;
     } catch (error) {
       console.error('Error creating scholarship:', error);
@@ -86,7 +129,7 @@ export const scholarshipAPI = {
 
   getScholarship: async (scholarshipId) => {
     try {
-      const response = await api.get(`/sch/${scholarshipId}`);
+      const response = await api.get(`/api/scholarships/${scholarshipId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting scholarship:', error);
@@ -101,7 +144,7 @@ export const scholarshipAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/sch?${params.toString()}`);
+      const response = await api.get(`/api/scholarships?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting scholarships:', error);
@@ -111,7 +154,7 @@ export const scholarshipAPI = {
 
   updateScholarship: async (scholarshipId, scholarshipData) => {
     try {
-      const response = await api.put(`/sch/${scholarshipId}`, scholarshipData);
+      const response = await api.put(`/api/scholarships/${scholarshipId}`, scholarshipData);
       return response.data;
     } catch (error) {
       console.error('Error updating scholarship:', error);
@@ -121,7 +164,7 @@ export const scholarshipAPI = {
 
   deleteScholarship: async (scholarshipId) => {
     try {
-      const response = await api.delete(`/sch/${scholarshipId}`);
+      const response = await api.delete(`/api/scholarships/${scholarshipId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting scholarship:', error);
@@ -134,7 +177,7 @@ export const scholarshipAPI = {
 export const jobAPI = {
   createJob: async (jobData) => {
     try {
-      const response = await api.post('/job/jobs', jobData);
+      const response = await api.post('/api/jobs', jobData);
       return response.data;
     } catch (error) {
       console.error('Error creating job:', error);
@@ -144,7 +187,7 @@ export const jobAPI = {
 
   getJob: async (jobId) => {
     try {
-      const response = await api.get(`/job/jobs/${jobId}`);
+      const response = await api.get(`/api/jobs/${jobId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting job:', error);
@@ -159,7 +202,7 @@ export const jobAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/job/jobs?${params.toString()}`);
+      const response = await api.get(`/api/jobs?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting jobs:', error);
@@ -169,7 +212,7 @@ export const jobAPI = {
 
   updateJob: async (jobId, jobData) => {
     try {
-      const response = await api.put(`/job/jobs/${jobId}`, jobData);
+      const response = await api.put(`/api/jobs/${jobId}`, jobData);
       return response.data;
     } catch (error) {
       console.error('Error updating job:', error);
@@ -179,7 +222,7 @@ export const jobAPI = {
 
   deleteJob: async (jobId) => {
     try {
-      const response = await api.delete(`/job/jobs/${jobId}`);
+      const response = await api.delete(`/api/jobs/${jobId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting job:', error);
@@ -192,7 +235,7 @@ export const jobAPI = {
 export const challengeAPI = {
   createChallenge: async (challengeData) => {
     try {
-      const response = await api.post('/challenges/challenges', challengeData);
+      const response = await api.post('/api/challenges', challengeData);
       return response.data;
     } catch (error) {
       console.error('Error creating challenge:', error);
@@ -202,7 +245,7 @@ export const challengeAPI = {
 
   getChallenge: async (challengeId) => {
     try {
-      const response = await api.get(`/challenges/${challengeId}`);
+      const response = await api.get(`/api/challenges/${challengeId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenge:', error);
@@ -217,7 +260,7 @@ export const challengeAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/challenges?${params.toString()}`);
+      const response = await api.get(`/api/challenges?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenges:', error);
@@ -227,7 +270,7 @@ export const challengeAPI = {
 
   updateChallenge: async (challengeId, challengeData) => {
     try {
-      const response = await api.put(`/challenges/${challengeId}`, challengeData);
+      const response = await api.put(`/api/challenges/${challengeId}`, challengeData);
       return response.data;
     } catch (error) {
       console.error('Error updating challenge:', error);
@@ -237,7 +280,7 @@ export const challengeAPI = {
 
   deleteChallenge: async (challengeId) => {
     try {
-      const response = await api.delete(`/challenges/${challengeId}`);
+      const response = await api.delete(`/api/challenges/${challengeId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting challenge:', error);
@@ -253,7 +296,7 @@ export const challengeAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/challenges/submissions?${params.toString()}`);
+      const response = await api.get(`/api/challenges/submissions?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenge submissions:', error);
@@ -335,7 +378,7 @@ export const applicationAPI = {
 export const submissionAPI = {
   createSubmission: async (submissionData) => {
     try {
-      const response = await api.post('/challenges/submissions', submissionData);
+      const response = await api.post('/api/challenges/submissions', submissionData);
       return response.data;
     } catch (error) {
       console.error('Error creating submission:', error);
@@ -345,7 +388,7 @@ export const submissionAPI = {
 
   getSubmission: async (submissionId) => {
     try {
-      const response = await api.get(`/challenges/submissions/${submissionId}`);
+      const response = await api.get(`/api/challenges/submissions/${submissionId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting submission:', error);
@@ -361,7 +404,7 @@ export const submissionAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/challenges/submissions?${params.toString()}`);
+      const response = await api.get(`/api/challenges/submissions?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting submissions:', error);
@@ -371,7 +414,7 @@ export const submissionAPI = {
 
   updateSubmission: async (submissionId, submissionData) => {
     try {
-      const response = await api.put(`/challenges/submissions/${submissionId}`, submissionData);
+      const response = await api.put(`/api/challenges/submissions/${submissionId}`, submissionData);
       return response.data;
     } catch (error) {
       console.error('Error updating submission:', error);
@@ -381,10 +424,53 @@ export const submissionAPI = {
 
   deleteSubmission: async (submissionId) => {
     try {
-      const response = await api.delete(`/challenges/submissions/${submissionId}`);
+      const response = await api.delete(`/api/challenges/submissions/${submissionId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting submission:', error);
+      throw error;
+    }
+  }
+};
+
+// Auth API
+export const authAPI = {
+  login: async (credentials) => {
+    try {
+      const response = await api.post('/auth/login', credentials);
+      return response.data;
+    } catch (error) {
+      console.error('Error logging in:', error);
+      throw error;
+    }
+  },
+
+  googleLogin: async (token) => {
+    try {
+      const response = await api.post('/auth/google/login', { token });
+      return response.data;
+    } catch (error) {
+      console.error('Error with Google login:', error);
+      throw error;
+    }
+  },
+
+  register: async (userData) => {
+    try {
+      const response = await api.post('/auth/register', userData);
+      return response.data;
+    } catch (error) {
+      console.error('Error registering:', error);
+      throw error;
+    }
+  },
+
+  checkAuth: async () => {
+    try {
+      const response = await api.get('/auth/check');
+      return response.data;
+    } catch (error) {
+      console.error('Error checking auth:', error);
       throw error;
     }
   }

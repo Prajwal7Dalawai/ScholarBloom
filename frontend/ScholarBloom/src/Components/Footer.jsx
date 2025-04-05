@@ -7,56 +7,56 @@ function Footer() {
       <div className="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">ಸಂಪರ್ಕಿಸಿ</h3>
-            <p className="text-gray-600 dark:text-gray-300">
-              ಇಮೇಲ್: info@scholarbloom.com<br />
-              ಫೋನ್: +91 1234567890<br />
-              ವಿಳಾಸ: ಬೆಂಗಳೂರು, ಕರ್ನಾಟಕ
+            <h3 className="text-lg font-semibold text-black dark:text-black mb-4">Contact Us</h3>
+            <p className="text-black dark:text-black">
+              Email: info@scholarbloom.com<br />
+              Phone: +91 1234567890<br />
+              Address: Bangalore, Karnataka
             </p>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">ಲಿಂಕ್ಸ್</h3>
+            <h3 className="text-lg font-semibold text-black dark:text-black mb-4">Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/about" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                  ನಮ್ಮ ಬಗ್ಗೆ
+                <Link to="/about" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                  About Us
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                  ಸಂಪರ್ಕಿಸಿ
+                <Link to="/contact" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                  Contact
                 </Link>
               </li>
               <li>
-                <Link to="/privacy" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                  ಗೌಪ್ಯತೆ ನೀತಿ
+                <Link to="/privacy" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                  Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link to="/terms" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                  ನಿಯಮಗಳು
+                <Link to="/terms" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                  Terms & Conditions
                 </Link>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">ನಮ್ಮನ್ನು ಅನುಸರಿಸಿ</h3>
+            <h3 className="text-lg font-semibold text-black dark:text-black mb-4">Follow Us</h3>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                ಫೇಸ್‌ಬುಕ್
+              <a href="#" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                Facebook
               </a>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                ಟ್ವಿಟರ್
+              <a href="#" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                Twitter
               </a>
-              <a href="#" className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400">
-                ಲಿಂಕ್‌ಡಿನ್
+              <a href="#" className="text-black dark:text-black hover:text-primary-600 dark:hover:text-primary-400">
+                LinkedIn
               </a>
             </div>
           </div>
         </div>
         <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-          <p className="text-center text-gray-600 dark:text-gray-300">
-            © {new Date().getFullYear()} ScholarBloom. ಎಲ್ಲ ಹಕ್ಕುಗಳನ್ನು ಕಾಯ್ದಿರಿಸಲಾಗಿದೆ.
+          <p className="text-center text-black dark:text-black">
+            © {new Date().getFullYear()} ScholarBloom. All rights reserved.
           </p>
         </div>
       </div>

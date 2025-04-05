@@ -35,7 +35,7 @@ const Profile = () => {
         });
       } catch (error) {
         console.error('Error fetching profile:', error);
-        setError('ಪ್ರೊಫೈಲ್ ಅನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
+        setError('Error occurred while loading profile');
       } finally {
         setLoading(false);
       }
@@ -62,7 +62,7 @@ const Profile = () => {
       setIsEditing(false);
     } catch (error) {
       console.error('Error updating profile:', error);
-      setError('ಪ್ರೊಫೈಲ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
+      setError('Error occurred while updating profile');
     }
   };
 
@@ -86,13 +86,13 @@ const Profile = () => {
     <div className="max-w-4xl mx-auto">
       <div className="bg-white rounded-lg shadow-sm p-6">
         <div className="flex justify-between items-center mb-6">
-          <h2 className="text-2xl font-semibold text-gray-900">ಪ್ರೊಫೈಲ್</h2>
+          <h2 className="text-2xl font-semibold text-gray-900">Profile</h2>
           {!isEditing && (
             <button
               onClick={() => setIsEditing(true)}
               className="px-4 py-2 rounded-full text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700"
             >
-              ಸಂಪಾದಿಸಿ
+              Edit
             </button>
           )}
         </div>
@@ -100,40 +100,40 @@ const Profile = () => {
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಹೆಸರು</label>
+              <label className="block text-sm font-medium text-gray-700">Name</label>
               <input
                 type="text"
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಇಮೇಲ್</label>
+              <label className="block text-sm font-medium text-gray-700">Email</label>
               <input
                 type="email"
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಫೋನ್</label>
+              <label className="block text-sm font-medium text-gray-700">Phone</label>
               <input
                 type="tel"
                 name="phone"
                 value={formData.phone}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ವಿಳಾಸ</label>
+              <label className="block text-sm font-medium text-gray-700">Address</label>
               <textarea
                 name="address"
                 value={formData.address}
@@ -144,7 +144,7 @@ const Profile = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಶಿಕ್ಷಣ</label>
+              <label className="block text-sm font-medium text-gray-700">Education</label>
               <textarea
                 name="education"
                 value={formData.education}
@@ -155,26 +155,26 @@ const Profile = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಕೌಶಲ್ಯಗಳು</label>
+              <label className="block text-sm font-medium text-gray-700">Skills</label>
               <input
                 type="text"
                 name="skills"
                 value={formData.skills}
                 onChange={handleInputChange}
-                placeholder="ಕೌಶಲ್ಯಗಳನ್ನು ಅಲ್ಪವಿರಾಮದಿಂದ ಬೇರ್ಪಡಿಸಿ"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                placeholder="Separate skills with commas"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700">ಆಸಕ್ತಿಗಳು</label>
+              <label className="block text-sm font-medium text-gray-700">Interests</label>
               <input
                 type="text"
                 name="interests"
                 value={formData.interests}
                 onChange={handleInputChange}
-                placeholder="ಆಸಕ್ತಿಗಳನ್ನು ಅಲ್ಪವಿರಾಮದಿಂದ ಬೇರ್ಪಡಿಸಿ"
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                placeholder="Separate interests with commas"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             </div>
 
@@ -184,45 +184,45 @@ const Profile = () => {
                 onClick={() => setIsEditing(false)}
                 className="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200"
               >
-                ರದ್ದುಮಾಡಿ
+                Cancel
               </button>
               <button
                 type="submit"
                 className="px-4 py-2 rounded-full text-sm font-medium bg-indigo-600 text-white hover:bg-indigo-700"
               >
-                ಉಳಿಸಿ
+                Save
               </button>
             </div>
           </form>
         ) : (
           <div className="space-y-6">
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಹೆಸರು</h3>
+              <h3 className="text-sm font-medium text-gray-500">Name</h3>
               <p className="mt-1 text-sm text-gray-900">{profile.name}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಇಮೇಲ್</h3>
+              <h3 className="text-sm font-medium text-gray-500">Email</h3>
               <p className="mt-1 text-sm text-gray-900">{profile.email}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಫೋನ್</h3>
+              <h3 className="text-sm font-medium text-gray-500">Phone</h3>
               <p className="mt-1 text-sm text-gray-900">{profile.phone}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ವಿಳಾಸ</h3>
+              <h3 className="text-sm font-medium text-gray-500">Address</h3>
               <p className="mt-1 text-sm text-gray-900">{profile.address}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಶಿಕ್ಷಣ</h3>
+              <h3 className="text-sm font-medium text-gray-500">Education</h3>
               <p className="mt-1 text-sm text-gray-900">{profile.education}</p>
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಕೌಶಲ್ಯಗಳು</h3>
+              <h3 className="text-sm font-medium text-gray-500">Skills</h3>
               <div className="mt-2 flex flex-wrap gap-2">
                 {profile.skills?.split(',').map((skill, index) => (
                   <span
@@ -236,7 +236,7 @@ const Profile = () => {
             </div>
 
             <div>
-              <h3 className="text-sm font-medium text-gray-500">ಆಸಕ್ತಿಗಳು</h3>
+              <h3 className="text-sm font-medium text-gray-500">Interests</h3>
               <div className="mt-2 flex flex-wrap gap-2">
                 {profile.interests?.split(',').map((interest, index) => (
                   <span

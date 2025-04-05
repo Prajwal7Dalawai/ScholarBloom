@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { verifyToken } = require('../middleware/auth');
-const { getSubmissions, getChallenges, getChallenge, createChallenge, updateChallenge, deleteChallenge } = require('../controls/challengeControls');
-
-// Get challenge submissions
-router.get('/submissions', verifyToken, getSubmissions);
+const { getChallenges, getChallenge, createChallenge, updateChallenge, deleteChallenge } = require('../controls/challengeControls');
 
 // Get all challenges
 router.get('/', verifyToken, getChallenges);

@@ -1,4 +1,5 @@
 import api from './api';
+import { scholarshipAPI } from './api';
 
 export const studentService = {
     getProfile: async () => {
@@ -21,8 +22,8 @@ export const studentService = {
 
     getScholarships: async (filters = {}) => {
         try {
-            const response = await api.get('/student/scholarships', { params: filters });
-            return response.data;
+            const data = await scholarshipAPI.getScholarships(filters);
+            return data;
         } catch (error) {
             throw error.response?.data || error.message;
         }
@@ -67,6 +68,15 @@ export const studentService = {
     getEnrolledCourses: async () => {
         try {
             const response = await api.get('/student/courses/enrolled');
+            return response.data;
+        } catch (error) {
+            throw error.response?.data || error.message;
+        }
+    },
+
+    getEduCoins: async () => {
+        try {
+            const response = await api.get('/student/educoins');
             return response.data;
         } catch (error) {
             throw error.response?.data || error.message;

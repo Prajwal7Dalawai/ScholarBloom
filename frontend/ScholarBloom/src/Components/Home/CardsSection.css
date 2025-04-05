@@ -9,11 +9,14 @@
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem;
+    margin: 1rem;
   }
   
   .custom-card img {
     height: 200px;
     object-fit: cover;
+    border-radius: 8px;
   }
   
   .custom-card:hover {
@@ -23,6 +26,7 @@
   
   .card-body {
     text-align: center;
+    padding: 1.5rem;
   }
   
   body.light-mode .section-title {
@@ -38,11 +42,14 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: #ffffff; /* White background */
     border: 1px solid #ddd; /* Light gray border */
+    padding: 1.5rem;
+    margin: 1rem;
   }
   
   body.light-mode .custom-card img {
     height: 200px;
     object-fit: cover;
+    border-radius: 8px;
   }
   
   body.light-mode .custom-card:hover {
@@ -53,5 +60,6 @@
   body.light-mode .card-body {
     text-align: center;
     color: #333; /* Darker text for readability */
+    padding: 1.5rem;
   }
   

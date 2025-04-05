@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import {
-  UserIcon,
-  AcademicCapIcon,
-  BriefcaseIcon,
-  DocumentTextIcon,
-  StarIcon,
-  BookOpenIcon,
-  TrophyIcon,
-  BuildingLibraryIcon
-} from '@heroicons/react/24/outline';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
+import './StudentProfile.css';
+import { UserIcon } from '@heroicons/react/24/outline';
 
-export default function StudentProfile() {
+const StudentProfile = () => {
   const [profile, setProfile] = useState({
     name: '',
     email: '',
@@ -26,36 +20,95 @@ export default function StudentProfile() {
     skills: [],
     achievements: [],
     interests: [],
-    resume: null
+    resume: null,
+    profilePicture: null
   });
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const { user, token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProfile = async () => {
       try {
+        if (!token) {
+          navigate('/login');
+          return;
+        }
+
+        // Set initial profile data from user info if not already set
+        if (!profile.name && user) {
+          setProfile(prev => ({
+            ...prev,
+            name: user.fullName || '',
+            email: user.email || '',
+            profilePicture: user.profilePic || null
+          }));
+          if (user.profilePic) {
+            setPreviewImage(user.profilePic);
+          }
+        }
+
         const response = await fetch('http://localhost:3000/api/student/profile', {
-          credentials: 'include'
+          method: 'GET',
+          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
         });
+
+        if (response.status === 401) {
+          navigate('/login');
+          return;
+        }
 
         if (!response.ok) {
           throw new Error('Failed to fetch profile');
         }
 
         const data = await response.json();
-        setProfile(data);
+        // Merge the additional profile data with basic user info
+        const processedData = {
+          ...data,
+          name: user?.fullName || data.name || '',
+          email: user?.email || data.email || '',
+          profilePicture: user?.profilePic || data.profilePicture || null,
+          education: {
+            currentDegree: '',
+            institution: '',
+            yearOfStudy: '',
+            expectedGraduation: '',
+            gpa: '',
+            ...(data.education || {})
+          },
+          skills: data.skills || [],
+          interests: data.interests || [],
+          achievements: data.achievements || []
+        };
+        
+        setProfile(processedData);
+        if (processedData.profilePicture && !previewImage) {
+          setPreviewImage(processedData.profilePicture);
+        }
       } catch (error) {
-        setError('ಪ್ರೊಫೈಲ್ ಡೇಟಾ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ');
+        console.error('Profile fetch error:', error);
+        setError('Failed to load additional profile data. Basic information is still available.');
       } finally {
         setLoading(false);
       }
     };
 
-    fetchProfile();
-  }, []);
+    // Only fetch profile data when component mounts or when token/user changes
+    if (!editMode) {
+      fetchProfile();
+    }
+  }, [token, navigate, user]); // Remove editMode from dependencies
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -64,7 +117,7 @@ export default function StudentProfile() {
       setProfile(prev => ({
         ...prev,
         [parent]: {
-          ...prev[parent],
+          ...(prev[parent] || {}), // Ensure the parent object exists
           [child]: value
         }
       }));
@@ -76,6 +129,37 @@ export default function StudentProfile() {
     }
   };
 
+  const handleSkillsChange = (e) => {
+    const skills = e.target.value.split(',').map(skill => skill.trim());
+    setProfile(prev => ({
+      ...prev,
+      skills: skills.filter(skill => skill !== '') // Filter out empty strings
+    }));
+  };
+
+  const handleInterestsChange = (e) => {
+    const interests = e.target.value.split(',').map(interest => interest.trim());
+    setProfile(prev => ({
+      ...prev,
+      interests: interests.filter(interest => interest !== '') // Filter out empty strings
+    }));
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+        setProfile(prev => ({
+          ...prev,
+          profilePicture: file
+        }));
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
@@ -83,238 +167,281 @@ export default function StudentProfile() {
     setSuccess(false);
 
     try {
+      if (!token) {
+        navigate('/login');
+        return;
+      }
+
+      const formData = new FormData();
+      Object.keys(profile).forEach(key => {
+        if (key === 'skills' || key === 'interests') {
+          formData.append(key, JSON.stringify(profile[key]));
+        } else if (key === 'profilePicture' && profile[key] instanceof File) {
+          formData.append('profilePicture', profile[key]);
+        } else {
+          formData.append(key, profile[key]);
+        }
+      });
+
       const response = await fetch('http://localhost:3000/api/student/profile', {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         credentials: 'include',
-        body: JSON.stringify(profile),
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        body: formData
       });
+
+      if (response.status === 401) {
+        navigate('/login');
+        return;
+      }
 
       if (!response.ok) {
         throw new Error('Failed to update profile');
       }
 
       setSuccess(true);
+      setEditMode(false);
     } catch (error) {
-      setError('ಪ್ರೊಫೈಲ್ ಅನ್ನು ನವೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ');
+      setError('Failed to update profile. Please try again.');
     } finally {
       setSaving(false);
     }
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
-      </div>
-    );
-  }
+  const handleEditClick = () => {
+    setEditMode(true);
+    setError(null);
+    setSuccess(false);
+  };
+
+  const handleCancelClick = () => {
+    setEditMode(false);
+    setError(null);
+    setSuccess(false);
+    // No need to refetch here, just reset the form
+    const savedProfile = { ...profile };
+    setProfile(savedProfile);
+  };
 
   return (
     <div className="py-6">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="flex items-center">
-          <UserIcon className="h-8 w-8 text-gray-500 mr-2" />
-          <h1 className="text-3xl font-bold text-gray-900">ವಿದ್ಯಾರ್ಥಿ ಪ್ರೊಫೈಲ್</h1>
+        <div className="flex items-center mb-6">
+          <UserIcon className="h-8 w-8 text-blue-600 mr-2" />
+          <h1 className="text-2xl font-semibold text-gray-900">My Profile</h1>
         </div>
-      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="mt-8">
-          {error && (
-            <div className="mb-4 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative" role="alert">
-              <span className="block sm:inline">{error}</span>
-            </div>
-          )}
+        {error && (
+          <div className="error-message" role="alert">
+            <span>{error}</span>
+          </div>
+        )}
 
-          {success && (
-            <div className="mb-4 bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded relative" role="alert">
-              <span className="block sm:inline">ಪ್ರೊಫೈಲ್ ಯಶಸ್ವಿಯಾಗಿ ನವೀಕರಿಸಲಾಗಿದೆ</span>
-            </div>
-          )}
+        {success && (
+          <div className="success-message" role="alert">
+            <span>Profile updated successfully</span>
+          </div>
+        )}
 
-          <form onSubmit={handleSubmit} className="space-y-8 divide-y divide-gray-200">
-            <div className="space-y-8 divide-y divide-gray-200">
-              <div>
-                <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">ವೈಯಕ್ತಿಕ ಮಾಹಿತಿ</h3>
-                  <p className="mt-1 text-sm text-gray-500">ನಿಮ್ಮ ಮೂಲ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಿ</p>
+        {loading ? (
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+          </div>
+        ) : (
+          <div className="profile-container">
+            <div className="profile-content">
+              <div className="profile-picture-section">
+                <div className="profile-picture-container">
+                  {previewImage ? (
+                    <img 
+                      src={previewImage}
+                      alt="Profile" 
+                      className="profile-picture"
+                    />
+                  ) : (
+                    <div className="profile-picture-placeholder">
+                      <UserIcon className="h-16 w-16 text-gray-400" />
+                    </div>
+                  )}
                 </div>
-
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                      ಹೆಸರು
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="name"
-                        id="name"
-                        value={profile.name}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                      ಇಮೇಲ್
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={profile.email}
-                        onChange={handleChange}
-                        disabled
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md bg-gray-50"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-                      ಫೋನ್ ಸಂಖ್ಯೆ
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="tel"
-                        name="phone"
-                        id="phone"
-                        value={profile.phone}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-6">
-                    <label htmlFor="address" className="block text-sm font-medium text-gray-700">
-                      ವಿಳಾಸ
-                    </label>
-                    <div className="mt-1">
-                      <textarea
-                        name="address"
-                        id="address"
-                        rows={3}
-                        value={profile.address}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-                </div>
+                {editMode && (
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                    className="profile-picture-input"
+                  />
+                )}
               </div>
 
-              <div className="pt-8">
-                <div>
-                  <h3 className="text-lg font-medium leading-6 text-gray-900">ಶೈಕ್ಷಣಿಕ ಮಾಹಿತಿ</h3>
-                  <p className="mt-1 text-sm text-gray-500">ನಿಮ್ಮ ಶೈಕ್ಷಣಿಕ ವಿವರಗಳನ್ನು ನವೀಕರಿಸಿ</p>
+              <form onSubmit={handleSubmit} className="profile-form">
+                <div className="form-group">
+                  <label>Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={profile.name || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your name"
+                  />
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
-                  <div className="sm:col-span-3">
-                    <label htmlFor="education.currentDegree" className="block text-sm font-medium text-gray-700">
-                      ಪ್ರಸ್ತುತ ಪದವಿ
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="education.currentDegree"
-                        id="education.currentDegree"
-                        value={profile.education.currentDegree}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-3">
-                    <label htmlFor="education.institution" className="block text-sm font-medium text-gray-700">
-                      ಸಂಸ್ಥೆ
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="education.institution"
-                        id="education.institution"
-                        value={profile.education.institution}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label htmlFor="education.yearOfStudy" className="block text-sm font-medium text-gray-700">
-                      ಅಧ್ಯಯನ ವರ್ಷ
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="education.yearOfStudy"
-                        id="education.yearOfStudy"
-                        value={profile.education.yearOfStudy}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label htmlFor="education.expectedGraduation" className="block text-sm font-medium text-gray-700">
-                      ನಿರೀಕ್ಷಿತ ಪದವಿ ವರ್ಷ
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="education.expectedGraduation"
-                        id="education.expectedGraduation"
-                        value={profile.education.expectedGraduation}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="sm:col-span-2">
-                    <label htmlFor="education.gpa" className="block text-sm font-medium text-gray-700">
-                      GPA
-                    </label>
-                    <div className="mt-1">
-                      <input
-                        type="text"
-                        name="education.gpa"
-                        id="education.gpa"
-                        value={profile.education.gpa}
-                        onChange={handleChange}
-                        className="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md"
-                      />
-                    </div>
-                  </div>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={profile.email || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your email"
+                  />
                 </div>
-              </div>
-            </div>
 
-            <div className="pt-5">
-              <div className="flex justify-end">
-                <button
-                  type="submit"
-                  disabled={saving}
-                  className="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                >
-                  {saving ? 'ನವೀಕರಿಸುತ್ತಿದೆ...' : 'ನವೀಕರಿಸಿ'}
-                </button>
-              </div>
+                <div className="form-group">
+                  <label>Phone</label>
+                  <input
+                    type="tel"
+                    name="phone"
+                    value={profile.phone || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your phone number"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Address</label>
+                  <input
+                    type="text"
+                    name="address"
+                    value={profile.address || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your address"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Current Degree</label>
+                  <input
+                    type="text"
+                    name="education.currentDegree"
+                    value={profile.education?.currentDegree || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your current degree"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Institution</label>
+                  <input
+                    type="text"
+                    name="education.institution"
+                    value={profile.education?.institution || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your institution"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Year of Study</label>
+                  <input
+                    type="text"
+                    name="education.yearOfStudy"
+                    value={profile.education?.yearOfStudy || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your year of study"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Expected Graduation</label>
+                  <input
+                    type="text"
+                    name="education.expectedGraduation"
+                    value={profile.education?.expectedGraduation || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your expected graduation date"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>GPA</label>
+                  <input
+                    type="text"
+                    name="education.gpa"
+                    value={profile.education?.gpa || ''}
+                    onChange={handleChange}
+                    disabled={!editMode}
+                    placeholder="Enter your GPA"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Skills</label>
+                  <input
+                    type="text"
+                    value={(profile.skills || []).join(', ')}
+                    onChange={handleSkillsChange}
+                    disabled={!editMode}
+                    placeholder="Enter skills (comma-separated)"
+                  />
+                </div>
+
+                <div className="form-group">
+                  <label>Interests</label>
+                  <input
+                    type="text"
+                    value={(profile.interests || []).join(', ')}
+                    onChange={handleInterestsChange}
+                    disabled={!editMode}
+                    placeholder="Enter interests (comma-separated)"
+                  />
+                </div>
+
+                <div className="form-actions">
+                  {!editMode ? (
+                    <button
+                      type="button"
+                      onClick={handleEditClick}
+                      className="edit-button"
+                    >
+                      Edit Profile
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        type="submit"
+                        disabled={saving}
+                        className="save-button"
+                      >
+                        {saving ? 'Saving...' : 'Save Changes'}
+                      </button>
+                      <button
+                        type="button"
+                        onClick={handleCancelClick}
+                        className="cancel-button"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  )}
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );
-} 
+};
+
+export default StudentProfile; 

@@ -226,3 +226,21 @@ body.light-mode .navbar-toggler-icon {
   }
 }
 
+.navbar-links button {
+  background-color: #ef4444 !important;
+  color: white !important;
+  border: none !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+}
+
+body.light-mode .navbar-links button {
+  background-color: black !important;
+}
+
+.navbar-links button:hover {
+  background-color: #dc2626 !important;
+}
+

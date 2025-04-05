@@ -34,6 +34,8 @@ const Navbar = () => {
     const checkAuth = async () => {
       try {
         const token = localStorage.getItem('token');
+        console.log('Current token:', token);
+
         if (!token) {
           setIsAuthenticated(false);
           setUserRole(null);
@@ -41,7 +43,18 @@ const Navbar = () => {
           return;
         }
 
-        const response = await fetch('http://localhost:3000/auth/verify', {
+        // Get the user data from localStorage as a fallback
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        // Set the authentication state based on token and stored user data
+        if (token && storedUser) {
+          setIsAuthenticated(true);
+          setUserRole(storedUser.role);
+          setUser(storedUser);
+        }
+
+        // Try to verify with the backend
+        const response = await fetch('http://localhost:3000/api/auth/verify', {
           credentials: 'include',
           headers: {
             'Accept': 'application/json',
@@ -52,10 +65,13 @@ const Navbar = () => {
         
         if (response.ok) {
           const data = await response.json();
+          console.log('Auth response data:', data);
           setIsAuthenticated(true);
           setUserRole(data.role);
           setUser(data);
+          localStorage.setItem('user', JSON.stringify(data));
         } else if (response.status === 401) {
+          console.log('Auth failed with 401');
           setIsAuthenticated(false);
           setUserRole(null);
           setUser(null);
@@ -64,11 +80,16 @@ const Navbar = () => {
         }
       } catch (error) {
         console.error('Error checking authentication:', error);
-        setIsAuthenticated(false);
-        setUserRole(null);
-        setUser(null);
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        // Don't clear auth state on network errors if we have a valid token and user data
+        const token = localStorage.getItem('token');
+        const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
+        if (!token || !storedUser) {
+          setIsAuthenticated(false);
+          setUserRole(null);
+          setUser(null);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
       }
     };
 
@@ -88,7 +109,7 @@ const Navbar = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:3000/auth/logout', {
+      const response = await fetch('http://localhost:3000/api/auth/logout', {
         method: 'GET',
         credentials: 'include'
       });
@@ -109,6 +130,16 @@ const Navbar = () => {
 
   const closeMenu = () => {
     setIsMenuOpen(false);
+  };
+
+  const handleDashboard = () => {
+    if (userRole === 'student') {
+      navigate('/student');
+    } else if (userRole === 'university') {
+      navigate('/university');
+    } else if (userRole === 'admin') {
+      navigate('/admin');
+    }
   };
 
   return (
@@ -144,18 +175,32 @@ const Navbar = () => {
                 Contact
               </Link>
             </li>
+            {console.log('Auth state:', { isAuthenticated, userRole, user })}
             {isAuthenticated ? (
-              <li className="nav-item">
-                <button 
-                  className="btn btn-outline-primary" 
-                  onClick={() => {
-                    handleLogout();
-                    closeMenu();
-                  }}
-                >
-                  Logout
-                </button>
-              </li>
+              <>
+                <li className="nav-item">
+                  <button 
+                    className="btn btn-primary" 
+                    onClick={() => {
+                      handleDashboard();
+                      closeMenu();
+                    }}
+                  >
+                    Dashboard
+                  </button>
+                </li>
+                <li className="nav-item">
+                  <button 
+                    className="btn btn-outline-primary" 
+                    onClick={() => {
+                      handleLogout();
+                      closeMenu();
+                    }}
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>
             ) : (
               <>
                 <li className="nav-item">

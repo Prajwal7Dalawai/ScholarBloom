@@ -1,96 +1,78 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import './StudentOverview.css';
 
 const StudentOverview = () => {
-  const navigate = useNavigate();
   const [scholarships, setScholarships] = useState([]);
-  const [jobs, setJobs] = useState([]);
-  const [challenges, setChallenges] = useState([]);
-  const [applications, setApplications] = useState([]);
+  const [educoins, setEduCoins] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const { user, token } = useAuth();
 
   useEffect(() => {
-    // Fetch data from API
-    fetchScholarships();
-    fetchJobs();
-    fetchChallenges();
-    fetchApplications();
-  }, []);
+    const fetchData = async () => {
+      try {
+        const [scholarshipsResponse, educoinsResponse] = await Promise.all([
+          fetch('http://localhost:3000/api/scholarships', { 
+            credentials: 'include',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          }),
+          fetch('http://localhost:3000/api/student/educoins', { 
+            credentials: 'include',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json'
+            }
+          })
+        ]);
 
-  const fetchScholarships = async () => {
-    // Implement the logic to fetch scholarships
-    setScholarships([]);
-  };
+        const [scholarshipsData, educoinsData] = await Promise.all([
+          scholarshipsResponse.json(),
+          educoinsResponse.json()
+        ]);
 
-  const fetchJobs = async () => {
-    // Implement the logic to fetch jobs
-    setJobs([]);
-  };
+        setScholarships(scholarshipsData);
+        setEduCoins(educoinsData.balance || 0);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  const fetchChallenges = async () => {
-    // Implement the logic to fetch challenges
-    setChallenges([]);
-  };
+    fetchData();
+  }, [token]);
 
-  const fetchApplications = async () => {
-    // Implement the logic to fetch applications
-    setApplications([]);
-  };
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-6">
-      {/* Statistics Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-gray-500 text-sm font-medium">ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು</h3>
-          <div className="mt-2 flex items-baseline">
-            <span className="text-3xl font-semibold text-gray-900">{scholarships.length}</span>
-            <span className="ml-2 text-sm font-medium text-gray-500">ಒಟ್ಟು</span>
-          </div>
+    <div className="overview-container">
+      <div className="stats-grid">
+        <div className="stat-card">
+          <h3>Available Scholarships</h3>
+          <p className="stat-value">{scholarships.length}</p>
         </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-gray-500 text-sm font-medium">ಉದ್ಯೋಗಗಳು</h3>
-          <div className="mt-2 flex items-baseline">
-            <span className="text-3xl font-semibold text-gray-900">{jobs.length}</span>
-            <span className="ml-2 text-sm font-medium text-gray-500">ಒಟ್ಟು</span>
-          </div>
+        <div className="stat-card">
+          <h3>Available Jobs</h3>
+          <p className="stat-value">0</p>
         </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-gray-500 text-sm font-medium">ಸವಾಲುಗಳು</h3>
-          <div className="mt-2 flex items-baseline">
-            <span className="text-3xl font-semibold text-gray-900">{challenges.length}</span>
-            <span className="ml-2 text-sm font-medium text-gray-500">ಒಟ್ಟು</span>
-          </div>
-        </div>
-
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-gray-500 text-sm font-medium">ಅರ್ಜಿಗಳು</h3>
-          <div className="mt-2 flex items-baseline">
-            <span className="text-3xl font-semibold text-gray-900">{applications.length}</span>
-            <span className="ml-2 text-sm font-medium text-gray-500">ಒಟ್ಟು</span>
-          </div>
+        <div className="stat-card">
+          <h3>Available Challenges</h3>
+          <p className="stat-value">0</p>
         </div>
       </div>
 
-      {/* Recent Activities */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-lg font-medium text-gray-900 mb-4">ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆಗಳು</h2>
-        <div className="space-y-4">
-          {applications.length === 0 ? (
-            <p className="text-gray-500">ಯಾವುದೇ ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆಗಳಿಲ್ಲ</p>
-          ) : (
-            applications.map((application, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-900">{application.title}</p>
-                  <p className="text-sm text-gray-500">{application.status}</p>
-                </div>
-                <span className="text-sm text-gray-500">{application.date}</span>
-              </div>
-            ))
-          )}
-        </div>
+      <div className="educoins-display">
+        <p className="educoins-value">{educoins}</p>
+        <p className="educoins-label">Total EduCoins Earned</p>
       </div>
     </div>
   );

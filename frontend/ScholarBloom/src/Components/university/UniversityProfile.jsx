@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   UserCircleIcon,
   AcademicCapIcon,
@@ -9,15 +9,24 @@ import {
   ChartBarIcon,
   Cog6ToothIcon
 } from '@heroicons/react/24/outline';
+import './UniversityProfile.css';
 
-export default function UniversityProfile() {
-  const [university, setUniversity] = useState({
+const UniversityProfile = () => {
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
+  const [formData, setFormData] = useState({
     name: '',
     email: '',
-    description: '',
     location: '',
+    description: '',
     website: '',
-    logo: null
+    contactNumber: '',
+    establishedYear: '',
+    accreditation: '',
+    facilities: '',
+    achievements: ''
   });
 
   const [stats, setStats] = useState({
@@ -31,24 +40,33 @@ export default function UniversityProfile() {
     pendingApplications: 0
   });
 
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUniversityData = async () => {
+    const fetchProfile = async () => {
       try {
         const response = await fetch('http://localhost:3000/api/university/profile', {
           credentials: 'include'
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch university data');
+        
+        if (response.ok) {
+          const data = await response.json();
+          setProfile(data);
+          setFormData({
+            name: data.name || '',
+            email: data.email || '',
+            location: data.location || '',
+            description: data.description || '',
+            website: data.website || '',
+            contactNumber: data.contactNumber || '',
+            establishedYear: data.establishedYear || '',
+            accreditation: data.accreditation || '',
+            facilities: data.facilities || '',
+            achievements: data.achievements || ''
+          });
         }
-
-        const data = await response.json();
-        setUniversity(data);
       } catch (error) {
-        setError('ವಿಶ್ವವಿದ್ಯಾಲಯ ಡೇಟಾ ಲೋಡ್ ಮಾಡಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ');
+        console.error('Error fetching profile:', error);
       } finally {
         setLoading(false);
       }
@@ -71,9 +89,39 @@ export default function UniversityProfile() {
       }
     };
 
-    fetchUniversityData();
+    fetchProfile();
     fetchStats();
   }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/api/university/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+      });
+
+      if (response.ok) {
+        const updatedProfile = await response.json();
+        setProfile(updatedProfile);
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
+  };
 
   const quickActions = [
     {
@@ -104,17 +152,164 @@ export default function UniversityProfile() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      <div className="loading-container">
+        <div className="loading-spinner"></div>
       </div>
     );
   }
 
   return (
-    <div className="py-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <h1 className="text-3xl font-bold text-gray-900">ವಿಶ್ವವಿದ್ಯಾಲಯ ಪ್ರೊಫೈಲ್</h1>
+    <div className="profile-container">
+      <div className="profile-header">
+        <h1>University Profile</h1>
+        <button 
+          className="edit-button"
+          onClick={() => setIsEditing(!isEditing)}
+        >
+          {isEditing ? 'Cancel' : 'Edit Profile'}
+        </button>
       </div>
+
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="profile-form">
+          <div className="form-group">
+            <label>University Name</label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="email"
+              name="email"
+              value={formData.email}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Location</label>
+            <input
+              type="text"
+              name="location"
+              value={formData.location}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Description</label>
+            <textarea
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Website</label>
+            <input
+              type="url"
+              name="website"
+              value={formData.website}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contact Number</label>
+            <input
+              type="tel"
+              name="contactNumber"
+              value={formData.contactNumber}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Established Year</label>
+            <input
+              type="number"
+              name="establishedYear"
+              value={formData.establishedYear}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Accreditation</label>
+            <input
+              type="text"
+              name="accreditation"
+              value={formData.accreditation}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Facilities</label>
+            <textarea
+              name="facilities"
+              value={formData.facilities}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Achievements</label>
+            <textarea
+              name="achievements"
+              value={formData.achievements}
+              onChange={handleInputChange}
+            />
+          </div>
+
+          <div className="button-group">
+            <button type="submit" className="save-button">Save Changes</button>
+          </div>
+        </form>
+      ) : (
+        <div className="profile-details">
+          <div className="profile-section">
+            <h2>Basic Information</h2>
+            <p><strong>Name:</strong> {profile?.name}</p>
+            <p><strong>Email:</strong> {profile?.email}</p>
+            <p><strong>Location:</strong> {profile?.location}</p>
+            <p><strong>Description:</strong> {profile?.description}</p>
+          </div>
+
+          <div className="profile-section">
+            <h2>Contact Information</h2>
+            <p><strong>Website:</strong> {profile?.website}</p>
+            <p><strong>Contact Number:</strong> {profile?.contactNumber}</p>
+          </div>
+
+          <div className="profile-section">
+            <h2>University Details</h2>
+            <p><strong>Established Year:</strong> {profile?.establishedYear}</p>
+            <p><strong>Accreditation:</strong> {profile?.accreditation}</p>
+          </div>
+
+          <div className="profile-section">
+            <h2>Facilities</h2>
+            <p>{profile?.facilities}</p>
+          </div>
+
+          <div className="profile-section">
+            <h2>Achievements</h2>
+            <p>{profile?.achievements}</p>
+          </div>
+        </div>
+      )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         {error && (
@@ -122,29 +317,6 @@ export default function UniversityProfile() {
             <span className="block sm:inline">{error}</span>
           </div>
         )}
-
-        {/* Profile Header */}
-        <div className="mt-8">
-          <div className="bg-white shadow rounded-lg p-6">
-            <div className="flex items-center">
-              <div className="flex-shrink-0">
-                <UserCircleIcon className="h-16 w-16 text-gray-400" />
-              </div>
-              <div className="ml-4">
-                <h2 className="text-2xl font-bold text-gray-900">{university.name}</h2>
-                <p className="text-gray-500">{university.email}</p>
-              </div>
-              <div className="ml-auto">
-                <Link
-                  to="/editUniprofile"
-                  className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700"
-                >
-                  ಪ್ರೊಫೈಲ್ ಸಂಪಾದಿಸಿ
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
 
         {/* Stats */}
         <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
@@ -243,4 +415,6 @@ export default function UniversityProfile() {
       </div>
     </div>
   );
-} 
+};
+
+export default UniversityProfile; 

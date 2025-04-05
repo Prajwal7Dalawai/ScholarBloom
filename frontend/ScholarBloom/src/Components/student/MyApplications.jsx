@@ -18,9 +18,14 @@ export default function MyApplications() {
     const fetchApplications = async () => {
       try {
         setLoading(true);
+        const token = localStorage.getItem('token');
+        
         // Get student profile first to get the student ID
-        const profileResponse = await fetch('http://localhost:3000/api/student/profile', {
-          credentials: 'include'
+        const profileResponse = await fetch('http://localhost:3000/student/profile', {
+          credentials: 'include',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
         });
 
         if (!profileResponse.ok) {
@@ -32,7 +37,7 @@ export default function MyApplications() {
         setApplications(applicationsData);
       } catch (error) {
         console.error('Error fetching applications:', error);
-        setError('ಅರ್ಜಿಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
+        setError('Error loading applications');
       } finally {
         setLoading(false);
       }
@@ -88,7 +93,7 @@ export default function MyApplications() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
         <div className="flex items-center">
           <DocumentTextIcon className="h-8 w-8 text-gray-500 mr-2" />
-          <h1 className="text-3xl font-bold text-gray-900">ನನ್ನ ಅರ್ಜಿಗಳು</h1>
+          <h1 className="text-3xl font-bold text-gray-900">My Applications</h1>
         </div>
       </div>
 
@@ -102,25 +107,25 @@ export default function MyApplications() {
                     <thead className="bg-gray-50">
                       <tr>
                         <th scope="col" className="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
-                          ಅರ್ಜಿ ವಿಧ
+                          Application Type
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          ಶೀರ್ಷಿಕೆ
+                          Title
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          ಸಂಸ್ಥೆ
+                          Organization
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          ಸ್ಥಿತಿ
+                          Status
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          ಅರ್ಜಿ ಸಲ್ಲಿಕೆ ದಿನಾಂಕ
+                          Application Date
                         </th>
                         <th scope="col" className="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                          ಕೊನೆಯ ದಿನಾಂಕ
+                          Deadline
                         </th>
                         <th scope="col" className="relative py-3.5 pl-3 pr-4 sm:pr-6">
-                          <span className="sr-only">ಕ್ರಿಯೆಗಳು</span>
+                          <span className="sr-only">Actions</span>
                         </th>
                       </tr>
                     </thead>
@@ -128,8 +133,8 @@ export default function MyApplications() {
                       {applications.map((application) => (
                         <tr key={application.id}>
                           <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                            {application.type === 'scholarship' ? 'ವಿದ್ಯಾರ್ಥಿವೇತನ' : 
-                             application.type === 'job' ? 'ಉದ್ಯೋಗ' : 'ಸವಾಲು'}
+                            {application.type === 'scholarship' ? 'Scholarship' : 
+                             application.type === 'job' ? 'Job' : 'Challenge'}
                           </td>
                           <td className="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                             {application.title}
@@ -141,9 +146,9 @@ export default function MyApplications() {
                             <div className="flex items-center">
                               {getStatusIcon(application.status)}
                               <span className={`ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(application.status)}`}>
-                                {application.status === 'accepted' ? 'ಅಂಗೀಕರಿಸಲಾಗಿದೆ' :
-                                 application.status === 'rejected' ? 'ತಿರಸ್ಕರಿಸಲಾಗಿದೆ' :
-                                 'ಬಾಕಿ ಇದೆ'}
+                                {application.status === 'accepted' ? 'Accepted' :
+                                 application.status === 'rejected' ? 'Rejected' :
+                                 'Pending'}
                               </span>
                             </div>
                           </td>

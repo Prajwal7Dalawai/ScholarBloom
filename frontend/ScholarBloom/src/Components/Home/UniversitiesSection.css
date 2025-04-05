@@ -2,11 +2,14 @@
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem;
+    margin: 1rem;
   }
   
   .university-card img {
     height: 220px;
     object-fit: cover;
+    border-radius: 8px;
   }
   
   .university-card:hover {
@@ -16,6 +19,7 @@
   
   .card-body {
     text-align: center;
+    padding: 1.5rem;
   }
   
   body.light-mode .university-card {
@@ -24,11 +28,14 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     background-color: #ffffff; /* White background */
     border: 1px solid #ddd; /* Light gray border */
+    padding: 1.5rem;
+    margin: 1rem;
   }
   
   body.light-mode .university-card img {
     height: 220px;
     object-fit: cover;
+    border-radius: 8px;
   }
   
   body.light-mode .university-card:hover {
@@ -39,5 +46,6 @@
   body.light-mode .card-body {
     text-align: center;
     color: #333; /* Dark text for contrast */
+    padding: 1.5rem;
   }
   
