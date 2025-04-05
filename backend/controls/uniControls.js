@@ -85,10 +85,18 @@ module.exports.getScholarships = async (req, res) => {
 
 module.exports.getScholarshipDetails = async (req, res) => {
     try {
+        const { id } = req.params;
+        
+        // Check if the ID is a valid MongoDB ObjectId
+        if (!id.match(/^[0-9a-fA-F]{24}$/)) {
+            return res.status(400).json({ error: "Invalid scholarship ID format" });
+        }
+
         const scholarship = await Scholarship.findOne({
-            _id: req.params.id,
-            university: req.user._id
+            _id: id,
+            universityId: req.user._id
         });
+        
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
         }
@@ -102,7 +110,7 @@ module.exports.getScholarshipDetails = async (req, res) => {
 module.exports.updateScholarship = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOneAndUpdate(
-            { _id: req.params.id, university: req.user._id },
+            { _id: req.params.id, universityId: req.user._id },
             req.body,
             { new: true }
         );
@@ -120,7 +128,7 @@ module.exports.deleteScholarship = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOneAndDelete({
             _id: req.params.id,
-            university: req.user._id
+            universityId: req.user._id
         });
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
@@ -136,8 +144,11 @@ module.exports.getScholarshipApplications = async (req, res) => {
     try {
         const scholarship = await Scholarship.findOne({
             _id: req.params.id,
-            university: req.user._id
-        }).populate("applicants");
+            universityId: req.user._id
+        }).populate({
+            path: "applicants.studentId",
+            select: "fullName email studentDetails"
+        });
         
         if (!scholarship) {
             return res.status(404).json({ error: "Scholarship not found" });
@@ -157,7 +168,7 @@ module.exports.updateApplicationStatus = async (req, res) => {
         const scholarship = await Scholarship.findOneAndUpdate(
             { 
                 _id: req.params.id,
-                university: req.user._id,
+                universityId: req.user._id,
                 "applicants._id": applicationId
             },
             { $set: { "applicants.$.status": status } },
@@ -203,7 +214,7 @@ module.exports.getCourseDetails = async (req, res) => {
     try {
         const course = await Course.findOne({
             _id: req.params.id,
-            university: req.user._id
+            universityId: req.user._id
         });
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -218,7 +229,7 @@ module.exports.getCourseDetails = async (req, res) => {
 module.exports.updateCourse = async (req, res) => {
     try {
         const course = await Course.findOneAndUpdate(
-            { _id: req.params.id, university: req.user._id },
+            { _id: req.params.id, universityId: req.user._id },
             req.body,
             { new: true }
         );
@@ -236,7 +247,7 @@ module.exports.deleteCourse = async (req, res) => {
     try {
         const course = await Course.findOneAndDelete({
             _id: req.params.id,
-            university: req.user._id
+            universityId: req.user._id
         });
         if (!course) {
             return res.status(404).json({ error: "Course not found" });
@@ -252,7 +263,7 @@ module.exports.getCourseEnrollments = async (req, res) => {
     try {
         const course = await Course.findOne({
             _id: req.params.id,
-            university: req.user._id
+            universityId: req.user._id
         }).populate("enrolledStudents");
         
         if (!course) {
@@ -388,11 +399,11 @@ module.exports.getScholarshipAnalytics = async (req, res) => {
         const analytics = {
             totalScholarships: scholarships.length,
             activeScholarships: scholarships.filter(s => s.status === 'active').length,
-            totalApplications: scholarships.reduce((acc, s) => acc + s.applicants.length, 0),
+            totalApplications: scholarships.reduce((acc, s) => acc + (s.applicants ? s.applicants.length : 0), 0),
             pendingApplications: scholarships.reduce((acc, s) => 
-                acc + s.applicants.filter(a => a.status === 'pending').length, 0),
+                acc + (s.applicants ? s.applicants.filter(a => a.status === 'pending').length : 0), 0),
             approvedApplications: scholarships.reduce((acc, s) => 
-                acc + s.applicants.filter(a => a.status === 'approved').length, 0)
+                acc + (s.applicants ? s.applicants.filter(a => a.status === 'approved').length : 0), 0)
         };
         return res.status(200).json(analytics);
     } catch (error) {
@@ -407,7 +418,7 @@ module.exports.getCourseAnalytics = async (req, res) => {
         const analytics = {
             totalCourses: courses.length,
             activeCourses: courses.filter(c => c.status === 'active').length,
-            totalEnrollments: courses.reduce((acc, c) => acc + c.enrolledStudents.length, 0)
+            totalEnrollments: courses.reduce((acc, c) => acc + (c.enrolledStudents ? c.enrolledStudents.length : 0), 0)
         };
         return res.status(200).json(analytics);
     } catch (error) {
@@ -422,11 +433,11 @@ module.exports.getJobAnalytics = async (req, res) => {
         const analytics = {
             totalJobs: jobs.length,
             activeJobs: jobs.filter(j => j.status === 'active').length,
-            totalApplications: jobs.reduce((acc, j) => acc + j.applicants.length, 0),
+            totalApplications: jobs.reduce((acc, j) => acc + (j.applications ? j.applications.length : 0), 0),
             pendingApplications: jobs.reduce((acc, j) => 
-                acc + j.applicants.filter(a => a.status === 'pending').length, 0),
+                acc + (j.applications ? j.applications.filter(a => a.status === 'pending').length : 0), 0),
             approvedApplications: jobs.reduce((acc, j) => 
-                acc + j.applicants.filter(a => a.status === 'approved').length, 0)
+                acc + (j.applications ? j.applications.filter(a => a.status === 'approved').length : 0), 0)
         };
         return res.status(200).json(analytics);
     } catch (error) {
@@ -435,28 +446,51 @@ module.exports.getJobAnalytics = async (req, res) => {
     }
 };
 
-// Get all applications for all scholarships
+// Get all applications (scholarships, courses, and jobs)
 module.exports.getAllApplications = async (req, res) => {
     try {
-        const { limit } = req.query;
+        console.log("Request headers:", req.headers);
+        console.log("Request user object:", req.user);
         
-        // Get all scholarships for this university with populated applicants
+        if (!req.user || !req.user._id) {
+            return res.status(401).json({ error: "User not authenticated" });
+        }
+
+        const { limit } = req.query;
+        console.log("Requested limit:", limit);
+        
+        // Get all scholarships with populated applicants
         const scholarships = await Scholarship.find({ universityId: req.user._id })
             .populate({
                 path: 'applicants.studentId',
-                select: 'fullName email studentDetails'
+                select: 'fullName email studentDetails profilePic'
             });
+            
+        console.log("Found scholarships:", scholarships.length); // Debug log
         
-        // Extract all applications from all scholarships
+        // Get all jobs with populated applications
+        const jobs = await Job.find({ universityId: req.user._id })
+            .populate({
+                path: 'applications.studentId',
+                select: 'fullName email studentDetails profilePic'
+            });
+            
+        console.log("Found jobs:", jobs.length); // Debug log
+
+        // Extract all applications from scholarships
         let allApplications = [];
+        
+        // Process scholarship applications
         for (const scholarship of scholarships) {
             if (scholarship.applicants && scholarship.applicants.length > 0) {
                 const applications = scholarship.applicants.map(applicant => ({
                     type: 'scholarship',
-                    scholarshipId: scholarship._id,
-                    scholarshipTitle: scholarship.title,
+                    itemId: scholarship._id,
+                    title: scholarship.title,
+                    studentId: applicant.studentId?._id,
                     studentName: applicant.studentId?.fullName || 'Unknown',
                     studentEmail: applicant.studentId?.email || 'Unknown',
+                    studentProfilePic: applicant.studentId?.profilePic,
                     studentGrade: applicant.studentId?.studentDetails?.grade || 'N/A',
                     status: applicant.status || 'pending',
                     createdAt: applicant.appliedAt || applicant.createdAt || new Date(),
@@ -466,17 +500,47 @@ module.exports.getAllApplications = async (req, res) => {
             }
         }
         
-        // Sort applications by date (newest first)
+        // Process job applications
+        for (const job of jobs) {
+            if (job.applications && job.applications.length > 0) {
+                const applications = job.applications.map(application => ({
+                    type: 'job',
+                    itemId: job._id,
+                    title: job.title,
+                    studentId: application.studentId?._id,
+                    studentName: application.studentId?.fullName || 'Unknown',
+                    studentEmail: application.studentId?.email || 'Unknown',
+                    studentProfilePic: application.studentId?.profilePic,
+                    studentGrade: application.studentId?.studentDetails?.grade || 'N/A',
+                    status: application.status || 'pending',
+                    createdAt: application.appliedAt || application.createdAt || new Date()
+                }));
+                allApplications = [...allApplications, ...applications];
+            }
+        }
+        
+        console.log("Total applications found:", allApplications.length); // Debug log
+        
+        // Sort all applications by date (newest first)
         allApplications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         
         // Apply limit if provided
         if (limit) {
             allApplications = allApplications.slice(0, parseInt(limit));
+            console.log("Applications after limit:", allApplications.length); // Debug log
         }
         
-        return res.status(200).json(allApplications);
+        return res.status(200).json({
+            total: allApplications.length,
+            applications: allApplications
+        });
     } catch (error) {
-        console.error("Get All Applications Error:", error);
-        return res.status(500).json({ error: "Failed to get applications" });
+        console.error("Get All Applications Error - Full error:", error);
+        console.error("Error stack trace:", error.stack);
+        return res.status(500).json({ 
+            error: "Failed to get applications",
+            details: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
     }
 }; 

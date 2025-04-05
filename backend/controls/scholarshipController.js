@@ -8,7 +8,7 @@ const createScholarship = async (req, res) => {
     try {
         const scholarship = new Scholarship({
             ...req.body,
-            universityId: req.user.uid
+            universityId: req.user._id
         });
         await scholarship.save();
         return res.status(201).json(scholarship);

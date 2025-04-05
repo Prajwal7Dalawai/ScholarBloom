@@ -20,74 +20,119 @@ const UniversityDashboard = () => {
         setLoading(true);
         setError(null);
 
+        // Debug logs
+        console.log('Current token:', token);
+        console.log('Current user:', user);
+        console.log('User ID:', user?._id);
+
+        if (!token) {
+          console.error('No token available');
+          setError('Authentication token not found. Please login again.');
+          setLoading(false);
+          return;
+        }
+
+        if (!user || !user._id) {
+          console.error('No user data or user ID available');
+          setError('User data not found. Please login again.');
+          setLoading(false);
+          return;
+        }
+
         const headers = {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         };
 
-        // Fetch analytics data
-        const [scholarshipAnalytics, courseAnalytics, jobAnalytics] = await Promise.all([
-          fetch('http://localhost:3000/api/university/analytics/scholarships', {
-            credentials: 'include',
-            headers
-          }).then(async res => {
-            if (!res.ok) throw new Error('Failed to fetch scholarship analytics');
-            return res.json();
-          }),
-          fetch('http://localhost:3000/api/university/analytics/courses', {
-            credentials: 'include',
-            headers
-          }).then(async res => {
-            if (!res.ok) throw new Error('Failed to fetch course analytics');
-            return res.json();
-          }),
-          fetch('http://localhost:3000/api/university/analytics/jobs', {
-            credentials: 'include',
-            headers
-          }).then(async res => {
-            if (!res.ok) throw new Error('Failed to fetch job analytics');
-            return res.json();
-          })
-        ]);
+        // Debug log for headers
+        console.log('Request headers:', headers);
 
-        // Fetch recent applications
-        const applicationsResponse = await fetch('http://localhost:3000/api/university/scholarships/applications?limit=5', {
-          credentials: 'include',
-          headers
-        });
+        // Fetch recent applications first as a test
+        try {
+          const applicationsResponse = await fetch('http://localhost:3000/api/university/scholarships/applications?limit=5', {
+            method: 'GET',
+            headers
+          });
 
-        if (!applicationsResponse.ok) {
-          throw new Error('Failed to fetch recent applications');
+          if (!applicationsResponse.ok) {
+            const errorText = await applicationsResponse.text();
+            console.error('Applications response error:', {
+              status: applicationsResponse.status,
+              statusText: applicationsResponse.statusText,
+              body: errorText
+            });
+            throw new Error(`Failed to fetch applications: ${errorText}`);
+          }
+
+          const recentApplications = await applicationsResponse.json();
+          console.log('Recent applications:', recentApplications);
+
+          // Continue with other API calls...
+          const [scholarshipAnalytics, courseAnalytics, jobAnalytics] = await Promise.all([
+            fetch('http://localhost:3000/api/university/analytics/scholarships', {
+              method: 'GET',
+              headers
+            }).then(async res => {
+              if (!res.ok) {
+                console.error('Scholarship analytics response:', res.status, await res.text());
+                throw new Error('Failed to fetch scholarship analytics');
+              }
+              return res.json();
+            }),
+            fetch('http://localhost:3000/api/university/analytics/courses', {
+              method: 'GET',
+              headers
+            }).then(async res => {
+              if (!res.ok) {
+                console.error('Course analytics response:', res.status, await res.text());
+                throw new Error('Failed to fetch course analytics');
+              }
+              return res.json();
+            }),
+            fetch('http://localhost:3000/api/university/analytics/jobs', {
+              method: 'GET',
+              headers
+            }).then(async res => {
+              if (!res.ok) {
+                console.error('Job analytics response:', res.status, await res.text());
+                throw new Error('Failed to fetch job analytics');
+              }
+              return res.json();
+            })
+          ]);
+
+          // Initialize default values for analytics
+          const defaultAnalytics = {
+            totalScholarships: 0,
+            activeScholarships: 0,
+            totalApplications: 0,
+            pendingApplications: 0
+          };
+
+          setDashboardData({
+            scholarshipStats: scholarshipAnalytics || defaultAnalytics,
+            courseStats: courseAnalytics || { totalCourses: 0, activeCourses: 0, totalEnrollments: 0 },
+            jobStats: jobAnalytics || { totalJobs: 0, activeJobs: 0, totalApplications: 0, pendingApplications: 0 },
+            recentApplications: Array.isArray(recentApplications?.applications) ? recentApplications.applications : []
+          });
+
+        } catch (error) {
+          console.error('Detailed error:', error);
+          setError(error.message || 'Failed to fetch dashboard data');
         }
 
-        const recentApplications = await applicationsResponse.json();
-
-        // Initialize default values for analytics
-        const defaultAnalytics = {
-          totalScholarships: 0,
-          activeScholarships: 0,
-          totalApplications: 0,
-          pendingApplications: 0
-        };
-
-        setDashboardData({
-          scholarshipStats: scholarshipAnalytics || defaultAnalytics,
-          courseStats: courseAnalytics || { totalCourses: 0, activeCourses: 0, totalEnrollments: 0 },
-          jobStats: jobAnalytics || { totalJobs: 0, activeJobs: 0, totalApplications: 0, pendingApplications: 0 },
-          recentApplications: Array.isArray(recentApplications) ? recentApplications : []
-        });
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
-        setError('ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಡೇಟಾವನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ');
+        setError('Failed to fetch dashboard data. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
-    if (token) {
+    if (user && token) {
       fetchDashboardData();
     }
-  }, [token]);
+  }, [user, token]);
 
   const renderContent = () => {
     switch (activeTab) {
