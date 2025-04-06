@@ -1,6 +1,7 @@
 const Job = require('../models/job-schema.js');
 const User = require('../models/user-schema.js');
 const wrapAsync = require('../utils/wrapAsync.js');
+const JobApplication = require('../models/jobApplication-schema.js');
 
 module.exports.getAllJobs = async (req, res) => {
     try {
@@ -74,25 +75,44 @@ module.exports.deleteJobPosting = async (req, res) => {
 
 module.exports.applyForJob = async (req, res) => {
     try {
-        const user = await User.findOne({ email: res.locals.currentUser.email });
-        const { jobId, resume } = req.body;
-        const job = await Job.findById(jobId);
-        
+        const { id } = req.params;
+        const studentId = req.user._id;
+
+        // Check if job exists
+        const job = await Job.findById(id);
         if (!job) {
-            return res.status(404).json({ error: "Job not found" });
+            return res.status(404).json({ message: 'Job not found' });
         }
 
+        // Check if already applied
+        const alreadyApplied = job.applicants.some(app => 
+            app.studentId.toString() === studentId.toString()
+        );
+
+        if (alreadyApplied) {
+            return res.status(400).json({ message: 'You have already applied for this job' });
+        }
+
+        // Get student details
+        const student = await User.findById(studentId);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
+
+        // Add application to job
         job.applicants.push({
-            studentId: user._id,
-            resume: resume,
-            status: "pending",
+            studentId: studentId,
+            resumeLink: student.studentDetails?.resumeLink || '',
+            status: 'Pending',
             appliedAt: new Date()
         });
 
         await job.save();
-        res.json({ message: "Applied for job successfully" });
-    } catch (err) {
-        res.status(400).json({ error: err.message });
+
+        res.status(201).json({ message: 'Application submitted successfully' });
+    } catch (error) {
+        console.error('Error in applyForJob:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 

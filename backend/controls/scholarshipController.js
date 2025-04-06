@@ -2,6 +2,7 @@ require("dotenv").config();
 const Scholarship = require("../models/scholarship-schema.js");
 const wrapAsync = require("../utils/wrapAsync.js");
 const User = require("../models/user-schema.js");
+const ScholarshipApplication = require("../models/scholarshipApplication-schema.js");
 
 // Create scholarship
 const createScholarship = async (req, res) => {
@@ -65,49 +66,45 @@ const getScholarshipApplicants = async (req, res) => {
 // Apply for scholarship
 const applyForScholarship = async (req, res) => {
     try {
-        const scholarship = await Scholarship.findById(req.params.id);
+        const { id } = req.params;
+        const studentId = req.user._id;
+
+        // Check if scholarship exists
+        const scholarship = await Scholarship.findById(id);
         if (!scholarship) {
-            return res.status(404).json({ error: "Scholarship not found" });
+            return res.status(404).json({ message: 'Scholarship not found' });
         }
 
-        // Check if student has already applied
+        // Check if already applied
         const alreadyApplied = scholarship.applicants.some(app => 
-            app.studentId.toString() === req.user._id.toString()
+            app.studentId.toString() === studentId.toString()
         );
 
         if (alreadyApplied) {
-            return res.status(400).json({ error: "Already applied for this scholarship" });
+            return res.status(400).json({ message: 'You have already applied for this scholarship' });
         }
 
         // Get student details
-        const student = await User.findById(req.user._id);
+        const student = await User.findById(studentId);
         if (!student) {
-            return res.status(404).json({ error: "Student not found" });
+            return res.status(404).json({ message: 'Student not found' });
         }
 
-        // Add application
+        // Add application to scholarship
         scholarship.applicants.push({
-            studentId: req.user._id,
-            status: "pending",
+            studentId: studentId,
+            status: 'pending',
+            appliedAt: new Date(),
             grade: student.studentDetails?.grade,
             eduCoins: student.studentDetails?.eduCoins
         });
 
         await scholarship.save();
 
-        // Add scholarship to student's applied list
-        await User.findByIdAndUpdate(
-            req.user._id,
-            { $addToSet: { "studentDetails.appliedScholarships": scholarship._id } }
-        );
-
-        return res.status(200).json({ 
-            message: "Application submitted successfully",
-            scholarshipId: scholarship._id
-        });
+        res.status(201).json({ message: 'Application submitted successfully' });
     } catch (error) {
-        console.error("Apply for Scholarship Error:", error);
-        return res.status(500).json({ error: "Failed to apply for scholarship" });
+        console.error('Error in applyForScholarship:', error);
+        res.status(500).json({ message: 'Internal server error' });
     }
 };
 

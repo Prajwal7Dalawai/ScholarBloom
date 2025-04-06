@@ -161,12 +161,12 @@ const Login = () => {
       <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-            ನಿಮ್ಮ ಖಾತೆಗೆ ಲಾಗಿನ್ ಮಾಡಿ
+            Sign in to your account
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
-            ಅಥವಾ{' '}
+            Or{' '}
             <Link to="/register" className="font-medium text-primary-600 hover:text-primary-500">
-              ಹೊಸ ಖಾತೆ ರಚಿಸಿ
+              create a new account
             </Link>
           </p>
         </div>
@@ -187,7 +187,7 @@ const Login = () => {
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
               <label htmlFor="email" className="sr-only">
-                ಇಮೇಲ್ ವಿಳಾಸ
+                Email address
               </label>
               <input
                 id="email"
@@ -195,14 +195,14 @@ const Login = () => {
                 type="email"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="ಇಮೇಲ್ ವಿಳಾಸ"
+                placeholder="Email address"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
             <div>
               <label htmlFor="password" className="sr-only">
-                ಪಾಸ್‌ವರ್ಡ್
+                Password
               </label>
               <input
                 id="password"
@@ -210,7 +210,7 @@ const Login = () => {
                 type="password"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                placeholder="ಪಾಸ್‌ವರ್ಡ್"
+                placeholder="Password"
                 value={formData.password}
                 onChange={handleChange}
               />
@@ -221,6 +221,7 @@ const Login = () => {
                 name="role"
                 value={formData.role}
                 onChange={handleChange}
+                className="text-black bg-white w-full px-3 py-2 border border-gray-300 rounded-md"
               >
                 <option value="student">Student</option>
                 <option value="university">University</option>
@@ -234,7 +235,7 @@ const Login = () => {
               disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
             >
-              {loading ? 'ಲಾಗಿನ್ ಆಗುತ್ತಿದೆ...' : 'ಲಾಗಿನ್'}
+              {loading ? 'Signing in...' : 'Sign in'}
             </button>
           </div>
         </form>
@@ -245,7 +246,7 @@ const Login = () => {
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-gray-50 text-gray-500">ಅಥವಾ</span>
+              <span className="px-2 bg-gray-50 text-gray-500">Or</span>
             </div>
           </div>
 

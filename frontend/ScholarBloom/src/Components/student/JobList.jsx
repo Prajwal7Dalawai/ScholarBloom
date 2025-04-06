@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { BriefcaseIcon, BuildingOfficeIcon, CurrencyDollarIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { BriefcaseIcon, CalendarIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { jobAPI } from '../../services/api';
 
 const JobList = () => {
@@ -9,7 +9,7 @@ const JobList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [filter, setFilter] = useState('all');
-  const [sortBy, setSortBy] = useState('postedDate');
+  const [sortBy, setSortBy] = useState('postedAt');
 
   useEffect(() => {
     fetchJobs();
@@ -65,18 +65,17 @@ const JobList = () => {
           className="px-4 py-2 border rounded-lg"
         >
           <option value="all">All Jobs</option>
-          <option value="full-time">Full Time</option>
-          <option value="part-time">Part Time</option>
-          <option value="internship">Internship</option>
+          <option value="open">Open</option>
+          <option value="closed">Closed</option>
         </select>
         <select
           value={sortBy}
           onChange={(e) => setSortBy(e.target.value)}
           className="px-4 py-2 border rounded-lg"
         >
-          <option value="postedDate">Posted Date</option>
-          <option value="salary">Salary</option>
-          <option value="title">Title</option>
+          <option value="postedAt">Posted Date</option>
+          <option value="deadline">Deadline</option>
+          <option value="jobTitle">Title</option>
         </select>
       </div>
 
@@ -90,35 +89,36 @@ const JobList = () => {
           jobs.map((job) => (
             <div key={job._id} className="bg-white rounded-lg shadow-sm p-6">
               <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">{job.title}</h3>
+                <h3 className="text-lg font-semibold text-gray-900">{job.jobTitle}</h3>
                 <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                  job.status === 'active'
+                  job.status === 'open'
                     ? 'bg-green-100 text-green-700'
                     : 'bg-gray-100 text-gray-700'
                 }`}>
-                  {job.status === 'active' ? 'Active' : 'Closed'}
+                  {job.status === 'open' ? 'Open' : 'Closed'}
                 </span>
               </div>
-              <p className="text-gray-600 mb-4">{job.description}</p>
+              <p className="text-gray-600 mb-4">{job.jobDescription}</p>
               <div className="space-y-2 mb-4">
                 <div className="flex items-center text-gray-600">
-                  <BuildingOfficeIcon className="h-5 w-5 mr-2" />
-                  <span>{job.company}</span>
+                  <ClockIcon className="h-5 w-5 mr-2" />
+                  <span>Posted: {new Date(job.postedAt).toLocaleDateString()}</span>
                 </div>
                 <div className="flex items-center text-gray-600">
-                  <MapPinIcon className="h-5 w-5 mr-2" />
-                  <span>{job.location}</span>
-                </div>
-                <div className="flex items-center text-gray-600">
-                  <CurrencyDollarIcon className="h-5 w-5 mr-2" />
-                  <span>Salary: ₹{job.salary.toLocaleString()}</span>
+                  <CalendarIcon className="h-5 w-5 mr-2" />
+                  <span>Deadline: {new Date(job.deadline).toLocaleDateString()}</span>
                 </div>
               </div>
               <button
                 onClick={() => handleApply(job._id)}
-                className="w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
+                disabled={job.status === 'closed'}
+                className={`w-full px-4 py-2 rounded ${
+                  job.status === 'open'
+                    ? 'bg-indigo-600 text-white hover:bg-indigo-700'
+                    : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                }`}
               >
-                Apply Now
+                {job.status === 'open' ? 'Apply Now' : 'Applications Closed'}
               </button>
             </div>
           ))
