@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Scholarship = require('../models/Scholarship-Schema');
 const User = require('../models/user-schema');
-const { verifyToken } = require('../middleware');
+const { verifyToken } = require('../Middleware/auth');
 
 // Get all scholarships
 router.get('/', async (req, res) => {
@@ -14,6 +14,32 @@ router.get('/', async (req, res) => {
   } catch (error) {
     console.error('Error fetching scholarships:', error);
     res.status(500).json({ error: 'Failed to fetch scholarships', details: error.message });
+  }
+});
+
+// Get recent scholarship applications for a university
+router.get('/applications', verifyToken, async (req, res) => {
+  try {
+    console.log('Fetching recent scholarship applications...');
+    const { limit = 5 } = req.query;
+    
+    // Find all scholarships created by this university
+    const scholarships = await Scholarship.find({ universityId: req.user._id });
+    const scholarshipIds = scholarships.map(s => s._id);
+    
+    // Find all applications for these scholarships
+    const applications = await User.find({
+      'studentDetails.scholarshipApplications.scholarshipId': { $in: scholarshipIds }
+    })
+    .select('fullName email studentDetails.scholarshipApplications')
+    .limit(parseInt(limit))
+    .sort({ 'studentDetails.scholarshipApplications.appliedAt': -1 });
+    
+    console.log(`Found ${applications.length} recent applications`);
+    res.json({ applications });
+  } catch (error) {
+    console.error('Error fetching recent applications:', error);
+    res.status(500).json({ error: 'Failed to fetch recent applications', details: error.message });
   }
 });
 

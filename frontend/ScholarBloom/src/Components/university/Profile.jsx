@@ -1,46 +1,71 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { toast } from 'react-toastify';
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [profileData, setProfileData] = useState({
-    name: 'Stanford University',
-    email: 'admin@stanford.edu',
-    website: 'www.stanford.edu',
-    location: 'Stanford, California',
-    founded: '1885',
-    description: 'Stanford University is one of the world\'s leading research and teaching institutions.',
-    departments: [
-      'Computer Science',
-      'Engineering',
-      'Business',
-      'Medicine',
-      'Law',
-      'Arts & Sciences'
-    ],
-    stats: {
-      students: 17000,
-      faculty: 2200,
-      alumni: 250000,
-      researchFunding: '$1.8B'
-    },
-    achievements: [
-      {
-        title: 'Nobel Prize Winners',
-        count: 85,
-        description: 'Stanford faculty and alumni have won 85 Nobel Prizes'
-      },
-      {
-        title: 'Research Impact',
-        count: 1000,
-        description: 'Over 1000 research papers published annually'
-      },
-      {
-        title: 'Global Ranking',
-        count: 2,
-        description: 'Ranked #2 in the world by QS World University Rankings'
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const { user, token } = useAuth();
+  const [profileData, setProfileData] = useState(null);
+
+  useEffect(() => {
+    fetchProfileData();
+  }, [token]);
+
+  const fetchProfileData = async () => {
+    try {
+      console.log('Fetching profile data with token:', token);
+      const response = await fetch('http://localhost:3000/api/university/profile', {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Profile fetch error:', errorData);
+        throw new Error(errorData.message || 'Failed to fetch profile data');
       }
-    ]
-  });
+
+      const data = await response.json();
+      console.log('Received profile data:', data);
+      setProfileData(data);
+    } catch (err) {
+      console.error('Profile fetch error:', err);
+      setError(err.message);
+      toast.error('Failed to load profile data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSave = async () => {
+    try {
+      const response = await fetch('http://localhost:3000/api/university/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          fullName: profileData.fullName,
+          email: profileData.email,
+          location: profileData.location,
+          profilePic: profileData.profilePic
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update profile');
+      }
+
+      toast.success('Profile updated successfully');
+      setIsEditing(false);
+    } catch (err) {
+      toast.error('Failed to update profile');
+    }
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -91,8 +116,32 @@ const Profile = () => {
     }));
   };
 
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center text-red-600 p-4">
+        {error}
+      </div>
+    );
+  }
+
+  if (!profileData) {
+    return (
+      <div className="text-center p-4">
+        No profile data found
+      </div>
+    );
+  }
+
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 p-6">
       {/* Profile Header */}
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex justify-between items-start">
@@ -101,7 +150,7 @@ const Profile = () => {
             <p className="text-gray-500">Manage your university information and settings</p>
           </div>
           <button
-            onClick={() => setIsEditing(!isEditing)}
+            onClick={() => isEditing ? handleSave() : setIsEditing(true)}
             className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
           >
             {isEditing ? 'Save Changes' : 'Edit Profile'}
@@ -118,13 +167,13 @@ const Profile = () => {
             {isEditing ? (
               <input
                 type="text"
-                name="name"
-                value={profileData.name}
+                name="fullName"
+                value={profileData.fullName || ''}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             ) : (
-              <p className="mt-1 text-gray-900">{profileData.name}</p>
+              <p className="mt-1 text-gray-900">{profileData.fullName}</p>
             )}
           </div>
           <div>
@@ -133,180 +182,105 @@ const Profile = () => {
               <input
                 type="email"
                 name="email"
-                value={profileData.email}
+                value={profileData.email || ''}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             ) : (
               <p className="mt-1 text-gray-900">{profileData.email}</p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Website</label>
-            {isEditing ? (
-              <input
-                type="url"
-                name="website"
-                value={profileData.website}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
-            ) : (
-              <p className="mt-1 text-gray-900">{profileData.website}</p>
-            )}
-          </div>
-          <div>
             <label className="block text-sm font-medium text-gray-700">Location</label>
             {isEditing ? (
-              <input
-                type="text"
-                name="location"
-                value={profileData.location}
-                onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-              />
+              <div className="space-y-2">
+                <input
+                  type="text"
+                  name="location.city"
+                  placeholder="City"
+                  value={profileData.location?.city || ''}
+                  onChange={(e) => setProfileData(prev => ({
+                    ...prev,
+                    location: { ...prev.location, city: e.target.value }
+                  }))}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
+                />
+                <input
+                  type="text"
+                  name="location.state"
+                  placeholder="State"
+                  value={profileData.location?.state || ''}
+                  onChange={(e) => setProfileData(prev => ({
+                    ...prev,
+                    location: { ...prev.location, state: e.target.value }
+                  }))}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
+                />
+                <input
+                  type="text"
+                  name="location.country"
+                  placeholder="Country"
+                  value={profileData.location?.country || ''}
+                  onChange={(e) => setProfileData(prev => ({
+                    ...prev,
+                    location: { ...prev.location, country: e.target.value }
+                  }))}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
+                />
+              </div>
             ) : (
-              <p className="mt-1 text-gray-900">{profileData.location}</p>
+              <p className="mt-1 text-gray-900">
+                {[
+                  profileData.location?.city,
+                  profileData.location?.state,
+                  profileData.location?.country
+                ].filter(Boolean).join(', ')}
+              </p>
             )}
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700">Founded</label>
+            <label className="block text-sm font-medium text-gray-700">Profile Picture URL</label>
             {isEditing ? (
               <input
                 type="text"
-                name="founded"
-                value={profileData.founded}
+                name="profilePic"
+                value={profileData.profilePic || ''}
                 onChange={handleInputChange}
-                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 bg-white text-black"
               />
             ) : (
-              <p className="mt-1 text-gray-900">{profileData.founded}</p>
+              <div className="mt-1">
+                {profileData.profilePic ? (
+                  <img
+                    src={profileData.profilePic}
+                    alt="Profile"
+                    className="h-20 w-20 rounded-full object-cover"
+                  />
+                ) : (
+                  <p className="text-gray-500">No profile picture set</p>
+                )}
+              </div>
             )}
           </div>
         </div>
-      </div>
-
-      {/* Description */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Description</h3>
-        {isEditing ? (
-          <textarea
-            name="description"
-            value={profileData.description}
-            onChange={handleInputChange}
-            rows={4}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        ) : (
-          <p className="text-gray-900">{profileData.description}</p>
-        )}
-      </div>
-
-      {/* Departments */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <h3 className="text-lg font-medium text-gray-900 mb-4">Departments</h3>
-        {isEditing ? (
-          <textarea
-            value={profileData.departments.join(', ')}
-            onChange={handleDepartmentChange}
-            rows={3}
-            className="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-            placeholder="Enter departments separated by commas"
-          />
-        ) : (
-          <div className="flex flex-wrap gap-2">
-            {profileData.departments.map((dept, index) => (
-              <span
-                key={index}
-                className="px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm"
-              >
-                {dept}
-              </span>
-            ))}
-          </div>
-        )}
       </div>
 
       {/* Statistics */}
       <div className="bg-white rounded-lg shadow p-6">
         <h3 className="text-lg font-medium text-gray-900 mb-4">Statistics</h3>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {Object.entries(profileData.stats).map(([key, value]) => (
-            <div key={key} className="text-center">
-              <div className="text-2xl font-bold text-indigo-600">{value}</div>
-              <div className="text-sm text-gray-500 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-2xl font-bold text-indigo-600">
+              {profileData.universityDetails?.scholarshipsOffered?.length || 0}
             </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Achievements */}
-      <div className="bg-white rounded-lg shadow p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-medium text-gray-900">Achievements</h3>
-          {isEditing && (
-            <button
-              onClick={addAchievement}
-              className="px-3 py-1 text-sm bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
-            >
-              Add Achievement
-            </button>
-          )}
-        </div>
-        <div className="space-y-4">
-          {profileData.achievements.map((achievement, index) => (
-            <div key={index} className="border rounded-lg p-4">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Title</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={achievement.title}
-                      onChange={(e) => handleAchievementChange(index, 'title', e.target.value)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                    />
-                  ) : (
-                    <p className="mt-1 text-gray-900">{achievement.title}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Count</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={achievement.count}
-                      onChange={(e) => handleAchievementChange(index, 'count', e.target.value)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                    />
-                  ) : (
-                    <p className="mt-1 text-gray-900">{achievement.count}</p>
-                  )}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700">Description</label>
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={achievement.description}
-                      onChange={(e) => handleAchievementChange(index, 'description', e.target.value)}
-                      className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-                    />
-                  ) : (
-                    <p className="mt-1 text-gray-900">{achievement.description}</p>
-                  )}
-                </div>
-              </div>
-              {isEditing && (
-                <button
-                  onClick={() => removeAchievement(index)}
-                  className="mt-2 text-sm text-red-600 hover:text-red-900"
-                >
-                  Remove Achievement
-                </button>
-              )}
+            <div className="text-sm text-gray-500">Scholarships Offered</div>
+          </div>
+          <div className="text-center p-4 bg-gray-50 rounded-lg">
+            <div className="text-2xl font-bold text-indigo-600">
+              {profileData.universityDetails?.postedJobs?.length || 0}
             </div>
-          ))}
+            <div className="text-sm text-gray-500">Jobs Posted</div>
+          </div>
         </div>
       </div>
     </div>

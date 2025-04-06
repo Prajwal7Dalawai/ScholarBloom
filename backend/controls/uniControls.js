@@ -6,17 +6,15 @@ const Job = require("../models/job-schema");
 // Profile Controllers
 module.exports.getProfile = async (req, res) => {
     try {
-        const user = await User.findById(req.user._id);
+        const user = await User.findById(req.user._id)
+            .select('-password')
+            .where('role').equals('university');
+
         if (!user) {
             return res.status(404).json({ error: "University not found" });
         }
-        return res.status(200).json({
-            fullName: user.fullName,
-            email: user.email,
-            profilePic: user.profilePic,
-            location: user.location,
-            universityDetails: user.universityDetails
-        });
+
+        return res.status(200).json(user);
     } catch (error) {
         console.error("Get Profile Error:", error);
         return res.status(500).json({ error: "Failed to get profile" });
@@ -25,13 +23,25 @@ module.exports.getProfile = async (req, res) => {
 
 module.exports.updateProfile = async (req, res) => {
     try {
-        const { fullName, profilePic } = req.body;
-        const user = await User.findByIdAndUpdate(
-            req.user._id,
-            { fullName, profilePic },
-            { new: true }
-        );
-        return res.status(200).json({ message: "Profile updated successfully", user });
+        const { fullName, email, location, profilePic } = req.body;
+        
+        const user = await User.findById(req.user._id)
+            .where('role').equals('university');
+
+        if (!user) {
+            return res.status(404).json({ error: "University not found" });
+        }
+
+        // Update fields
+        user.fullName = fullName || user.fullName;
+        user.email = email || user.email;
+        user.location = location || user.location;
+        user.profilePic = profilePic || user.profilePic;
+        user.updatedAt = Date.now();
+
+        await user.save();
+        
+        return res.status(200).json(user);
     } catch (error) {
         console.error("Update Profile Error:", error);
         return res.status(500).json({ error: "Failed to update profile" });

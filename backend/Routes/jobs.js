@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Job = require("../models/Job-Schema");
 const User = require("../models/user-schema");
-const { verifyToken } = require("../middleware");
+const { verifyToken } = require("../Middleware/auth");
 
 // Get all jobs
 router.get("/", async (req, res) => {
@@ -18,6 +18,32 @@ router.get("/", async (req, res) => {
             details: error.message 
         });
     }
+});
+
+// Get recent job applications for a university
+router.get('/applications', verifyToken, async (req, res) => {
+  try {
+    console.log('Fetching recent job applications...');
+    const { limit = 5 } = req.query;
+    
+    // Find all jobs created by this university
+    const jobs = await Job.find({ universityId: req.user._id });
+    const jobIds = jobs.map(j => j._id);
+    
+    // Find all applications for these jobs
+    const applications = await User.find({
+      'studentDetails.jobApplications.jobId': { $in: jobIds }
+    })
+    .select('fullName email studentDetails.jobApplications')
+    .limit(parseInt(limit))
+    .sort({ 'studentDetails.jobApplications.appliedAt': -1 });
+    
+    console.log(`Found ${applications.length} recent applications`);
+    res.json({ applications });
+  } catch (error) {
+    console.error('Error fetching recent applications:', error);
+    res.status(500).json({ error: 'Failed to fetch recent applications', details: error.message });
+  }
 });
 
 // Get job by ID

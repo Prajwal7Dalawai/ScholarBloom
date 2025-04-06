@@ -56,6 +56,7 @@ import { useNavigate } from 'react-router-dom';
 import CreateChallenge from './pages/CreateChallenge';
 import EditScholarship from './pages/EditScholarship';
 import EditJob from './pages/EditJob';
+import Profile from './Components/university/Profile';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -138,6 +139,7 @@ function App() {
                     }
                   >
                     <Route index element={<UniversityProfile />} />
+                    <Route path="profile" element={<Profile />} />
                     <Route path="scholarships" element={<ManageScholarships />} />
                     <Route path="scholarships/create" element={<HostScholarship />} />
                     <Route path="scholarships/:id/edit" element={<EditScholarship />} />

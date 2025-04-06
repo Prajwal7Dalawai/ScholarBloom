@@ -98,13 +98,13 @@ const DashboardOverview = ({ data, loading, error }) => {
                 <p className="text-2xl font-bold text-gray-900 mb-1">{stat.total}</p>
                 <div className="flex items-center">
                   {stat.active !== undefined && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                      Active: {stat.active}
+                    <span className="text-sm text-gray-500">
+                      {stat.active} Active
                     </span>
                   )}
                   {stat.pending !== undefined && (
-                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                      Pending: {stat.pending}
+                    <span className="text-sm text-gray-500">
+                      {stat.pending} Pending
                     </span>
                   )}
                 </div>
@@ -114,42 +114,44 @@ const DashboardOverview = ({ data, loading, error }) => {
         ))}
       </div>
 
-      {/* Recent Activities */}
-      {Array.isArray(recentApplications) && recentApplications.length > 0 && (
-        <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">Recent Activities</h2>
-          </div>
-          <div className="divide-y divide-gray-200">
-            {recentApplications.map((activity, index) => (
-              <div key={index} className="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4">
-                    <div className={`p-2 rounded-full ${
-                      activity.type === 'scholarship' ? 'bg-green-100 text-green-600' :
-                      activity.type === 'job' ? 'bg-blue-100 text-blue-600' :
-                      'bg-purple-100 text-purple-600'
-                    }`}>
-                      {getActivityIcon(activity.type)}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">
-                        {activity.scholarshipTitle || activity.jobTitle || 'Application'}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        {activity.studentName || 'Student'} - {activity.status || 'Pending'}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {activity.createdAt ? new Date(activity.createdAt).toLocaleDateString() : ''}
-                      </p>
-                    </div>
+      {/* Recent Applications */}
+      <div className="bg-white rounded-lg shadow p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Applications</h2>
+        {recentApplications.length > 0 ? (
+          <div className="space-y-4">
+            {recentApplications.map((application) => (
+              <div key={application._id} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
+                <div className="flex items-center space-x-4">
+                  <div className={`p-2 rounded-full ${
+                    application.type === 'scholarship' ? 'bg-green-100 text-green-600' : 'bg-blue-100 text-blue-600'
+                  }`}>
+                    {application.type === 'scholarship' ? (
+                      <AcademicCapIcon className="w-5 h-5" />
+                    ) : (
+                      <BriefcaseIcon className="w-5 h-5" />
+                    )}
                   </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-900">{application.fullName}</h3>
+                    <p className="text-sm text-gray-500">{application.email}</p>
+                  </div>
+                </div>
+                <div className="text-sm text-gray-500">
+                  {application.type === 'scholarship' ? (
+                    <span>Applied for Scholarship</span>
+                  ) : (
+                    <span>Applied for Job</span>
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        </div>
-      )}
+        ) : (
+          <div className="text-center py-8">
+            <p className="text-gray-500">No recent applications</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
