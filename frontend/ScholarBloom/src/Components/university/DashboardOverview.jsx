@@ -26,7 +26,7 @@ const DashboardOverview = ({ data, loading, error }) => {
   if (!data || !data.scholarshipStats || !data.courseStats || !data.jobStats) {
     return (
       <div className="bg-yellow-50 border border-yellow-200 text-yellow-700 px-4 py-3 rounded relative">
-        ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ಡೇಟಾ ಲಭ್ಯವಿಲ್ಲ
+        Dashboard data not available
       </div>
     );
   }
@@ -35,25 +35,25 @@ const DashboardOverview = ({ data, loading, error }) => {
 
   const stats = [
     {
-      label: 'ಒಟ್ಟು ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು',
+      label: 'Total Scholarships',
       total: scholarshipStats.totalScholarships || 0,
       active: scholarshipStats.activeScholarships || 0,
       icon: AcademicCapIcon
     },
     {
-      label: 'ಒಟ್ಟು ಉದ್ಯೋಗಗಳು',
+      label: 'Total Jobs',
       total: jobStats.totalJobs || 0,
       active: jobStats.activeJobs || 0,
       icon: BriefcaseIcon
     },
     {
-      label: 'ಒಟ್ಟು ಕೋರ್ಸ್‌ಗಳು',
+      label: 'Total Courses',
       total: courseStats.totalCourses || 0,
       active: courseStats.activeCourses || 0,
       icon: PuzzlePieceIcon
     },
     {
-      label: 'ಒಟ್ಟು ಅರ್ಜಿಗಳು',
+      label: 'Total Applications',
       total: (scholarshipStats.totalApplications || 0) + (jobStats.totalApplications || 0),
       pending: (scholarshipStats.pendingApplications || 0) + (jobStats.pendingApplications || 0),
       icon: ClipboardDocumentListIcon
@@ -88,18 +88,26 @@ const DashboardOverview = ({ data, loading, error }) => {
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         {stats.map((stat) => (
-          <div key={stat.label} className="bg-white rounded-lg shadow p-6">
-            <div className="flex items-center">
+          <div key={stat.label} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition-shadow duration-200">
+            <div className="flex items-start space-x-4">
               <div className="p-3 rounded-full bg-indigo-100 text-indigo-600">
                 <stat.icon className="w-6 h-6" />
               </div>
-              <div className="ml-4">
-                <p className="text-sm font-medium text-gray-600">{stat.label}</p>
-                <p className="text-2xl font-semibold text-gray-900">{stat.total}</p>
-                <p className="text-sm text-gray-500">
-                  {stat.active !== undefined && `ಸಕ್ರಿಯ: ${stat.active}`}
-                  {stat.pending !== undefined && `ಬಾಕಿ: ${stat.pending}`}
-                </p>
+              <div className="flex-1">
+                <h3 className="text-sm font-medium text-gray-500 mb-1">{stat.label}</h3>
+                <p className="text-2xl font-bold text-gray-900 mb-1">{stat.total}</p>
+                <div className="flex items-center">
+                  {stat.active !== undefined && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      Active: {stat.active}
+                    </span>
+                  )}
+                  {stat.pending !== undefined && (
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
+                      Pending: {stat.pending}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
           </div>
@@ -108,15 +116,15 @@ const DashboardOverview = ({ data, loading, error }) => {
 
       {/* Recent Activities */}
       {Array.isArray(recentApplications) && recentApplications.length > 0 && (
-        <div className="bg-white rounded-lg shadow">
+        <div className="bg-white rounded-lg shadow hover:shadow-lg transition-shadow duration-200">
           <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-lg font-medium text-gray-900">ಇತ್ತೀಚಿನ ಚಟುವಟಿಕೆಗಳು</h2>
+            <h2 className="text-lg font-medium text-gray-900">Recent Activities</h2>
           </div>
           <div className="divide-y divide-gray-200">
             {recentApplications.map((activity, index) => (
-              <div key={index} className="px-6 py-4">
+              <div key={index} className="px-6 py-4 hover:bg-gray-50 transition-colors duration-150">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+                  <div className="flex items-center space-x-4">
                     <div className={`p-2 rounded-full ${
                       activity.type === 'scholarship' ? 'bg-green-100 text-green-600' :
                       activity.type === 'job' ? 'bg-blue-100 text-blue-600' :
@@ -124,14 +132,14 @@ const DashboardOverview = ({ data, loading, error }) => {
                     }`}>
                       {getActivityIcon(activity.type)}
                     </div>
-                    <div className="ml-4">
+                    <div>
                       <p className="text-sm font-medium text-gray-900">
-                        {activity.scholarshipTitle || activity.jobTitle || 'ಅರ್ಜಿ'}
+                        {activity.scholarshipTitle || activity.jobTitle || 'Application'}
                       </p>
                       <p className="text-sm text-gray-500">
-                        {activity.studentName || 'ವಿದ್ಯಾರ್ಥಿ'} - {activity.status || 'ಬಾಕಿ'}
+                        {activity.studentName || 'Student'} - {activity.status || 'Pending'}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs text-gray-400">
                         {activity.createdAt ? new Date(activity.createdAt).toLocaleDateString() : ''}
                       </p>
                     </div>

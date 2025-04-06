@@ -39,12 +39,12 @@ router.put("/university-details", verifyToken, updateUniversityDetails);
 // Scholarship Routes
 router.post("/scholarships", verifyToken, createScholarship);
 router.get("/scholarships", verifyToken, getScholarships);
+router.get("/scholarships/applications", verifyToken, getAllApplications);
 router.get("/scholarships/:id", verifyToken, getScholarshipDetails);
 router.put("/scholarships/:id", verifyToken, updateScholarship);
 router.delete("/scholarships/:id", verifyToken, deleteScholarship);
 router.get("/scholarships/:id/applications", verifyToken, getScholarshipApplications);
 router.put("/scholarships/:id/applications/:applicationId", verifyToken, updateApplicationStatus);
-router.get("/scholarships/applications", verifyToken, getAllApplications);
 
 // Course Routes
 router.post("/courses", verifyToken, createCourse);

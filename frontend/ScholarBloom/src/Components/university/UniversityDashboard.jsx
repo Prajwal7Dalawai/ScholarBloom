@@ -2,28 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import UniversitySidebar from './UniversitySidebar';
 import DashboardOverview from './DashboardOverview';
-import ScholarshipManagement from './ScholarshipManagement';
-import JobManagement from './JobManagement';
-import ChallengeManagement from './ChallengeManagement';
-import Profile from './Profile';
+import { Outlet, useLocation } from 'react-router-dom';
 
 const UniversityDashboard = () => {
-  const [activeTab, setActiveTab] = useState('overview');
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const { user, token } = useAuth();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         setLoading(true);
         setError(null);
-
-        // Debug logs
-        console.log('Current token:', token);
-        console.log('Current user:', user);
-        console.log('User ID:', user?._id);
 
         if (!token) {
           console.error('No token available');
@@ -43,9 +35,6 @@ const UniversityDashboard = () => {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         };
-
-        // Debug log for headers
-        console.log('Request headers:', headers);
 
         // Fetch recent applications first as a test
         try {
@@ -134,23 +123,6 @@ const UniversityDashboard = () => {
     }
   }, [user, token]);
 
-  const renderContent = () => {
-    switch (activeTab) {
-      case 'overview':
-        return <DashboardOverview data={dashboardData} loading={loading} error={error} />;
-      case 'scholarships':
-        return <ScholarshipManagement />;
-      case 'jobs':
-        return <JobManagement />;
-      case 'challenges':
-        return <ChallengeManagement />;
-      case 'profile':
-        return <Profile />;
-      default:
-        return <DashboardOverview data={dashboardData} loading={loading} error={error} />;
-    }
-  };
-
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -159,12 +131,14 @@ const UniversityDashboard = () => {
     );
   }
 
+  const isOverview = location.pathname === '/university';
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="flex">
         {/* Sidebar */}
         <div className="w-64 flex-shrink-0">
-          <UniversitySidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <UniversitySidebar />
         </div>
 
         {/* Main Content */}
@@ -174,13 +148,13 @@ const UniversityDashboard = () => {
               <div className="bg-white rounded-lg shadow-sm p-6">
                 <div className="flex items-center justify-between mb-6">
                   <h1 className="text-2xl font-semibold text-gray-900">
-                    ಸ್ವಾಗತ, {user?.fullName || 'ವಿಶ್ವವಿದ್ಯಾಲಯ ನಿರ್ವಾಹಕ'}
+                    Welcome, {user?.fullName || 'University Administrator'}
                   </h1>
                   {dashboardData?.scholarshipStats && (
                     <div className="flex items-center space-x-4">
                       <div className="bg-indigo-50 px-4 py-2 rounded-full">
                         <span className="text-indigo-700 font-medium">
-                          ಸಕ್ರಿಯ ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು: {dashboardData.scholarshipStats.activeScholarships}
+                          Active Scholarships: {dashboardData.scholarshipStats.activeScholarships}
                         </span>
                       </div>
                     </div>
@@ -191,7 +165,11 @@ const UniversityDashboard = () => {
                     {error}
                   </div>
                 )}
-                {renderContent()}
+                {isOverview ? (
+                  <DashboardOverview data={dashboardData} loading={loading} error={error} />
+                ) : (
+                  <Outlet />
+                )}
               </div>
             </div>
           </div>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const JobManagement = () => {
   const [jobs, setJobs] = useState([]);
@@ -7,6 +9,8 @@ const JobManagement = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('postedAt');
+  const { token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchJobs = async () => {
@@ -14,11 +18,22 @@ const JobManagement = () => {
         setLoading(true);
         setError(null);
 
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
         const response = await fetch('http://localhost:3000/api/university/jobs', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           credentials: 'include'
         });
 
         if (!response.ok) {
+          const errorData = await response.text();
+          console.error('Server response:', errorData);
           throw new Error('Failed to fetch jobs');
         }
 
@@ -26,17 +41,17 @@ const JobManagement = () => {
         setJobs(data);
       } catch (error) {
         console.error('Error fetching jobs:', error);
-        setError('ಉದ್ಯೋಗಗಳನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ');
+        setError('Failed to fetch jobs. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchJobs();
-  }, []);
+  }, [token]);
 
   const handleCreateJob = () => {
-    // TODO: Implement job creation
+    navigate('/university/jobs/create');
   };
 
   const handleEditJob = (id) => {
@@ -45,8 +60,16 @@ const JobManagement = () => {
 
   const handleDeleteJob = async (id) => {
     try {
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
       const response = await fetch(`http://localhost:3000/api/university/jobs/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include'
       });
 
@@ -57,7 +80,7 @@ const JobManagement = () => {
       setJobs(prev => prev.filter(j => j._id !== id));
     } catch (error) {
       console.error('Error deleting job:', error);
-      setError('ಉದ್ಯೋಗವನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ');
+      setError('Failed to delete job. Please try again.');
     }
   };
 
@@ -99,15 +122,15 @@ const JobManagement = () => {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">ಉದ್ಯೋಗ ನಿರ್ವಹಣೆ</h2>
-            <p className="text-gray-500">ಉದ್ಯೋಗ ಪೋಸ್ಟಿಂಗ್‌ಗಳನ್ನು ರಚಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ</p>
+            <h2 className="text-2xl font-bold text-gray-900">Job Management</h2>
+            <p className="text-gray-500">Create and manage job postings</p>
           </div>
           <button
             onClick={handleCreateJob}
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
           >
             <PlusIcon className="h-5 w-5 mr-2" />
-            ಹೊಸ ಉದ್ಯೋಗ
+            New Job
           </button>
         </div>
 
@@ -120,23 +143,23 @@ const JobManagement = () => {
               onChange={(e) => setFilter(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="all">ಎಲ್ಲಾ ಸ್ಥಿತಿಗಳು</option>
-              <option value="active">ಸಕ್ರಿಯ</option>
-              <option value="inactive">ನಿಷ್ಕ್ರಿಯ</option>
-              <option value="draft">ಕರಡು</option>
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
             </select>
           </div>
 
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">ವಿಂಗಡಿಸು:</label>
+            <label className="text-sm font-medium text-gray-700">Sort by:</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="postedAt">ಪೋಸ್ಟ್ ಮಾಡಿದ ದಿನಾಂಕ</option>
-              <option value="salary">ಸಂಬಳ</option>
-              <option value="applicants">ಅರ್ಜಿದಾರರು</option>
+              <option value="postedAt">Posted Date</option>
+              <option value="salary">Salary</option>
+              <option value="applicants">Applicants</option>
             </select>
           </div>
         </div>
@@ -147,12 +170,12 @@ const JobManagement = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಶೀರ್ಷಿಕೆ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಸಂಬಳ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಪೋಸ್ಟ್ ಮಾಡಿದ ದಿನಾಂಕ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಸ್ಥಿತಿ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಅರ್ಜಿದಾರರು</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಕ್ರಿಯೆಗಳು</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Salary</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Posted Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applicants</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -187,13 +210,13 @@ const JobManagement = () => {
                     onClick={() => handleEditJob(job._id)}
                     className="text-indigo-600 hover:text-indigo-900 mr-4"
                   >
-                    ಸಂಪಾದಿಸು
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDeleteJob(job._id)}
                     className="text-red-600 hover:text-red-900"
                   >
-                    ಅಳಿಸು
+                    Delete
                   </button>
                 </td>
               </tr>

@@ -355,12 +355,12 @@ module.exports.getJobApplications = async (req, res) => {
         const job = await Job.findOne({
             _id: req.params.id,
             universityId: req.user._id
-        }).populate("applications.studentId");
+        }).populate("applicants.studentId");
         
         if (!job) {
             return res.status(404).json({ error: "Job posting not found" });
         }
-        return res.status(200).json(job.applications);
+        return res.status(200).json(job.applicants);
     } catch (error) {
         console.error("Get Job Applications Error:", error);
         return res.status(500).json({ error: "Failed to get job applications" });
@@ -449,98 +449,21 @@ module.exports.getJobAnalytics = async (req, res) => {
 // Get all applications (scholarships, courses, and jobs)
 module.exports.getAllApplications = async (req, res) => {
     try {
-        console.log("Request headers:", req.headers);
-        console.log("Request user object:", req.user);
+        const jobs = await Job.find({ 
+            universityId: req.user._id 
+        }).populate("applicants.studentId");
         
-        if (!req.user || !req.user._id) {
-            return res.status(401).json({ error: "User not authenticated" });
-        }
+        const allApplications = jobs.reduce((acc, job) => {
+            return acc.concat(job.applicants.map(app => ({
+                ...app.toObject(),
+                jobTitle: job.jobTitle,
+                jobId: job._id
+            })));
+        }, []);
 
-        const { limit } = req.query;
-        console.log("Requested limit:", limit);
-        
-        // Get all scholarships with populated applicants
-        const scholarships = await Scholarship.find({ universityId: req.user._id })
-            .populate({
-                path: 'applicants.studentId',
-                select: 'fullName email studentDetails profilePic'
-            });
-            
-        console.log("Found scholarships:", scholarships.length); // Debug log
-        
-        // Get all jobs with populated applications
-        const jobs = await Job.find({ universityId: req.user._id })
-            .populate({
-                path: 'applications.studentId',
-                select: 'fullName email studentDetails profilePic'
-            });
-            
-        console.log("Found jobs:", jobs.length); // Debug log
-
-        // Extract all applications from scholarships
-        let allApplications = [];
-        
-        // Process scholarship applications
-        for (const scholarship of scholarships) {
-            if (scholarship.applicants && scholarship.applicants.length > 0) {
-                const applications = scholarship.applicants.map(applicant => ({
-                    type: 'scholarship',
-                    itemId: scholarship._id,
-                    title: scholarship.title,
-                    studentId: applicant.studentId?._id,
-                    studentName: applicant.studentId?.fullName || 'Unknown',
-                    studentEmail: applicant.studentId?.email || 'Unknown',
-                    studentProfilePic: applicant.studentId?.profilePic,
-                    studentGrade: applicant.studentId?.studentDetails?.grade || 'N/A',
-                    status: applicant.status || 'pending',
-                    createdAt: applicant.appliedAt || applicant.createdAt || new Date(),
-                    eduCoins: applicant.eduCoins || 0
-                }));
-                allApplications = [...allApplications, ...applications];
-            }
-        }
-        
-        // Process job applications
-        for (const job of jobs) {
-            if (job.applications && job.applications.length > 0) {
-                const applications = job.applications.map(application => ({
-                    type: 'job',
-                    itemId: job._id,
-                    title: job.title,
-                    studentId: application.studentId?._id,
-                    studentName: application.studentId?.fullName || 'Unknown',
-                    studentEmail: application.studentId?.email || 'Unknown',
-                    studentProfilePic: application.studentId?.profilePic,
-                    studentGrade: application.studentId?.studentDetails?.grade || 'N/A',
-                    status: application.status || 'pending',
-                    createdAt: application.appliedAt || application.createdAt || new Date()
-                }));
-                allApplications = [...allApplications, ...applications];
-            }
-        }
-        
-        console.log("Total applications found:", allApplications.length); // Debug log
-        
-        // Sort all applications by date (newest first)
-        allApplications.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        
-        // Apply limit if provided
-        if (limit) {
-            allApplications = allApplications.slice(0, parseInt(limit));
-            console.log("Applications after limit:", allApplications.length); // Debug log
-        }
-        
-        return res.status(200).json({
-            total: allApplications.length,
-            applications: allApplications
-        });
+        return res.status(200).json(allApplications);
     } catch (error) {
-        console.error("Get All Applications Error - Full error:", error);
-        console.error("Error stack trace:", error.stack);
-        return res.status(500).json({ 
-            error: "Failed to get applications",
-            details: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        });
+        console.error("Get All Applications Error:", error);
+        return res.status(500).json({ error: "Failed to get all applications" });
     }
 }; 

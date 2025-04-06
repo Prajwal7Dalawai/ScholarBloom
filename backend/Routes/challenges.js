@@ -5,10 +5,17 @@ const User = require("../models/user-schema");
 const { verifyToken } = require("../middleware");
 
 // Get all challenges
-router.get("/", async (req, res) => {
+router.get("/", verifyToken, async (req, res) => {
     try {
-        console.log('Fetching all challenges...');
-        const challenges = await Challenge.find();
+        console.log('Fetching challenges...');
+        let query = {};
+        
+        // If user is a university, only show their challenges
+        if (req.user.role === "university") {
+            query.universityId = req.user._id;
+        }
+
+        const challenges = await Challenge.find(query);
         console.log(`Found ${challenges.length} challenges`);
         res.json(challenges);
     } catch (error) {

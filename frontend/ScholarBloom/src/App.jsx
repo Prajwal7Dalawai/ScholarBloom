@@ -53,6 +53,9 @@ import NotFound from './pages/NotFound';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Sidebar from './Components/Sidebar';
 import { useNavigate } from 'react-router-dom';
+import CreateChallenge from './pages/CreateChallenge';
+import EditScholarship from './pages/EditScholarship';
+import EditJob from './pages/EditJob';
 
 // Protected Route Component
 const ProtectedRoute = ({ children, allowedRoles }) => {
@@ -136,8 +139,13 @@ function App() {
                   >
                     <Route index element={<UniversityProfile />} />
                     <Route path="scholarships" element={<ManageScholarships />} />
+                    <Route path="scholarships/create" element={<HostScholarship />} />
+                    <Route path="scholarships/:id/edit" element={<EditScholarship />} />
                     <Route path="jobs" element={<ManageJobs />} />
+                    <Route path="jobs/create" element={<HostJob />} />
+                    <Route path="jobs/:id/edit" element={<EditJob />} />
                     <Route path="challenges" element={<ManageChallenges />} />
+                    <Route path="challenges/create" element={<CreateChallenge />} />
                     <Route path="applications" element={<ApplicationsList />} />
                   </Route>
 

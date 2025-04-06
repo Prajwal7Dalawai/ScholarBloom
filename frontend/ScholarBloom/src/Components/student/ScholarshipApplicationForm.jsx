@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 
 const ScholarshipApplicationForm = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const { token } = useAuth();
   const [scholarship, setScholarship] = useState(null);
   const [formData, setFormData] = useState({
+    grade: '',
     eligibilityProof: '',
-    academicTranscript: null,
-    recommendationLetter: null,
-    statementOfPurpose: '',
-    additionalDocuments: []
+    documents: [],
+    statementOfPurpose: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -21,12 +22,17 @@ const ScholarshipApplicationForm = () => {
 
   const fetchScholarshipDetails = async () => {
     try {
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+
       setLoading(true);
       setError('');
-      const response = await fetch(`http://localhost:3000/scholarships/${id}`, {
+      const response = await fetch(`http://localhost:3000/api/scholarships/${id}`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         }
       });
       
@@ -54,18 +60,10 @@ const ScholarshipApplicationForm = () => {
   };
 
   const handleFileChange = (e) => {
-    const { name, files } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: files[0]
-    }));
-  };
-
-  const handleAdditionalFilesChange = (e) => {
     const files = Array.from(e.target.files);
     setFormData(prev => ({
       ...prev,
-      additionalDocuments: [...prev.additionalDocuments, ...files]
+      documents: [...prev.documents, ...files]
     }));
   };
 
@@ -75,26 +73,25 @@ const ScholarshipApplicationForm = () => {
     setError('');
 
     try {
+      if (!token) {
+        throw new Error('Authentication token not found');
+      }
+
       const formDataToSend = new FormData();
-      formDataToSend.append('scholarshipId', id);
+      formDataToSend.append('grade', formData.grade);
       formDataToSend.append('eligibilityProof', formData.eligibilityProof);
       formDataToSend.append('statementOfPurpose', formData.statementOfPurpose);
       
-      if (formData.academicTranscript) {
-        formDataToSend.append('academicTranscript', formData.academicTranscript);
-      }
-      
-      if (formData.recommendationLetter) {
-        formDataToSend.append('recommendationLetter', formData.recommendationLetter);
-      }
-      
-      formData.additionalDocuments.forEach(file => {
-        formDataToSend.append('additionalDocuments', file);
+      formData.documents.forEach(file => {
+        formDataToSend.append('documents', file);
       });
 
-      const response = await fetch('http://localhost:3000/student/scholarships/apply', {
+      const response = await fetch(`http://localhost:3000/api/student/scholarships/${id}/apply`, {
         method: 'POST',
         credentials: 'include',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
         body: formDataToSend
       });
 
@@ -136,7 +133,9 @@ const ScholarshipApplicationForm = () => {
 
   return (
     <div className="max-w-4xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-6">Apply for {scholarship.title}</h1>
+      <h1 className="text-2xl font-bold mb-6">
+        {scholarship ? `Apply for ${scholarship.title}` : 'Loading scholarship details...'}
+      </h1>
       
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
@@ -144,7 +143,32 @@ const ScholarshipApplicationForm = () => {
         </div>
       )}
 
+      {scholarship && (
+        <div className="mb-6 bg-gray-50 p-4 rounded-lg">
+          <h2 className="text-lg font-semibold mb-2">Scholarship Details</h2>
+          <p><strong>Amount:</strong> ₹{scholarship.amount}</p>
+          <p><strong>Deadline:</strong> {new Date(scholarship.deadline).toLocaleDateString()}</p>
+          <p><strong>Required EduCoins:</strong> {scholarship.requiredEduCoins}</p>
+          <p><strong>Eligibility Criteria:</strong> {scholarship.eligibilityCriteria}</p>
+        </div>
+      )}
+
       <form onSubmit={handleSubmit} className="space-y-6">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Current Grade/CGPA
+          </label>
+          <input
+            type="text"
+            name="grade"
+            value={formData.grade}
+            onChange={handleChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
+            required
+            placeholder="Enter your current grade or CGPA"
+          />
+        </div>
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Eligibility Proof
@@ -153,38 +177,10 @@ const ScholarshipApplicationForm = () => {
             name="eligibilityProof"
             value={formData.eligibilityProof}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
             rows="4"
             required
             placeholder="Explain how you meet the eligibility criteria"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Academic Transcript
-          </label>
-          <input
-            type="file"
-            name="academicTranscript"
-            onChange={handleFileChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-            accept=".pdf,.doc,.docx"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Recommendation Letter
-          </label>
-          <input
-            type="file"
-            name="recommendationLetter"
-            onChange={handleFileChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
-            required
-            accept=".pdf,.doc,.docx"
           />
         </div>
 
@@ -196,7 +192,7 @@ const ScholarshipApplicationForm = () => {
             name="statementOfPurpose"
             value={formData.statementOfPurpose}
             onChange={handleChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
             rows="6"
             required
             placeholder="Explain your academic goals and why you deserve this scholarship"
@@ -205,25 +201,32 @@ const ScholarshipApplicationForm = () => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
-            Additional Documents
+            Supporting Documents
           </label>
           <input
             type="file"
             multiple
-            onChange={handleAdditionalFilesChange}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md"
+            onChange={handleFileChange}
+            className="w-full px-3 py-2 border border-gray-300 rounded-md bg-white text-black"
             accept=".pdf,.doc,.docx"
           />
           <p className="text-sm text-gray-500 mt-1">
-            Upload any additional supporting documents (certificates, awards, etc.)
+            Upload relevant documents (transcripts, certificates, recommendation letters, etc.)
           </p>
         </div>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end space-x-4">
+          <button
+            type="button"
+            onClick={() => navigate('/student/scholarships')}
+            className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50"
+          >
+            Cancel
+          </button>
           <button
             type="submit"
             disabled={loading}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 disabled:opacity-50"
+            className="px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 disabled:opacity-50"
           >
             {loading ? 'Submitting...' : 'Submit Application'}
           </button>

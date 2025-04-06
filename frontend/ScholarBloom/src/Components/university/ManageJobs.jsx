@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import {
   BriefcaseIcon,
   PlusIcon,
@@ -9,39 +11,56 @@ import {
 } from '@heroicons/react/24/outline';
 import { jobAPI } from '../../services/api';
 
-export default function ManageJobs() {
+const ManageJobs = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { token } = useAuth();
+  const navigate = useNavigate();
   const [showForm, setShowForm] = useState(false);
   const [editingJob, setEditingJob] = useState(null);
 
   useEffect(() => {
-    const fetchJobs = async () => {
-      try {
-        setLoading(true);
-        // Get university profile first to get the university ID
-        const profileResponse = await fetch('http://localhost:3000/api/university/profile', {
-          credentials: 'include'
-        });
+    if (token) {
+      fetchJobs();
+    }
+  }, [token]);
 
-        if (!profileResponse.ok) {
-          throw new Error('Failed to fetch university profile');
-        }
+  const fetchJobs = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const universityProfile = await profileResponse.json();
-        const jobsData = await jobAPI.getJobs({ universityId: universityProfile._id });
-        setJobs(jobsData);
-      } catch (error) {
-        console.error('Error fetching jobs:', error);
-        setError('ಉದ್ಯೋಗಗಳನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ದೋಷ ಸಂಭವಿಸಿದೆ');
-      } finally {
-        setLoading(false);
+      if (!token) {
+        throw new Error('Authentication token not found');
       }
-    };
 
-    fetchJobs();
-  }, []);
+      const response = await fetch('http://localhost:3000/api/university/jobs', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      });
+      
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to fetch jobs');
+      }
+
+      const data = await response.json();
+      setJobs(data);
+    } catch (error) {
+      console.error('Error fetching jobs:', error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateJob = () => {
+    navigate('/university/jobs/create');
+  };
 
   const handleStatusChange = async (id, newStatus) => {
     try {
@@ -54,139 +73,140 @@ export default function ManageJobs() {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm('ನೀವು ಖಚಿತವಾಗಿ ಈ ಉದ್ಯೋಗವನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?')) {
+  const handleDelete = async (jobId) => {
+    if (window.confirm('Are you sure you want to delete this job?')) {
       try {
-        await jobAPI.deleteJob(id);
-        setJobs(jobs.filter(job => job.id !== id));
-      } catch (err) {
-        setError('ಉದ್ಯೋಗವನ್ನು ಅಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ');
+        const response = await fetch(`http://localhost:3000/api/university/jobs/${jobId}`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Failed to delete job');
+        }
+
+        await fetchJobs();
+      } catch (error) {
+        console.error('Error deleting job:', error);
+        setError(error.message);
       }
     }
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-64">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
       </div>
     );
   }
 
-  if (error) {
-    return (
-      <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-        {error}
-      </div>
-    );
-  }
-
   return (
-    <div className="py-6">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+    <div className="space-y-6">
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded relative">
+          {error}
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center">
-            <BriefcaseIcon className="h-8 w-8 text-gray-500 mr-2" />
-            <h1 className="text-3xl font-bold text-gray-900">ಉದ್ಯೋಗಗಳನ್ನು ನಿರ್ವಹಿಸಿ</h1>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">Job Management</h2>
+            <p className="text-gray-500">Create and manage job postings</p>
           </div>
           <button
-            onClick={() => setShowForm(true)}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+            onClick={handleCreateJob}
+            className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
           >
             <PlusIcon className="h-5 w-5 mr-2" />
-            ಹೊಸ ಉದ್ಯೋಗ
+            New Job
           </button>
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-        <div className="mt-8">
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">
-            <ul className="divide-y divide-gray-200">
-              {jobs.map((job) => (
-                <li key={job.id}>
-                  <div className="px-4 py-4 sm:px-6">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <h3 className="text-lg font-medium text-gray-900">
-                          {job.title}
-                        </h3>
-                        <span className={`ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                          job.status === 'active'
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-red-100 text-red-800'
-                        }`}>
-                          {job.status === 'active' ? 'ಸಕ್ರಿಯ' : 'ನಿಷ್ಕ್ರಿಯ'}
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-4">
-                        <button
-                          onClick={() => setEditingJob(job)}
-                          className="text-gray-400 hover:text-gray-500"
-                        >
-                          <PencilIcon className="h-5 w-5" />
-                        </button>
-                        <button
-                          onClick={() => handleStatusChange(job.id, job.status === 'active' ? 'inactive' : 'active')}
-                          className="text-gray-400 hover:text-gray-500"
-                        >
-                          {job.status === 'active' ? (
-                            <XCircleIcon className="h-5 w-5" />
-                          ) : (
-                            <CheckCircleIcon className="h-5 w-5" />
-                          )}
-                        </button>
-                        <button
-                          onClick={() => handleDelete(job.id)}
-                          className="text-red-400 hover:text-red-500"
-                        >
-                          <TrashIcon className="h-5 w-5" />
-                        </button>
-                      </div>
-                    </div>
-                    <div className="mt-2 sm:flex sm:justify-between">
-                      <div className="sm:flex">
-                        <p className="flex items-center text-sm text-gray-500">
-                          {job.description}
-                        </p>
-                        <p className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6">
-                          <span className="font-medium">{job.salary}</span>
-                        </p>
-                      </div>
-                      <div className="mt-2 flex items-center text-sm text-gray-500 sm:mt-0">
-                        <p>
-                          ಸ್ಥಳ: {job.location}
-                        </p>
-                        <p className="ml-4">
-                          ಪ್ರಕಾರ: {job.type}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-2 flex items-center text-sm text-gray-500">
-                      <p>
-                        ಕೊನೆಯ ದಿನಾಂಕ: {new Date(job.deadline).toLocaleDateString()}
-                      </p>
-                      <p className="ml-4">
-                        ಅರ್ಜಿದಾರರು: {job.applicants}
-                      </p>
-                    </div>
-                    <div className="mt-4">
-                      <h4 className="text-sm font-medium text-gray-900">ಅಗತ್ಯಗಳು:</h4>
-                      <ul className="mt-2 space-y-1">
-                        {job.requirements.map((req, index) => (
-                          <li key={index} className="text-sm text-gray-500">
-                            • {req}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
+      {/* Job List */}
+      <div className="bg-white rounded-lg shadow overflow-hidden">
+        {jobs.length === 0 ? (
+          <div className="text-center py-12">
+            <BriefcaseIcon className="mx-auto h-12 w-12 text-gray-400" />
+            <h3 className="mt-2 text-sm font-medium text-gray-900">No jobs</h3>
+            <p className="mt-1 text-sm text-gray-500">Get started by creating a new job posting.</p>
+            <div className="mt-6">
+              <button
+                onClick={handleCreateJob}
+                className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700"
+              >
+                <PlusIcon className="h-5 w-5 mr-2" />
+                New Job
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Deadline</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Applications</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody className="bg-white divide-y divide-gray-200">
+              {jobs.map((job) => (
+                <tr key={job._id}>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm font-medium text-gray-900">{job.jobTitle}</div>
+                  </td>
+                  <td className="px-6 py-4">
+                    <div className="text-sm text-gray-500 truncate max-w-xs">{job.jobDescription}</div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {new Date(job.deadline).toLocaleDateString()}
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
+                      job.status === 'open' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                      {job.status}
+                    </span>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {job.applicants ? job.applicants.length : 0} applications
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                    <button
+                      onClick={() => navigate(`/university/jobs/${job._id}/edit`)}
+                      className="text-indigo-600 hover:text-indigo-900 mr-4"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(job._id)}
+                      className="text-red-600 hover:text-red-900"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
-} 
+};
+
+export default ManageJobs; 

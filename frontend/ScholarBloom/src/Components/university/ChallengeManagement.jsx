@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PlusIcon, FunnelIcon } from '@heroicons/react/24/outline';
+import { useAuth } from '../../contexts/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 const ChallengeManagement = () => {
   const [challenges, setChallenges] = useState([]);
@@ -7,6 +9,8 @@ const ChallengeManagement = () => {
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [sortBy, setSortBy] = useState('startDate');
+  const { token } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchChallenges = async () => {
@@ -14,11 +18,22 @@ const ChallengeManagement = () => {
         setLoading(true);
         setError(null);
 
-        const response = await fetch('http://localhost:3000/api/university/challenges', {
+        if (!token) {
+          throw new Error('No authentication token found');
+        }
+
+        const response = await fetch('http://localhost:3000/api/challenges', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
           credentials: 'include'
         });
 
         if (!response.ok) {
+          const errorData = await response.text();
+          console.error('Server response:', errorData);
           throw new Error('Failed to fetch challenges');
         }
 
@@ -26,17 +41,17 @@ const ChallengeManagement = () => {
         setChallenges(data);
       } catch (error) {
         console.error('Error fetching challenges:', error);
-        setError('ಸವಾಲುಗಳನ್ನು ಪಡೆಯಲು ವಿಫಲವಾಗಿದೆ');
+        setError('Failed to fetch challenges. Please try again.');
       } finally {
         setLoading(false);
       }
     };
 
     fetchChallenges();
-  }, []);
+  }, [token]);
 
   const handleCreateChallenge = () => {
-    // TODO: Implement challenge creation
+    navigate('/university/challenges/create');
   };
 
   const handleEditChallenge = (id) => {
@@ -45,8 +60,16 @@ const ChallengeManagement = () => {
 
   const handleDeleteChallenge = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/university/challenges/${id}`, {
+      if (!token) {
+        throw new Error('No authentication token found');
+      }
+
+      const response = await fetch(`http://localhost:3000/api/challenges/${id}`, {
         method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         credentials: 'include'
       });
 
@@ -57,7 +80,7 @@ const ChallengeManagement = () => {
       setChallenges(prev => prev.filter(c => c._id !== id));
     } catch (error) {
       console.error('Error deleting challenge:', error);
-      setError('ಸವಾಲನ್ನು ಅಳಿಸಲು ವಿಫಲವಾಗಿದೆ');
+      setError('Failed to delete challenge. Please try again.');
     }
   };
 
@@ -99,15 +122,15 @@ const ChallengeManagement = () => {
       <div className="bg-white rounded-lg shadow p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">ಸವಾಲು ನಿರ್ವಹಣೆ</h2>
-            <p className="text-gray-500">ಸವಾಲುಗಳನ್ನು ರಚಿಸಿ ಮತ್ತು ನಿರ್ವಹಿಸಿ</p>
+            <h2 className="text-2xl font-bold text-gray-900">Challenge Management</h2>
+            <p className="text-gray-500">Create and manage challenges</p>
           </div>
           <button
             onClick={handleCreateChallenge}
             className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700"
           >
             <PlusIcon className="h-5 w-5 mr-2" />
-            ಹೊಸ ಸವಾಲು
+            New Challenge
           </button>
         </div>
 
@@ -120,23 +143,23 @@ const ChallengeManagement = () => {
               onChange={(e) => setFilter(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="all">ಎಲ್ಲಾ ಸ್ಥಿತಿಗಳು</option>
-              <option value="active">ಸಕ್ರಿಯ</option>
-              <option value="inactive">ನಿಷ್ಕ್ರಿಯ</option>
-              <option value="draft">ಕರಡು</option>
+              <option value="all">All Statuses</option>
+              <option value="active">Active</option>
+              <option value="inactive">Inactive</option>
+              <option value="draft">Draft</option>
             </select>
           </div>
 
           <div className="flex items-center space-x-2">
-            <label className="text-sm font-medium text-gray-700">ವಿಂಗಡಿಸು:</label>
+            <label className="text-sm font-medium text-gray-700">Sort by:</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
               className="rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
             >
-              <option value="startDate">ಪ್ರಾರಂಭ ದಿನಾಂಕ</option>
-              <option value="endDate">ಕೊನೆಯ ದಿನಾಂಕ</option>
-              <option value="participants">ಭಾಗವಹಿಸುವವರು</option>
+              <option value="startDate">Start Date</option>
+              <option value="endDate">End Date</option>
+              <option value="participants">Participants</option>
             </select>
           </div>
         </div>
@@ -147,12 +170,12 @@ const ChallengeManagement = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಶೀರ್ಷಿಕೆ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಪ್ರಾರಂಭ ದಿನಾಂಕ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಕೊನೆಯ ದಿನಾಂಕ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಸ್ಥಿತಿ</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಭಾಗವಹಿಸುವವರು</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ಕ್ರಿಯೆಗಳು</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Participants</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -189,13 +212,13 @@ const ChallengeManagement = () => {
                     onClick={() => handleEditChallenge(challenge._id)}
                     className="text-indigo-600 hover:text-indigo-900 mr-4"
                   >
-                    ಸಂಪಾದಿಸು
+                    Edit
                   </button>
                   <button
                     onClick={() => handleDeleteChallenge(challenge._id)}
                     className="text-red-600 hover:text-red-900"
                   >
-                    ಅಳಿಸು
+                    Delete
                   </button>
                 </td>
               </tr>
