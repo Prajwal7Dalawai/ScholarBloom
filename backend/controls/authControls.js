@@ -1,5 +1,5 @@
 const admin = require('firebase-admin');
-const User = require("../models/user-schema");
+const User = require("../models/User-Schema");
 const serviceAccount = require("../utils/scholarbloom-ffaa4-firebase-adminsdk-fbsvc-aa64741232.json");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
