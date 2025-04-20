@@ -20,7 +20,7 @@ export const AuthProvider = ({ children }) => {
         return false;
       }
 
-      const response = await fetch('http://localhost:3000/api/auth/verify', {
+      const response = await fetch('https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/verify', {
         headers: {
           'Authorization': `Bearer ${storedToken}`,
           'Content-Type': 'application/json'
@@ -142,7 +142,7 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       if (token) {
-        await fetch('http://localhost:3000/api/auth/logout', {
+        await fetch('https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/logout', {
           method: 'GET',
           credentials: 'include',
           headers: {

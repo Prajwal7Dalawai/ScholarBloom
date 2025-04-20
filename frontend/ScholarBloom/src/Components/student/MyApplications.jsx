@@ -21,7 +21,7 @@ export default function MyApplications() {
         const token = localStorage.getItem('token');
         
         // Get student profile first to get the student ID
-        const profileResponse = await fetch('http://localhost:3000/student/profile', {
+        const profileResponse = await fetch(`${import.meta.env.VITE_API_URL}/student/profile`, {
           credentials: 'include',
           headers: {
             'Authorization': `Bearer ${token}`

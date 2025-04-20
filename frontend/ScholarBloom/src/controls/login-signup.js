@@ -23,7 +23,7 @@ export const handleGoogleSignIn = async (role, navigate) => {
             throw new Error('Failed to get ID token');
         }
 
-        const endpoint = `http://localhost:3000/api/auth/google/${role}`;
+        const endpoint = `https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/google/${role}`;
         console.log(`Sending request to: ${endpoint}`);
 
         const response = await fetch(endpoint, {
@@ -93,7 +93,7 @@ export const login = async () => {
         const result = await signInWithPopup(auth, provider);
         const idToken = await result.user.getIdToken();
 
-        const response = await fetch(`http://localhost:3000/api/auth/google/login`, {
+        const response = await fetch(`https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/google/login`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -128,7 +128,7 @@ export const login = async () => {
 
 export const logout = async () => {
     try {
-        const response = await fetch("http://localhost:3000/api/auth/logout", {
+        const response = await fetch("https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/logout", {
             method: "GET",
             credentials: "include",
         });

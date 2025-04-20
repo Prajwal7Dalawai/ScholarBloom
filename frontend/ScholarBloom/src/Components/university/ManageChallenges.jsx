@@ -28,7 +28,7 @@ const ManageChallenges = () => {
         throw new Error('Authentication token not found');
       }
 
-      const response = await fetch('http://localhost:3000/api/challenges', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/challenges`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

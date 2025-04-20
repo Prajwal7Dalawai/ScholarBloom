@@ -37,7 +37,7 @@ const UniversityDashboard = () => {
         };
 
         // Fetch scholarship applications
-        const scholarshipApplicationsResponse = await fetch('http://localhost:3000/api/scholarships/applications?limit=5', {
+        const scholarshipApplicationsResponse = await fetch(`${import.meta.env.VITE_API_URL}/scholarships/applications?limit=5`, {
           method: 'GET',
           headers: {
             ...headers,
@@ -58,7 +58,7 @@ const UniversityDashboard = () => {
         const scholarshipApplications = await scholarshipApplicationsResponse.json();
 
         // Fetch job applications
-        const jobApplicationsResponse = await fetch('http://localhost:3000/api/jobs/applications?limit=5', {
+        const jobApplicationsResponse = await fetch(`${import.meta.env.VITE_API_URL}/jobs/applications?limit=5`, {
           method: 'GET',
           headers: {
             ...headers,
@@ -100,7 +100,7 @@ const UniversityDashboard = () => {
 
         // Continue with other API calls...
         const [scholarshipAnalytics, courseAnalytics, jobAnalytics] = await Promise.all([
-          fetch('http://localhost:3000/api/university/analytics/scholarships', {
+          fetch(`${import.meta.env.VITE_API_URL}/university/analytics/scholarships`, {
             method: 'GET',
             headers: {
               ...headers,
@@ -113,7 +113,7 @@ const UniversityDashboard = () => {
             }
             return res.json();
           }),
-          fetch('http://localhost:3000/api/university/analytics/courses', {
+          fetch(`${import.meta.env.VITE_API_URL}/university/analytics/courses`, {
             method: 'GET',
             headers: {
               ...headers,
@@ -126,7 +126,7 @@ const UniversityDashboard = () => {
             }
             return res.json();
           }),
-          fetch('http://localhost:3000/api/university/analytics/jobs', {
+          fetch(`${import.meta.env.VITE_API_URL}/university/analytics/jobs`, {
             method: 'GET',
             headers: {
               ...headers,

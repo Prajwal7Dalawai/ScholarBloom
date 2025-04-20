@@ -1,133 +1,65 @@
 # ScholarBloom
 
-ScholarBloom is a platform that helps students earn scholarships through skills and learning. It features gamified learning, virtual currency (EduCoins), and job opportunities with universities.
+ScholarBloom ಎಂಬುದು ವಿದ್ಯಾರ್ಥಿಗಳಿಗಾಗಿ ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು, ಉದ್ಯೋಗಗಳು ಮತ್ತು ಸವಾಲುಗಳನ್ನು ಒದಗಿಸುವ ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್.
 
-## Features
+## ವೈಶಿಷ್ಟ್ಯಗಳು
 
-- **Gamified Learning**: Students earn EduCoins by learning new skills
-- **Scholarships**: Apply for scholarships from various universities
-- **Job Opportunities**: Access job opportunities with partner universities
-- **Wallet System**: Securely store and manage EduCoins
-- **Profile Management**: Students and universities can manage their profiles
+- ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು ಮತ್ತು ಉದ್ಯೋಗಗಳಿಗಾಗಿ ಅರ್ಜಿ ಸಲ್ಲಿಕೆ
+- ಸವಾಲುಗಳಿಗಾಗಿ ಸಲ್ಲಿಕೆ ಮತ್ತು ಪ್ರಶಸ್ತಿಗಳು
+- ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್ ನಿರ್ವಹಣೆ
+- ಅರ್ಜಿ ಮತ್ತು ಸಲ್ಲಿಕೆ ಸ್ಥಿತಿ ಟ್ರ್ಯಾಕಿಂಗ್
+- ರೋಲ್-ಆಧಾರಿತ ಪ್ರವೇಶ ನಿಯಂತ್ರಣ
 
-## Technology Stack
+## ಸ್ಥಾಪನೆ
 
-### Frontend
-- React.js
-- Tailwind CSS
-- Framer Motion (for animations)
-- React Router (for routing)
-- Axios (for API calls)
-
-### Backend
-- Node.js
-- Express.js
-- MongoDB
-- JWT (for authentication)
-- Mongoose (MongoDB ODM)
-
-## Project Structure
-
-```
-ScholarBloom/
-├── frontend/                 # Frontend code
-│   ├── public/              # Static files
-│   └── src/                 # React code
-│       ├── Components/      # Reusable components
-│       ├── pages/          # Page components
-│       ├── context/        # React context
-│       └── utils/          # Utility functions
-├── backend/                 # Backend code
-│   ├── Models/             # Mongoose models
-│   ├── Routes/             # API routes
-│   ├── Middleware/         # Middleware functions
-│   └── controllers/        # Route controllers
-└── README.md               # Project documentation
-```
-
-## Running Locally
-
-### Prerequisites
-- Node.js (v14+)
-- MongoDB
-- npm or yarn
-
-### Setup Steps
-
-1. **Clone the repository**
+1. ರಿಪೊಸಿಟರಿಯನ್ನು ಕ್ಲೋನ್ ಮಾಡಿ:
 ```bash
 git clone https://github.com/yourusername/ScholarBloom.git
 cd ScholarBloom
 ```
 
-2. **Backend Setup**
+2. ಅವಲಂಬನೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ:
 ```bash
-cd backend
 npm install
 ```
 
-3. **Set up environment variables**
-Create a `.env` file and add the following variables:
-```
-PORT=3000
-MONGODB_URI=mongodb://localhost:27017/scholarbloom
-JWT_SECRET=your_jwt_secret
+3. `.env` ಫೈಲ್ ಅನ್ನು ರಚಿಸಿ ಮತ್ತು Firebase ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಸೇರಿಸಿ:
+```env
+REACT_APP_FIREBASE_API_KEY=your_api_key
+REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
+REACT_APP_FIREBASE_PROJECT_ID=your_project_id
+REACT_APP_FIREBASE_STORAGE_BUCKET=your_storage_bucket
+REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+REACT_APP_FIREBASE_APP_ID=your_app_id
 ```
 
-4. **Start the backend server**
+4. ಅಭಿವೃದ್ಧಿ ಸರ್ವರ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ:
 ```bash
 npm start
 ```
 
-5. **Frontend Setup**
-```bash
-cd ../frontend
-npm install
-```
+## ಬಳಕೆ
 
-6. **Start the frontend server**
-```bash
-npm start
-```
+1. ವಿದ್ಯಾರ್ಥಿ ಖಾತೆಯನ್ನು ರಚಿಸಿ
+2. ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು, ಉದ್ಯೋಗಗಳು ಮತ್ತು ಸವಾಲುಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ
+3. ಅರ್ಜಿಗಳನ್ನು ಸಲ್ಲಿಸಿ ಮತ್ತು ಸವಾಲುಗಳಿಗಾಗಿ ಸಲ್ಲಿಕೆ ಮಾಡಿ
+4. ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನಿರ್ವಹಿಸಿ
 
-7. **Open the application in your browser**
-```
-http://localhost:3000
-```
+## ತಂತ್ರಜ್ಞಾನಗಳು
 
-## API Documentation
+- React.js
+- Firebase Authentication
+- Firebase Firestore
+- Tailwind CSS
 
-### Authentication
-- `POST /api/auth/register` - Register new users
-- `POST /api/auth/login` - Login users
-- `GET /api/auth/profile` - Get user profile
+## ಕೊಡುಗೆ
 
-### Scholarships
-- `GET /api/scholarships` - Get all scholarships
-- `POST /api/scholarships` - Create new scholarship
-- `GET /api/scholarships/:id` - Get specific scholarship
-- `PUT /api/scholarships/:id` - Update scholarship
-- `DELETE /api/scholarships/:id` - Delete scholarship
+1. ಫೋರ್ಕ್ ರಿಪೊಸಿಟರಿ
+2. ಫೀಚರ್ ಬ್ರಾಂಚ್ ರಚಿಸಿ (`git checkout -b feature/amazing-feature`)
+3. ಬದಲಾವಣೆಗಳನ್ನು ಕಮಿಟ್ ಮಾಡಿ (`git commit -m 'Add some amazing feature'`)
+4. ಬ್ರಾಂಚ್ ಅನ್ನು ಪುಶ್ ಮಾಡಿ (`git push origin feature/amazing-feature`)
+5. ಪುಲ್ ರಿಕ್ವೆಸ್ಟ್ ತೆರೆಯಿರಿ
 
-### Jobs
-- `GET /api/jobs` - Get all jobs
-- `POST /api/jobs` - Create new job
-- `GET /api/jobs/:id` - Get specific job
-- `PUT /api/jobs/:id` - Update job
-- `DELETE /api/jobs/:id` - Delete job
+## ಲೈಸೆನ್ಸ್
 
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## License
-
-MIT
-
-## Contact
-
-For questions or feedback, please email: support@scholarbloom.com 
+ಈ ಪ್ರಾಜೆಕ್ಟ್ MIT ಲೈಸೆನ್ಸ್ ಅಡಿಯಲ್ಲಿ ವಿತರಿಸಲಾಗಿದೆ - ವಿವರಗಳಿಗಾಗಿ [LICENSE](LICENSE) ಫೈಲ್ ಅನ್ನು ನೋಡಿ.

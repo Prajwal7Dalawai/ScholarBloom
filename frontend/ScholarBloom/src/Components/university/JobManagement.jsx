@@ -22,7 +22,7 @@ const JobManagement = () => {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:3000/api/university/jobs', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/university/jobs`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',

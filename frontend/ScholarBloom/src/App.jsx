@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ThemeProvider } from './contexts/ThemeContext';
 import Navbar from './Components/Navbar';
-import Footer from './Components/Footer';
+// import Footer from './Components/Footer';
 import Home from './pages/Home';
-import Login from './pages/Login';
-import Register from './pages/Register';
+import Login from './pages/login.jsx';
+// import Register from './pages/Register';
 import ForgotPassword from './pages/ForgotPassword';
 import StudentLayout from './Components/student/StudentLayout';
 import StudentOverview from './Components/student/StudentOverview';
@@ -14,30 +14,30 @@ import "./App.css";
 import SignupPage from "./pages/SignupPage.jsx";
 import Challenge from "./pages/Challenge.jsx";
 import JobApplication from "./pages/JobApplication.jsx";
-import Header from "./Components/header/Header.jsx";
+// import Header from "./Components/header/Header.jsx";
 import Scholarship from "./pages/Scholarship.jsx";
 import Course from './pages/Course.jsx'
-import ScholarshipApplicants from "./pages/ScholarshipApplicants";
-import ProfilePage from "./pages/ProfilePage";
-import EditProfilePage from "./pages/EditProfilePage";
-import ApplicantProfile from "./pages/ApplicantProfile.jsx";
-import JobApplicants from "./pages/JobApplicants.jsx";
-import JobApplicationForm from './Pages/JobApplicationForm.jsx'
+// import ScholarshipApplicants from "./pages/ScholarshipApplicants";
+// import ProfilePage from "./pages/ProfilePage";
+// import EditProfilePage from "./pages/EditProfilePage";
+// import ApplicantProfile from "./pages/ApplicantProfile.jsx";
+// import JobApplicants from "./pages/JobApplicants.jsx";
+// import JobApplicationForm from './Pages/JobApplicationForm.jsx'
 import ScholarshipApplicationForm from './Components/student/ScholarshipApplicationForm'
-import UniProfile from './pages/UniProfile.jsx'
-import UniEditProfile from './pages/EditUniversityProfile.jsx'
+// import UniProfile from './pages/UniProfile.jsx'
+// import UniEditProfile from './pages/EditUniversityProfile.jsx'
 import HostScholarship from "./pages/HostScholarship.jsx";
 import HostJob from "./pages/HostJob.jsx";
 import About from './pages/About';
 import Contact from './pages/Contact';
-import SignUp from './pages/SignUp';
+// import SignUp from './pages/SignUp';
 import UniversityProfile from './Components/university/UniversityProfile';
 import AdminDashboard from './Components/admin/AdminDashboard';
-import UserManagement from './Components/admin/UserManagement';
-import ContentManagement from './Components/admin/ContentManagement';
+// import UserManagement from './Components/admin/UserManagement';
+// import ContentManagement from './Components/admin/ContentManagement';
 import SystemSettings from './Components/admin/SystemSettings';
 import StudentProfile from './Components/student/StudentProfile';
-import DashboardOverview from './Components/student/DashboardOverview';
+//import DashboardOverview from './Components/student/DashboardOverview';
 import ScholarshipList from './Components/student/ScholarshipList';
 import JobList from './Components/student/JobList';
 import ChallengeList from './Components/student/ChallengeList';

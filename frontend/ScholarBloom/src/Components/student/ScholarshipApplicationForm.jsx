@@ -28,7 +28,7 @@ const ScholarshipApplicationForm = () => {
 
       setLoading(true);
       setError('');
-      const response = await fetch(`http://localhost:3000/api/scholarships/${id}`, {
+      const response = await fetch(`https://scholarbloom-backend-142097269177.asia-south1.run.app/api/scholarships/${id}`, {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
@@ -86,7 +86,7 @@ const ScholarshipApplicationForm = () => {
         formDataToSend.append('documents', file);
       });
 
-      const response = await fetch(`http://localhost:3000/api/student/scholarships/${id}/apply`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/student/scholarships/${id}/apply`, {
         method: 'POST',
         credentials: 'include',
         headers: {

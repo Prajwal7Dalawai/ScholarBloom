@@ -1,5 +1,5 @@
 const fetchUniData = async()=>{
-    let response = await fetch("http://localhost:3000/uni/",
+    let response = await fetch("https://scholarbloom-backend-142097269177.asia-south1.run.app/uni/",
     {
         method: "GET",
         headers: {

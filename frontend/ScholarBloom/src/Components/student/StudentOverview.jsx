@@ -12,14 +12,14 @@ const StudentOverview = () => {
     const fetchData = async () => {
       try {
         const [scholarshipsResponse, educoinsResponse] = await Promise.all([
-          fetch('http://localhost:3000/api/scholarships', { 
+          fetch('https://scholarbloom-backend-142097269177.asia-south1.run.app/api/scholarships', { 
             credentials: 'include',
             headers: {
               'Authorization': `Bearer ${token}`,
               'Content-Type': 'application/json'
             }
           }),
-          fetch('http://localhost:3000/api/student/educoins', { 
+          fetch('https://scholarbloom-backend-142097269177.asia-south1.run.app/api/student/educoins', { 
             credentials: 'include',
             headers: {
               'Authorization': `Bearer ${token}`,

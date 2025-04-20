@@ -16,7 +16,7 @@ const Profile = () => {
   const fetchProfileData = async () => {
     try {
       console.log('Fetching profile data with token:', token);
-      const response = await fetch('http://localhost:3000/api/university/profile', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/university/profile`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

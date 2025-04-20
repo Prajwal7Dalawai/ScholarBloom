@@ -21,7 +21,7 @@ const StudentDashboard = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await fetch('http://localhost:3000/auth/verify', {
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/verify`, {
           credentials: 'include',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`

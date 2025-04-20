@@ -19,7 +19,7 @@ export default function ApplicationsList() {
         setLoading(true);
 
         // Get university profile first to get the university ID
-        const profileResponse = await fetch('http://localhost:3000/api/university/profile', {
+        const profileResponse = await fetch(`${import.meta.env.VITE_API_URL}/university/profile`, {
           credentials: 'include'
         });
 

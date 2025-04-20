@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3000/api';
+const API_URL = 'https://scholarbloom-backend-142097269177.asia-south1.run.app/api';
 
 export const aiServices = {
   // ಶಾಲರ್‌ಶಿಪ್ ಶಿಫಾರಸುಗಳು

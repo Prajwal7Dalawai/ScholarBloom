@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL
 
 const api = axios.create({
     baseURL: API_BASE_URL,
@@ -53,7 +53,7 @@ export const userAPI = {
 
   getUser: async () => {
     try {
-      const response = await api.get('/api/student/profile');
+      const response = await api.get('/student/profile');
       return response.data;
     } catch (error) {
       console.error('Error getting user:', error);
@@ -63,7 +63,7 @@ export const userAPI = {
 
   updateUser: async (userData) => {
     try {
-      const response = await api.put('/api/student/profile', userData);
+      const response = await api.put('/student/profile', userData);
       return response.data;
     } catch (error) {
       console.error('Error updating user:', error);
@@ -76,7 +76,7 @@ export const userAPI = {
 export const studentAPI = {
   getApplications: async () => {
     try {
-      const response = await api.get('/api/student/applications');
+      const response = await api.get('/student/applications');
       return response.data;
     } catch (error) {
       console.error('Error getting applications:', error);
@@ -86,7 +86,7 @@ export const studentAPI = {
 
   getChallenges: async () => {
     try {
-      const response = await api.get('/api/student/challenges');
+      const response = await api.get('/student/challenges');
       return response.data;
     } catch (error) {
       console.error('Error getting challenges:', error);
@@ -96,7 +96,7 @@ export const studentAPI = {
 
   getEduCoins: async () => {
     try {
-      const response = await api.get('/api/student/educoins');
+      const response = await api.get('/student/educoins');
       return response.data;
     } catch (error) {
       console.error('Error getting EduCoins:', error);
@@ -106,7 +106,7 @@ export const studentAPI = {
 
   applyForScholarship: async (applicationData) => {
     try {
-      const response = await api.post('/api/student/scholarships/apply', applicationData);
+      const response = await api.post('/student/scholarships/apply', applicationData);
       return response.data;
     } catch (error) {
       console.error('Error applying for scholarship:', error);
@@ -119,7 +119,7 @@ export const studentAPI = {
 export const scholarshipAPI = {
   createScholarship: async (scholarshipData) => {
     try {
-      const response = await api.post('/api/scholarships', scholarshipData);
+      const response = await api.post('/scholarships', scholarshipData);
       return response.data;
     } catch (error) {
       console.error('Error creating scholarship:', error);
@@ -129,7 +129,7 @@ export const scholarshipAPI = {
 
   getScholarship: async (scholarshipId) => {
     try {
-      const response = await api.get(`/api/scholarships/${scholarshipId}`);
+      const response = await api.get(`/scholarships/${scholarshipId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting scholarship:', error);
@@ -144,7 +144,7 @@ export const scholarshipAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/api/scholarships?${params.toString()}`);
+      const response = await api.get(`/scholarships?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting scholarships:', error);
@@ -154,7 +154,7 @@ export const scholarshipAPI = {
 
   updateScholarship: async (scholarshipId, scholarshipData) => {
     try {
-      const response = await api.put(`/api/scholarships/${scholarshipId}`, scholarshipData);
+      const response = await api.put(`/scholarships/${scholarshipId}`, scholarshipData);
       return response.data;
     } catch (error) {
       console.error('Error updating scholarship:', error);
@@ -164,7 +164,7 @@ export const scholarshipAPI = {
 
   deleteScholarship: async (scholarshipId) => {
     try {
-      const response = await api.delete(`/api/scholarships/${scholarshipId}`);
+      const response = await api.delete(`/scholarships/${scholarshipId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting scholarship:', error);
@@ -177,7 +177,7 @@ export const scholarshipAPI = {
 export const jobAPI = {
   createJob: async (jobData) => {
     try {
-      const response = await api.post('/api/jobs', jobData);
+      const response = await api.post('/jobs', jobData);
       return response.data;
     } catch (error) {
       console.error('Error creating job:', error);
@@ -187,7 +187,7 @@ export const jobAPI = {
 
   getJob: async (jobId) => {
     try {
-      const response = await api.get(`/api/jobs/${jobId}`);
+      const response = await api.get(`/jobs/${jobId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting job:', error);
@@ -202,7 +202,7 @@ export const jobAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/api/jobs?${params.toString()}`);
+      const response = await api.get(`/jobs?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting jobs:', error);
@@ -212,7 +212,7 @@ export const jobAPI = {
 
   updateJob: async (jobId, jobData) => {
     try {
-      const response = await api.put(`/api/jobs/${jobId}`, jobData);
+      const response = await api.put(`/jobs/${jobId}`, jobData);
       return response.data;
     } catch (error) {
       console.error('Error updating job:', error);
@@ -222,7 +222,7 @@ export const jobAPI = {
 
   deleteJob: async (jobId) => {
     try {
-      const response = await api.delete(`/api/jobs/${jobId}`);
+      const response = await api.delete(`/jobs/${jobId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting job:', error);
@@ -235,7 +235,7 @@ export const jobAPI = {
 export const challengeAPI = {
   createChallenge: async (challengeData) => {
     try {
-      const response = await api.post('/api/challenges', challengeData);
+      const response = await api.post('/challenges', challengeData);
       return response.data;
     } catch (error) {
       console.error('Error creating challenge:', error);
@@ -245,7 +245,7 @@ export const challengeAPI = {
 
   getChallenge: async (challengeId) => {
     try {
-      const response = await api.get(`/api/challenges/${challengeId}`);
+      const response = await api.get(`/challenges/${challengeId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenge:', error);
@@ -260,7 +260,7 @@ export const challengeAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/api/challenges?${params.toString()}`);
+      const response = await api.get(`/challenges?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenges:', error);
@@ -270,7 +270,7 @@ export const challengeAPI = {
 
   updateChallenge: async (challengeId, challengeData) => {
     try {
-      const response = await api.put(`/api/challenges/${challengeId}`, challengeData);
+      const response = await api.put(`/challenges/${challengeId}`, challengeData);
       return response.data;
     } catch (error) {
       console.error('Error updating challenge:', error);
@@ -280,7 +280,7 @@ export const challengeAPI = {
 
   deleteChallenge: async (challengeId) => {
     try {
-      const response = await api.delete(`/api/challenges/${challengeId}`);
+      const response = await api.delete(`/challenges/${challengeId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting challenge:', error);
@@ -296,7 +296,7 @@ export const challengeAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/api/challenges/submissions?${params.toString()}`);
+      const response = await api.get(`/challenges/submissions?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting challenge submissions:', error);
@@ -378,7 +378,7 @@ export const applicationAPI = {
 export const submissionAPI = {
   createSubmission: async (submissionData) => {
     try {
-      const response = await api.post('/api/challenges/submissions', submissionData);
+      const response = await api.post('/challenges/submissions', submissionData);
       return response.data;
     } catch (error) {
       console.error('Error creating submission:', error);
@@ -388,7 +388,7 @@ export const submissionAPI = {
 
   getSubmission: async (submissionId) => {
     try {
-      const response = await api.get(`/api/challenges/submissions/${submissionId}`);
+      const response = await api.get(`/challenges/submissions/${submissionId}`);
       return response.data;
     } catch (error) {
       console.error('Error getting submission:', error);
@@ -404,7 +404,7 @@ export const submissionAPI = {
       if (sortBy) params.append('sortBy', sortBy);
       if (limit) params.append('limit', limit);
 
-      const response = await api.get(`/api/challenges/submissions?${params.toString()}`);
+      const response = await api.get(`/challenges/submissions?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error getting submissions:', error);
@@ -414,7 +414,7 @@ export const submissionAPI = {
 
   updateSubmission: async (submissionId, submissionData) => {
     try {
-      const response = await api.put(`/api/challenges/submissions/${submissionId}`, submissionData);
+      const response = await api.put(`/challenges/submissions/${submissionId}`, submissionData);
       return response.data;
     } catch (error) {
       console.error('Error updating submission:', error);
@@ -424,7 +424,7 @@ export const submissionAPI = {
 
   deleteSubmission: async (submissionId) => {
     try {
-      const response = await api.delete(`/api/challenges/submissions/${submissionId}`);
+      const response = await api.delete(`/challenges/submissions/${submissionId}`);
       return response.data;
     } catch (error) {
       console.error('Error deleting submission:', error);
