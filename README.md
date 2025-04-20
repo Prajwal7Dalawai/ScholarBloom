@@ -62,4 +62,14 @@ npm start
 
 ## ಲೈಸೆನ್ಸ್
 
+<<<<<<< HEAD
 ಈ ಪ್ರಾಜೆಕ್ಟ್ MIT ಲೈಸೆನ್ಸ್ ಅಡಿಯಲ್ಲಿ ವಿತರಿಸಲಾಗಿದೆ - ವಿವರಗಳಿಗಾಗಿ [LICENSE](LICENSE) ಫೈಲ್ ಅನ್ನು ನೋಡಿ.
+=======
+## Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+>>>>>>> 73175acde4861d96e71bd9b772093f24b7423979

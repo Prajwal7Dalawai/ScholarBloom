@@ -20,9 +20,9 @@ mongoose.connect(process.env.MongoURL)
     .catch(err => console.error("MongoDB connection error:", err));
 
 // Routes
-const authRoutes = require("./routes/authRoute");
-const scholarshipRoutes = require("./routes/scholarships");
-const jobRoutes = require("./routes/jobs");
+const authRoutes = require("./Routes/authRoute");
+const scholarshipRoutes = require("./Routes/scholarships");
+const jobRoutes = require("./Routes/jobs");
 const challengeRoutes = require("./Routes/challengeRoute");
 const submissionRoutes = require("./Routes/submissionRoute");
 const studentRoutes = require("./Routes/studentRoute");
