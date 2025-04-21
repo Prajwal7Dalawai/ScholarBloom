@@ -41,7 +41,7 @@ const SignupPage = () => {
       setLoading(true);
       setError("");
 
-      const response = await axios.post("http://localhost:3000/api/auth/register", {
+      const response = await axios.post("https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/register", {
         ...studentForm,
         role: "student"
       });
@@ -65,7 +65,7 @@ const SignupPage = () => {
       setLoading(true);
       setError("");
 
-      const response = await axios.post("http://localhost:3000/api/auth/register", {
+      const response = await axios.post("https://scholarbloom-backend-142097269177.asia-south1.run.app/api/auth/register", {
         ...universityForm,
         role: "university"
       });

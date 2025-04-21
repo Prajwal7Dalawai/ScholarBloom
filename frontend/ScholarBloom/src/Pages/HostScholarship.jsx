@@ -45,7 +45,7 @@ const HostScholarship = () => {
         throw new Error("Please enter a valid EduCoins requirement");
       }
 
-      const response = await fetch('http://localhost:3000/api/university/scholarships', {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/university/scholarships`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
