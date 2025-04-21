@@ -1,29 +1,41 @@
 # ScholarBloom
 
-ScholarBloom ಎಂಬುದು ವಿದ್ಯಾರ್ಥಿಗಳಿಗಾಗಿ ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು, ಉದ್ಯೋಗಗಳು ಮತ್ತು ಸವಾಲುಗಳನ್ನು ಒದಗಿಸುವ ವೆಬ್ ಅಪ್ಲಿಕೇಶನ್.
+ScholarBloom is a web application designed to provide students with access to scholarships, job opportunities, and challenges to help them grow academically and professionally.
 
-## ವೈಶಿಷ್ಟ್ಯಗಳು
+## Live Application
 
-- ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು ಮತ್ತು ಉದ್ಯೋಗಗಳಿಗಾಗಿ ಅರ್ಜಿ ಸಲ್ಲಿಕೆ
-- ಸವಾಲುಗಳಿಗಾಗಿ ಸಲ್ಲಿಕೆ ಮತ್ತು ಪ್ರಶಸ್ತಿಗಳು
-- ಬಳಕೆದಾರರ ಪ್ರೊಫೈಲ್ ನಿರ್ವಹಣೆ
-- ಅರ್ಜಿ ಮತ್ತು ಸಲ್ಲಿಕೆ ಸ್ಥಿತಿ ಟ್ರ್ಯಾಕಿಂಗ್
-- ರೋಲ್-ಆಧಾರಿತ ಪ್ರವೇಶ ನಿಯಂತ್ರಣ
+You can access the live application here: [ScholarBloom Live](https://tiny-cupcake-d226e3.netlify.app/)
 
-## ಸ್ಥಾಪನೆ
+## Features
 
-1. ರಿಪೊಸಿಟರಿಯನ್ನು ಕ್ಲೋನ್ ಮಾಡಿ:
+- Apply for scholarships and jobs
+- Participate in challenges and win rewards
+- User profile management
+- Application and submission status tracking
+- Role-based access control
+
+## Future Improvements
+
+- Enhanced AI-driven scholarship and job recommendations
+- Mobile app version for better accessibility
+- Integration with more universities and organizations
+- Advanced analytics dashboard for users and administrators
+- Multi-language support beyond English
+
+## Setup and Installation
+
+1. Clone the repository:
 ```bash
 git clone https://github.com/yourusername/ScholarBloom.git
 cd ScholarBloom
 ```
 
-2. ಅವಲಂಬನೆಗಳನ್ನು ಸ್ಥಾಪಿಸಿ:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. `.env` ಫೈಲ್ ಅನ್ನು ರಚಿಸಿ ಮತ್ತು Firebase ಕಾನ್ಫಿಗರೇಶನ್ ಅನ್ನು ಸೇರಿಸಿ:
+3. Create a `.env` file and add your Firebase configuration:
 ```env
 REACT_APP_FIREBASE_API_KEY=your_api_key
 REACT_APP_FIREBASE_AUTH_DOMAIN=your_auth_domain
@@ -33,43 +45,44 @@ REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 REACT_APP_FIREBASE_APP_ID=your_app_id
 ```
 
-4. ಅಭಿವೃದ್ಧಿ ಸರ್ವರ್ ಅನ್ನು ಪ್ರಾರಂಭಿಸಿ:
+## Running the Application Locally
+
+### Frontend
+
+Start the development server:
 ```bash
 npm start
 ```
 
-## ಬಳಕೆ
+### Backend
 
-1. ವಿದ್ಯಾರ್ಥಿ ಖಾತೆಯನ್ನು ರಚಿಸಿ
-2. ವಿದ್ಯಾರ್ಥಿವೇತನಗಳು, ಉದ್ಯೋಗಗಳು ಮತ್ತು ಸವಾಲುಗಳನ್ನು ಬ್ರೌಸ್ ಮಾಡಿ
-3. ಅರ್ಜಿಗಳನ್ನು ಸಲ್ಲಿಸಿ ಮತ್ತು ಸವಾಲುಗಳಿಗಾಗಿ ಸಲ್ಲಿಕೆ ಮಾಡಿ
-4. ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ನಿರ್ವಹಿಸಿ
+You can run the backend server locally using Docker:
 
-## ತಂತ್ರಜ್ಞಾನಗಳು
+```bash
+docker pull 777batman/scholarbloom-backend
+docker run -p 5000:5000 777batman/scholarbloom-backend
+```
+
+This will start the backend server on port 5000.
+
+## Usage
+
+1. Create a student account
+2. Browse scholarships, jobs, and challenges
+3. Submit applications and participate in challenges
+4. Manage your profile and track application statuses
+
+## Technologies Used
 
 - React.js
 - Firebase Authentication
 - Firebase Firestore
 - Tailwind CSS
 
-## ಕೊಡುಗೆ
-
-1. ಫೋರ್ಕ್ ರಿಪೊಸಿಟರಿ
-2. ಫೀಚರ್ ಬ್ರಾಂಚ್ ರಚಿಸಿ (`git checkout -b feature/amazing-feature`)
-3. ಬದಲಾವಣೆಗಳನ್ನು ಕಮಿಟ್ ಮಾಡಿ (`git commit -m 'Add some amazing feature'`)
-4. ಬ್ರಾಂಚ್ ಅನ್ನು ಪುಶ್ ಮಾಡಿ (`git push origin feature/amazing-feature`)
-5. ಪುಲ್ ರಿಕ್ವೆಸ್ಟ್ ತೆರೆಯಿರಿ
-
-## ಲೈಸೆನ್ಸ್
-
-<<<<<<< HEAD
-ಈ ಪ್ರಾಜೆಕ್ಟ್ MIT ಲೈಸೆನ್ಸ್ ಅಡಿಯಲ್ಲಿ ವಿತರಿಸಲಾಗಿದೆ - ವಿವರಗಳಿಗಾಗಿ [LICENSE](LICENSE) ಫೈಲ್ ಅನ್ನು ನೋಡಿ.
-=======
-## Contributing
+## Contribution
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
->>>>>>> 73175acde4861d96e71bd9b772093f24b7423979
