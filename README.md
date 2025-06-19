@@ -4,7 +4,7 @@ ScholarBloom is a web application designed to provide students with access to sc
 
 ## Live Application
 
-You can access the live application here: [ScholarBloom Live](https://tiny-cupcake-d226e3.netlify.app/)
+You can access the live application here: [ScholarBloom Live](https://scholarbloom.netlify.app/)
 
 ## Features
 
